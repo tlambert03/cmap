@@ -6,5 +6,15 @@ try:
 except PackageNotFoundError:
     __version__ = "uninstalled"
 
-__author__ = "Talley Lambert"
-__email__ = "talley.lambert@gmail.com"
+from ._color import HSLA, HSVA, RGBA, RGBA8, Color
+from ._colormap import Colormap, ColorStops
+
+__all__ = [
+    "Color",
+    "Colormap",
+    "ColorStops",
+    "HSLA",
+    "HSVA",
+    "RGBA",
+    "RGBA8",
+]

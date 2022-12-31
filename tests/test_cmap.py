@@ -1,8 +1,6 @@
-from unittest.mock import MagicMock, patch
-
 import numpy as np
 import pytest
-from cmap.color import RGBA, RGBA8, Color
+from cmap._color import RGBA, RGBA8, Color
 
 
 @pytest.mark.parametrize(
@@ -58,18 +56,6 @@ def test_color_errors() -> None:
         Color("red")._rgba = 1
 
 
-def test_pydantic_support():
-    pytest.importorskip("pydantic")
-    from pydantic.color import Color as PydanticColor
-
-    assert Color(PydanticColor("red")) is Color("red")
-
-
-def test_colour_support():
-    colour = pytest.importorskip("colour")
-    assert Color(colour.Color("red")) is Color("red")
-
-
 def test_conversions() -> None:
     # this test is very sensitive to rounding errors
     start = RGBA8(59, 84, 226, 0.6)
@@ -79,13 +65,3 @@ def test_conversions() -> None:
     assert int(start.to_hsl().in_degrees()[0]) == 231
     assert start.to_hex() == start.to_float().to_hex() == "#3B54E299"
     assert str(start) == str(start.to_float()) == "#3B54E299"
-
-
-def test_rich_repr() -> None:
-    rich = pytest.importorskip("rich")
-    from rich.text import Text
-
-    mock = MagicMock()
-    with patch.object(rich, "get_console", lambda: mock):
-        Color("red").__rich_repr__()
-    mock.print.assert_called_once_with(Text("  ", style="on red"), end="")

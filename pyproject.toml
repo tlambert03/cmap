@@ -116,4 +116,5 @@ ignore = [
     ".pre-commit-config.yaml",
     ".ruff_cache/**/*",
     "tests/**/*",
+    "setup.py",
 ]

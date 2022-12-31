@@ -30,7 +30,16 @@ globs = ["LICENSE/*"]
 # https://peps.python.org/pep-0621/#dependencies-optional-dependencies
 [project.optional-dependencies]
 test = ["pytest>=6.0", "pytest-cov"]
-thirdparty = ["rich", "pydantic", "colour", "matplotlib"]
+thirdparty = [
+    "rich",
+    "pydantic",
+    "colour",
+    "matplotlib",
+    "napari",
+    "vispy",
+    "pyqt5",
+    "pytest-qt",
+]
 dev = [
     "black",
     "ipython",
@@ -63,10 +72,10 @@ include = ["/src", "/tests"]
 line-length = 88
 target-version = "py38"
 extend-select = [
-    "E", # style errors
-    "F", # flakes
-    "D", # pydocstyle
-    "I", # isort
+    "E",  # style errors
+    "F",  # flakes
+    "D",  # pydocstyle
+    "I",  # isort
     "UP", # pyupgrade
     # "N",  # pep8-naming
     "S",    # bandit
@@ -92,7 +101,12 @@ extend-ignore = [
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
-filterwarnings = ["error"]
+filterwarnings = [
+    "error",
+    "ignore:distutils Version classes are deprecated",
+    "ignore:`np.bool8` is a deprecated:DeprecationWarning:skimage",
+
+]
 
 # https://mypy.readthedocs.io/en/stable/config_file.html
 [tool.mypy]

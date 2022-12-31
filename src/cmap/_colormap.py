@@ -116,7 +116,7 @@ class Colormap:
     def __deepcopy__(self, memo: dict[int, Any]) -> Colormap:
         return self
 
-    def lut(self, N: int = 256, gamma: float = 1) -> np.ndarray:
+    def lut(self, N: int = 255, gamma: float = 1) -> np.ndarray:
         """Return a lookup table (LUT) for the colormap.
 
         The returned LUT is a numpy array of RGBA values, with shape (N, 4), where N is

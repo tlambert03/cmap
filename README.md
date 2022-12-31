@@ -11,11 +11,14 @@ Scientific colormaps for python, with no dependencies beyond numpy.
 With `cmap`, you can use any of the colormaps from [matplotlib](https://matplotlib.org/stable/tutorials/colors/colormaps.html) or [cmocean](https://matplotlib.org/cmocean/) in your python code, without having to install matplotlib or cmocean.
 
 There are a number of python libraries that provide colormaps or basic color
-support, but they all either depend on matplotlib, or provided a specialized set
-of colormaps intended to extend those provided by matplotlib.
+support, but they all either depend on matplotlib, provide a specialized set of
+colormaps intended to extend those provided by matplotlib, or roll their own
+colormap solution that discourages reuse.
 
 `cmap` is a lightweight library that provides all of the open-source colormaps
-from matplotlib and cmocean, with no dependencies beyond numpy.  It provides exports to a number of known third-party colormap objects, allowing it to be used across a wide range of python visualization libraries.
+from matplotlib and cmocean, with no dependencies beyond numpy.  It provides
+exports to a number of known third-party colormap objects, allowing it to be
+used across a wide range of python visualization libraries.
 
 ## API
 
@@ -62,10 +65,17 @@ initialized with a variety of inputs, including:
   (`position` must be a monotically increasing float between 0-1).
 
 ```python
-import cmap
+In [1]: import cmap
 
-# create a colormap from a list of colors
-cmap1 = cmap.Colormap(["red", "green", "blue"])
+In [2]: cmap1 = cmap.Colormap(["red", "green", "blue"])
+
+In [3]: cmap1(np.linspace(0,1,5))
+Out[3]:
+array([[1.        , 0.        , 0.        , 1.        ],
+       [0.50393701, 0.24900417, 0.        , 1.        ],
+       [0.        , 0.50196078, 0.        , 1.        ],
+       [0.        , 0.24900417, 0.50393701, 1.        ],
+       [0.        , 0.        , 1.        , 1.        ]])
 ```
 
 #### `cmap.ColorStops`

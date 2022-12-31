@@ -31,15 +31,16 @@ globs = ["LICENSE/*"]
 [project.optional-dependencies]
 test = ["pytest>=6.0", "pytest-cov"]
 thirdparty = [
-    "rich",
-    "pydantic",
     "colour",
     "matplotlib",
     "napari",
-    "vispy",
-    "pyqt5",
+    "plotly",
+    "pydantic",
     "pygfx",
+    "pyqt5",
     "pytest-qt",
+    "rich",
+    "vispy",
 ]
 dev = [
     "black",

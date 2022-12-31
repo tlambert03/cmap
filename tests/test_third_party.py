@@ -63,6 +63,7 @@ def test_plotly() -> None:
     px.imshow(IMG, color_continuous_scale=CMAP.to_plotly())
 
 
+@pytest.mark.skip(reason="segfaults")
 def test_pygfx(qapp) -> None:
     gfx = pytest.importorskip("pygfx")
     auto = pytest.importorskip("wgpu.gui.auto")

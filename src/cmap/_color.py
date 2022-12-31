@@ -29,13 +29,13 @@ if TYPE_CHECKING:
     )
     # all of the valid argument types that can be cast to a color
     ColorLike: TypeAlias = Union[
-        None,  # casts to transparent 
+        None,  # casts to transparent
         str,  # color name, hex, 'rgba(r,g,b,a)' or 'hsla(h,s,l,a)' string
-        RGBTuple,  # 3-tuple of all ints or all floats 
+        RGBTuple,  # 3-tuple of all ints or all floats
         RGBATuple,  # 4-tuple of all floats, or 3 ints and 1 float
         np.ndarray,  # 3- or 4-element rgb(a) vector
-        list[float | int],  # 3- or 4-element rgb(a) vector 
-        "Color", # another color object
+        list[float | int],  # 3- or 4-element rgb(a) vector
+        "Color",  # another color object
     ]
 
 # Tuples
@@ -67,7 +67,7 @@ class HSLA(NamedTuple):
         """Convert to RGB."""
         return RGBA(*colorsys.hls_to_rgb(self.h, self.l, self.s), self.a)
 
-    def in_degrees(self) -> tuple:
+    def in_degrees(self) -> tuple[float, float, float, float]:
         """Convert to degrees."""
         return (self.h * 360, self.s, self.l, self.a)
 
@@ -267,7 +267,7 @@ def _norm_name(name: str) -> str:
     return delim.sub("", name).lower()
 
 
-def parse_rgba(value: Any) -> RGBA:
+def parse_rgba(value: Any) -> RGBA:  # noqa: C901
     """Parse a color."""
     # parse hex, rgb, rgba, hsl, hsla, and color name strings
     if isinstance(value, str):

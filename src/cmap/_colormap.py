@@ -30,12 +30,20 @@ if TYPE_CHECKING:
 
     from ._color import ColorLike, RGBTuple
 
-    ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
-
     class MPLSegmentData(TypedDict):
         red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
         green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
         blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+
+    ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
+    # All of the things that we can pass to the constructor of Colormap
+    ColorStopsLike: TypeAlias = Union[
+        str,  # single color string or colormap name, w/ optional "_r" suffix
+        Sequence[ColorLike | ColorStopLike],
+        np.ndarray,
+        MPLSegmentData,
+        dict[float, ColorLike],
+    ]
 
 
 class Colormap:
@@ -88,7 +96,8 @@ class Colormap:
 
     def __init__(
         self,
-        color_data: ColorLike,
+        color_data: ColorStopsLike,
+        *,
         name: str | None = None,
         identifier: str | None = None,
         category: str | None = None,
@@ -276,10 +285,7 @@ class ColorStops(Sequence[ColorStop]):
     @classmethod
     def parse(
         cls,
-        colors: str
-        | Sequence[ColorLike | ColorStopLike]
-        | MPLSegmentData
-        | dict[float, ColorLike],
+        colors: ColorStopsLike,
         fill_mode: Literal["neighboring", "fractional"] = "neighboring",
     ) -> ColorStops:
         """Parse `colors` into a sequence of color stops.

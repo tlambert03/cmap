@@ -57,47 +57,43 @@ def test_vispy(qapp: "QApplication") -> None:
     view.camera.set_range()
 
 
+def test_plotly() -> None:
+    px = pytest.importorskip("plotly.express")
+
+    px.imshow(IMG, color_continuous_scale=CMAP.to_plotly())
+
+
+def test_pygfx(qapp) -> None:
+    gfx = pytest.importorskip("pygfx")
+    auto = pytest.importorskip("wgpu.gui.auto")
+
+    canvas = auto.WgpuCanvas(size=IMG.shape)
+    renderer = gfx.renderers.WgpuRenderer(canvas)
+    camera = gfx.OrthographicCamera(*IMG.shape)
+    camera.position.y = IMG.shape[0] / 2
+    camera.position.x = IMG.shape[1] / 2
+    camera.scale.y = -1
+
+    scene = gfx.Scene()
+    scene.add(
+        gfx.Image(
+            gfx.Geometry(grid=gfx.Texture(IMG, dim=2)),
+            gfx.ImageBasicMaterial(clim=(0, IMG.max()), map=CMAP.to_pygfx()),
+        )
+    )
+
+    def animate() -> None:
+        renderer.render(scene, camera)
+        canvas.request_draw()
+
+    canvas.request_draw(animate)
+
+
 # def microvis_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
 #     from microvis import _util, imshow
 
 #     with _util.exec_if_new_qt_app():
 #         imshow(img_data, cmap=cmap)
-
-
-# def pygfx_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
-#     import pygfx as gfx
-#     from qtpy.QtWidgets import QApplication
-#     from wgpu.gui.auto import WgpuCanvas, run
-
-#     _ = QApplication.instance() or QApplication(sys.argv)
-#     canvas = WgpuCanvas(size=img_data.shape)
-#     renderer = gfx.renderers.WgpuRenderer(canvas)
-#     camera = gfx.OrthographicCamera(*img_data.shape)
-#     camera.position.y = img_data.shape[0] / 2
-#     camera.position.x = img_data.shape[1] / 2
-#     camera.scale.y = -1
-
-#     scene = gfx.Scene()
-#     scene.add(
-#         gfx.Image(
-#             gfx.Geometry(grid=gfx.Texture(img_data, dim=2)),
-#             gfx.ImageBasicMaterial(clim=(0, img_data.max()), map=cmap.to_pygfx()),
-#         )
-#     )
-
-#     def animate() -> None:
-#         renderer.render(scene, camera)
-#         canvas.request_draw()
-
-#     canvas.request_draw(animate)
-#     run()
-
-
-# def plotly_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
-#     import plotly.express as px
-
-#     fig = px.imshow(img_data, color_continuous_scale=cmap.to_plotly())
-#     fig.show()
 
 
 # def bokeh_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:

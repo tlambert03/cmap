@@ -38,6 +38,7 @@ thirdparty = [
     "napari",
     "vispy",
     "pyqt5",
+    "pygfx",
     "pytest-qt",
 ]
 dev = [

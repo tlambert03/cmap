@@ -64,7 +64,7 @@ jobs:
       - name: Run test
         uses: coactions/setup-xvfb@v1
         with:
-          run: pytest
+          run: pytest -v
 
       - name: Coverage
         uses: codecov/codecov-action@v3

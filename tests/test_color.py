@@ -65,3 +65,16 @@ def test_conversions() -> None:
     assert int(start.to_hsl().in_degrees()[0]) == 231
     assert start.to_hex() == start.to_float().to_hex() == "#3B54E299"
     assert str(start) == str(start.to_float()) == "#3B54E299"
+
+
+def test_copy() -> None:
+    """test various copy and serdes operations"""
+    import pickle
+    from copy import copy, deepcopy
+    from weakref import ref
+
+    color = Color("red")
+    assert copy(color) is color
+    assert deepcopy(color) is color
+    assert pickle.loads(pickle.dumps(color)) is color
+    assert ref(color)() is color

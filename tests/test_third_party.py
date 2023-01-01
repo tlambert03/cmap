@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
@@ -59,6 +60,7 @@ def test_vispy(qapp: "QApplication") -> None:
     view.camera.set_range()
 
 
+@pytest.mark.skipif(os.name == "nt" and sys.version_info >= (3, 11), reason="segfaults")
 def test_plotly() -> None:
     px = pytest.importorskip("plotly.express")
 

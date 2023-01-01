@@ -3,7 +3,7 @@ from importlib.metadata import PackageNotFoundError, version
 
 try:
     __version__ = version("cmap")
-except PackageNotFoundError:
+except PackageNotFoundError:  # pragma: no cover
     __version__ = "uninstalled"
 
 from ._color import HSLA, HSVA, RGBA, RGBA8, Color

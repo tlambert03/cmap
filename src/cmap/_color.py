@@ -333,7 +333,7 @@ class Color:
     you can compare them with `is`.
     """
 
-    __slots__ = ("_rgba", "_name", "__weakref__")
+    __slots__ = ("_rgba", "_name", "__weakref__", "__dict__")
     _cache: ClassVar[dict[RGBA, Color]] = {}
     _rgba: RGBA
     _name: str | None
@@ -348,11 +348,11 @@ class Color:
             cls._cache[rgba] = obj
         return cls._cache[rgba]
 
-    def __deepcopy__(self, memo: dict) -> Color:
-        # this is required because of the __new__ implementation
-        # which requires an argument.  In any case, we don't want
-        # to copy the color, so we just return self.
-        return self
+    # required because of the __new__ implementation, which requires an argument
+    # https://docs.python.org/3/library/pickle.html#module-pickle
+    # also works for copy and deepcopy
+    def __reduce__(self) -> tuple:
+        return (self.__class__, (self._rgba,))
 
     @classmethod
     def __get_validators__(cls) -> Iterator[Callable]:

@@ -69,7 +69,7 @@ def sineramp(
         rows = cols = shape
     elif len(shape) == 2:
         rows, cols = shape
-    else:
+    else:  # pragma: no cover
         raise ValueError("size must be a 1 or 2 element vector")
 
     # Adjust width of image so that we have an integer number of cycles of

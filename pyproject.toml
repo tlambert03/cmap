@@ -41,6 +41,7 @@ thirdparty = [
     "pytest-qt",
     "rich",
     "vispy",
+    "bokeh",
 ]
 dev = [
     "black",
@@ -107,7 +108,7 @@ testpaths = ["tests"]
 filterwarnings = [
     "error",
     "ignore:distutils Version classes are deprecated",
-    "ignore:`np.bool8` is a deprecated:DeprecationWarning:skimage",
+    "ignore:`np.bool8` is a deprecated:DeprecationWarning",
 
 ]
 

@@ -356,7 +356,7 @@ class Color:
 
     @classmethod
     def __get_validators__(cls) -> Iterator[Callable]:
-        yield cls  # pydantic validator  # pragma: no cover
+        yield cls  # pydantic validator
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         # Make Color immutable

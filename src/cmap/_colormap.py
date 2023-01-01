@@ -39,10 +39,11 @@ if TYPE_CHECKING:
     # All of the things that we can pass to the constructor of Colormap
     ColorStopsLike: TypeAlias = Union[
         str,  # single color string or colormap name, w/ optional "_r" suffix
-        Sequence[ColorLike | ColorStopLike],
+        Iterable[ColorLike | ColorStopLike],
         np.ndarray,
         MPLSegmentData,
         dict[float, ColorLike],
+        "ColorStops",
     ]
 
 
@@ -113,8 +114,16 @@ class Colormap:
     def __setattr__(self, _name: str, _value: Any) -> None:
         raise AttributeError("Colormap is immutable")
 
-    def __deepcopy__(self, memo: dict[int, Any]) -> Colormap:
-        return self
+    def __reduce__(self) -> str | tuple[Any, ...]:
+        return self.__class__, (self.color_stops,)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Colormap):
+            try:
+                other = Colormap(other)  # type: ignore
+            except Exception:
+                return NotImplemented
+        return self.color_stops == other.color_stops
 
     def lut(self, N: int = 255, gamma: float = 1) -> np.ndarray:
         """Return a lookup table (LUT) for the colormap.
@@ -184,7 +193,7 @@ class Colormap:
 
     @classmethod
     def __get_validators__(cls) -> Iterator[Callable]:
-        yield cls._validate  # pydantic validator  # pragma: no cover
+        yield cls._validate  # pydantic validator
 
     @classmethod
     def _validate(cls, v: Any) -> Colormap:
@@ -283,7 +292,7 @@ class ColorStops(Sequence[ColorStop]):
     _stops: np.ndarray  # internally, stored as an (N, 5) array
 
     @classmethod
-    def parse(
+    def parse(  # noqa: C901
         cls,
         colors: ColorStopsLike,
         fill_mode: Literal["neighboring", "fractional"] = "neighboring",
@@ -325,6 +334,9 @@ class ColorStops(Sequence[ColorStop]):
         ColorStops
             A sequence of color stops.
         """
+        if isinstance(colors, ColorStops):
+            return colors
+
         if fill_mode not in {"neighboring", "fractional"}:
             raise ValueError(
                 f"fill_mode must be 'neighboring' or 'fractional', not {fill_mode!r}"
@@ -345,7 +357,7 @@ class ColorStops(Sequence[ColorStop]):
                     "or a matplotlib-style segmentdata dict (with 'red', 'green', and "
                     "'blue' keys)."
                 )
-        else:
+        else:  # all other iterables
             _clr_seq = list(colors)
 
         if len(_clr_seq) == 1:
@@ -356,7 +368,7 @@ class ColorStops(Sequence[ColorStop]):
         for item in _clr_seq:
             if isinstance(item, (tuple, list)) and len(item) == 2:
                 # a 2-tuple cannot be a valid color, so it must be a stop
-                _position, item = cast(tuple[float, ColorLike], item)
+                _position, item = cast("tuple[float, ColorLike]", item)
             elif (isinstance(item, (tuple, list)) and len(item) == 5) or (
                 isinstance(item, np.ndarray) and item.shape == (5,)
             ):
@@ -436,13 +448,26 @@ class ColorStops(Sequence[ColorStop]):
         m = ",\n  ".join(repr((pos, Color(rgba))) for pos, *rgba in self._stops)
         return f"ColorStops(\n  {m}\n)"
 
+    def __eq__(self, __o: object) -> bool:
+        if not isinstance(__o, ColorStops):
+            try:
+                __o = ColorStops.parse(__o)  # type: ignore
+            except Exception:
+                return NotImplemented
+        return np.array_equal(self._stops, __o._stops)
+
     @classmethod
     def __get_validators__(cls) -> Iterator[Callable]:
-        yield cls.parse  # pydantic validator  # pragma: no cover
+        yield cls.parse  # pydantic validator
 
     def to_lut(self, N: int = 256, gamma: float = 1.0) -> np.ndarray:
         """Create (N, 4) LUT of RGBA values, interpolated between color stops."""
         return _interpolate_stops(N, self, gamma)
+
+    def __reversed__(self) -> Iterator[ColorStop]:
+        for pos, *rgba in self._stops[::-1]:
+            # reverse the colors, but not the positions
+            yield ColorStop(1 - pos, Color(rgba))
 
 
 def _fill_stops(

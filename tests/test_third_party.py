@@ -94,26 +94,19 @@ def test_pygfx(qapp) -> None:
     canvas.request_draw(animate)
 
 
+def test_bokeh() -> None:
+    from bokeh.plotting import figure
+
+    p = figure()
+    h, w = IMG.shape
+    p.image(image=[np.flipud(IMG)], x=0, y=0, dw=w, dh=h, color_mapper=CMAP.to_bokeh())
+
+
 # def microvis_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
 #     from microvis import _util, imshow
 
 #     with _util.exec_if_new_qt_app():
 #         imshow(img_data, cmap=cmap)
-
-
-# def bokeh_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
-#     from bokeh.plotting import figure, show
-
-#     p = figure()
-#     p.image(
-#         image=[np.flipud(img_data)],
-#         x=0,
-#         y=0,
-#         dw=img_data.shape[1],
-#         dh=img_data.shape[0],
-#         color_mapper=cmap.to_bokeh(),
-#     )
-#     show(p)
 
 
 # def altair_chart(cmap: cmap.Colormap) -> None:

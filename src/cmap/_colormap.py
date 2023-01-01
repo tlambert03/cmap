@@ -18,12 +18,14 @@ from typing import (
 
 import numpy as np
 
+from . import _external
 from ._color import Color
 
 if TYPE_CHECKING:
     import pygfx
     from bokeh.models import LinearColorMapper as BokehLinearColorMapper
     from matplotlib.colors import LinearSegmentedColormap as MplLinearSegmentedColormap
+    from matplotlib.figure import Figure as MplFigure
     from napari.utils.colormaps import Colormap as NapariColormap
     from numpy.typing import ArrayLike, NDArray
     from typing_extensions import Literal, TypeAlias
@@ -203,16 +205,7 @@ class Colormap:
     # -------------------------- RICH REPR SUPPORT ----------------------------------
 
     def __rich_repr__(self) -> Any:
-        from rich import get_console
-        from rich.style import Style
-        from rich.text import Text
-
-        console = get_console()
-        color_cell = Text("")
-        X = np.linspace(0, 1.0, console.width - 12, dtype=np.float64)
-        for _color in self(X):
-            color_cell += Text(" ", style=Style(bgcolor=Color(_color).hex[:7]))
-        console.print(color_cell)
+        return _external.rich_print_colormap(self)  # side effect
 
     # -------------------------- PYDANTIC SUPPORT -----------------------------------
 
@@ -230,19 +223,11 @@ class Colormap:
 
     def to_mpl(self, N: int = 256, gamma: float = 1.0) -> MplLinearSegmentedColormap:
         """Return a matplotlib colormap."""
-        import matplotlib.colors as mplc
-
-        return mplc.LinearSegmentedColormap.from_list(
-            self.name, self.color_stops, N=N, gamma=gamma
-        )
+        return _external.to_mpl(self, N=N, gamma=gamma)
 
     def to_vispy(self) -> VispyColormap:
         """Return a vispy colormap."""
-        from vispy.color import Colormap
-
-        return Colormap(
-            colors=self.color_stops.color_array, controls=self.color_stops.stops
-        )
+        return _external.to_vispy(self)
 
     @overload
     def to_pygfx(
@@ -262,45 +247,40 @@ class Colormap:
         If you want to customize the TextureView, use `as_view == False` and then
         call `get_view()` on the returned Texture, providing the desired arguments.
         """
-        import pygfx
+        return _external.to_pygfx(self, N=N, as_view=as_view)
 
-        # TODO: check whether pygfx has it's own stop-aware interpolation,
-        # and if so, use that instead of .lut()
-        # (get_view has a filter argument... but I don't know whether it will take
-        # care of the stops)
-        tex = pygfx.Texture(self.lut(N).astype(np.float32), dim=1)
-        return tex.get_view() if as_view else tex
+    def to_napari(self) -> NapariColormap:
+        """Return a napari colormap.
+
+        https://napari.org/stable/api/napari.utils.Colormap.html
+        """
+        return _external.to_napari(self)
 
     def to_plotly(self) -> list[list[float | str]]:
         """Return a plotly colorscale."""
-        return [[pos, color.rgba_string] for pos, color in self.color_stops]
-
-    def to_napari(self) -> NapariColormap:
-        """Return a napari colormap."""
-        from napari.utils.colormaps import Colormap
-
-        return Colormap(
-            colors=self.color_stops.color_array,
-            controls=self.color_stops.stops,
-            name=self.identifier or "custom colormap",
-            display_name=self.name,
-        )
+        return _external.to_plotly(self)
 
     def to_bokeh(self, N: int = 256) -> BokehLinearColorMapper:
-        """Return a bokeh colorscale, with N color samples from the colormap."""
-        from bokeh.models import LinearColorMapper
+        """Return a bokeh colorscale, with N color samples from the colormap.
 
-        # TODO: check whether bokeh has it's own interpolation, and if so, use that
-        return LinearColorMapper([color.hex for color in self.iter_colors(N)])
+        https://docs.bokeh.org/en/latest/docs/reference/models/mappers.html
+
+        Parameters
+        ----------
+        N : int, optional
+            Number of colors to sample from the colormap, by default 256.
+        """
+        return _external.to_bokeh(self, N=N)
 
     def to_altair(self, N: int = 256) -> list[str]:
         """Return an altair colorscale with N color samples from the colormap.
 
         Suitable for passing to the range parameter of altair.Scale.
+        https://altair-viz.github.io/user_guide/customization.html#color-domain-and-range
         """
-        return [color.hex for color in self.iter_colors(N)]
+        return _external.to_altair(self, N=N)
 
-    def visualize(self, dpi: int = 100, dest: str | None = None) -> None:
+    def visualize(self, dpi: int = 100, dest: str | None = None) -> MplFigure:
         """Plot colormap using viscm.  (Requires viscm to be installed.).
 
         https://github.com/matplotlib/viscm
@@ -312,9 +292,7 @@ class Colormap:
         dest : str, optional
             If provided, the image will be saved to this path. Defaults to None.
         """
-        from ._utils import viscm_plot
-
-        viscm_plot(self, dpi, dest)
+        return _external.viscm_plot(self, dpi, dest)
 
 
 class ColorStop(NamedTuple):

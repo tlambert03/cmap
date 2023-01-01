@@ -11,6 +11,11 @@ from cmap import Color, Colormap
 if TYPE_CHECKING:
     from qtpy.QtWidgets import QApplication
 
+# This module is slow, so we skip it unless running on CI
+# or if the THIRD environment variable is set.
+if not (os.getenv("CI") or os.getenv("THIRD")):
+    pytest.skip("Skipping third party tests", allow_module_level=True)
+
 CMAP = Colormap(["black", (0, 1, 0), "00FFFF33", "w"])
 IMG = np.random.rand(10, 10).astype("float32")
 

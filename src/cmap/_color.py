@@ -17,6 +17,8 @@ from typing import (
 
 import numpy as np
 
+from . import _external
+
 if TYPE_CHECKING:
     from typing import Union
 
@@ -93,10 +95,6 @@ class RGBA(NamedTuple):
         """Convert to hex color."""
         return self.to_8bit().to_hex()
 
-    def rgba_string(self) -> str:
-        """Return a string representation of the color."""
-        return f"rgba({self.r}, {self.g}, {self.b}, {self.a})"
-
     def to_hsv(self) -> HSVA:
         """Convert to Hue, Saturation, Value."""
         return HSVA(*colorsys.rgb_to_hsv(self.r, self.g, self.b), self.a)
@@ -142,6 +140,10 @@ class RGBA8(NamedTuple):
 
     def __str__(self) -> str:
         return self.to_hex()
+
+    def rgba_string(self) -> str:
+        """Return a string representation of the color."""
+        return f"rgba({self.r}, {self.g}, {self.b}, {self.a})"
 
 
 # Parsers
@@ -391,7 +393,7 @@ class Color:
     @property
     def rgba_string(self) -> str:
         """Return the color as an 'rgba(r, g, b, a)' string; 0-255 range."""
-        return self._rgba.rgba_string()
+        return self.rgba8.rgba_string()
 
     @property
     def hex(self) -> str:
@@ -427,16 +429,7 @@ class Color:
 
     def __rich_repr__(self) -> Any:
         """Provide a rich representation of the color, with color swatch."""
-        import rich
-        from rich.style import Style
-        from rich.text import Text
-
-        # TODO: this is a side-effect
-        # it "works" to print a small color patch if rich is used,
-        # but it would be better to yield something that rich can actually render.
-        console = rich.get_console()
-        color_cell = Text("  ", style=Style(bgcolor=self.hex[:7]))
-        console.print(color_cell, end="")
+        return _external.rich_print_color(self)
 
     @classmethod
     def __get_validators__(cls) -> Iterator[Callable]:

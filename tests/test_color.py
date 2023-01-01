@@ -75,6 +75,7 @@ def test_color_conversions() -> None:
     assert color.hex == "#FF0000"
     assert color.rgba == (1, 0, 0, 1)
     assert color.rgba8 == (255, 0, 0, 1)
+    assert color.rgba_string == "rgba(255, 0, 0, 1)"
     assert color == "#FF0000FF"
     assert color == "#FF0000"
     assert color == Color("r")

@@ -104,7 +104,7 @@ extend-ignore = [
 # https://docs.pytest.org/en/6.2.x/customize.html
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = ["-v", "--cov=cmap"]
+addopts = ["-v", "--cov=cmap", "--cov-report", "term-missing"]
 testpaths = ["tests"]
 filterwarnings = [
     "error",
@@ -133,6 +133,7 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "@overload",
     "except ImportError",
+    "return _external."  # skip calls to external functions in colormap
 ]
 [tool.coverage.run]
 source = ["src"]

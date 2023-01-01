@@ -100,6 +100,7 @@ def test_pygfx(qapp: "QApplication") -> None:
     canvas.deleteLater()
 
 
+@pytest.mark.skipif(os.name == "nt" and sys.version_info >= (3, 11), reason="segfaults")
 def test_bokeh() -> None:
     from bokeh.plotting import figure
 

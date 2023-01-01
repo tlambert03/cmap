@@ -9,10 +9,10 @@ from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    ClassVar,
     Iterable,
     NamedTuple,
     Sequence,
+    SupportsFloat,
 )
 
 import numpy as np
@@ -86,7 +86,7 @@ class RGBA(NamedTuple):
 
     def to_8bit(self) -> RGBA8:
         """Convert to 8-bit integer form."""
-        r, g, b = (min(255, round(x * 255)) for x in self[:3])
+        r, g, b = (min(255, round(x * 255)) for x in (self.r, self.g, self.b))
         return RGBA8(r, g, b, self.a)
 
     def to_hex(self) -> str:
@@ -124,8 +124,7 @@ class RGBA8(NamedTuple):
 
     def to_float(self) -> RGBA:
         """Convert to float."""
-        r, g, b = (x / 255 for x in self[:3])
-        return RGBA(r, g, b, self.a)
+        return RGBA(self.r / 255, self.g / 255, self.b / 255, self.a)
 
     def to_hex(self) -> str:
         """Convert to hex color."""
@@ -255,11 +254,11 @@ def _parse_hex_string(hex: str) -> RGBA8:
     return RGBA8(r, g, b, a)
 
 
-def _bound_0_1(*values: float | str) -> Iterable[float]:
+def _bound_0_1(*values: SupportsFloat) -> Iterable[float]:
     return (round(max(0, min(1, float(v))), 15) for v in values)
 
 
-def _bound_0_255(*values: float | str) -> Iterable[int]:
+def _bound_0_255(*values: SupportsFloat) -> Iterable[int]:
     return (max(0, min(255, round(float(v)))) for v in values)
 
 
@@ -327,6 +326,9 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
     raise TypeError(f"Cannot convert type {type(value)!r} to Color")
 
 
+_COLOR_CACHE: dict[RGBA, Color] = {}
+
+
 class Color:
     """Class to represent a single color.
 
@@ -334,20 +336,19 @@ class Color:
     you can compare them with `is`.
     """
 
-    __slots__ = ("_rgba", "_name", "__weakref__", "__dict__")
-    _cache: ClassVar[dict[RGBA, Color]] = {}
+    __slots__ = ("_rgba", "_name", "__weakref__")
     _rgba: RGBA
     _name: str | None
 
     def __new__(cls, value: Any) -> Color:
         rgba = parse_rgba(value)
-        if rgba not in cls._cache:
+        if rgba not in _COLOR_CACHE:
             name = RGB_TO_NAME.get(rgba.to_8bit())
             obj = super().__new__(cls)
             object.__setattr__(obj, "_rgba", rgba)
             object.__setattr__(obj, "_name", name)
-            cls._cache[rgba] = obj
-        return cls._cache[rgba]
+            _COLOR_CACHE[rgba] = obj
+        return _COLOR_CACHE[rgba]
 
     # required because of the __new__ implementation, which requires an argument
     # https://docs.python.org/3/library/pickle.html#module-pickle
@@ -356,7 +357,6 @@ class Color:
         return (self.__class__, (self._rgba,))
 
     def __setattr__(self, __name: str, __value: Any) -> None:
-        # Make Color immutable
         raise AttributeError("Color is immutable")
 
     def __iter__(self) -> Iterator[float]:
@@ -420,7 +420,7 @@ class Color:
         if self.name:
             arg: str | tuple = self.name
         else:
-            arg = tuple(round(x, 2) for x in self._rgba)
+            arg = tuple(round(x, 2) for x in tuple(self._rgba))
             if self._rgba.a == 1:
                 arg = arg[:3]
         return f"{self.__class__.__name__}({arg!r})"

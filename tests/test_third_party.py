@@ -1,5 +1,6 @@
 import os
 import sys
+from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import MagicMock, patch
 
@@ -43,7 +44,8 @@ def test_matplotlib() -> None:
 def test_napari(qapp: "QApplication") -> None:
     napari = pytest.importorskip("napari")
 
-    napari.view_image(IMG, colormap=CMAP.to_napari())
+    v = napari.view_image(IMG, colormap=CMAP.to_napari())
+    v.close()
 
 
 def test_vispy(qapp: "QApplication") -> None:
@@ -57,6 +59,7 @@ def test_vispy(qapp: "QApplication") -> None:
     scene.visuals.Image(IMG, cmap=CMAP.to_vispy(), parent=view.scene)
     view.camera.flip = (0, 1, 0)
     view.camera.set_range()
+    canvas.close()
 
 
 @pytest.mark.skipif(os.name == "nt" and sys.version_info >= (3, 11), reason="segfaults")
@@ -67,7 +70,9 @@ def test_plotly() -> None:
 
 
 @pytest.mark.skipif(bool(os.getenv("CI")), reason="segfaults")
-def test_pygfx(qapp) -> None:
+def test_pygfx(qapp: "QApplication") -> None:
+    from qtpy.QtWidgets import QWidget
+
     gfx = pytest.importorskip("pygfx")
     auto = pytest.importorskip("wgpu.gui.auto")
 
@@ -91,6 +96,8 @@ def test_pygfx(qapp) -> None:
         canvas.request_draw()
 
     canvas.request_draw(animate)
+    QWidget.close(canvas)  # pygfx overrides close with a broken method :)
+    canvas.deleteLater()
 
 
 def test_bokeh() -> None:
@@ -101,13 +108,6 @@ def test_bokeh() -> None:
     p.image(image=[np.flipud(IMG)], x=0, y=0, dw=w, dh=h, color_mapper=CMAP.to_bokeh())
 
 
-# def microvis_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
-#     from microvis import _util, imshow
-
-#     with _util.exec_if_new_qt_app():
-#         imshow(img_data, cmap=cmap)
-
-
 def test_altair() -> None:
     # altair doesn't do images well... using random data
     cmap1 = Colormap(["red", "green", "blue"])
@@ -115,3 +115,19 @@ def test_altair() -> None:
     assert isinstance(alt, list) and all(isinstance(c, str) for c in alt)
     assert alt[0] == "#FF0000"
     assert alt[-1] == "#0000FF"
+
+
+def test_viscm(tmp_path: Path) -> None:
+    # NOT using importorskip here because there IS an error import viscm
+    # in the current release
+    cmap1 = Colormap(["red", "green", "blue"])
+    out = tmp_path / "test.png"
+    cmap1.visualize(dest=str(out))  # use dest to avoid show
+    assert out.is_file()
+
+
+# def microvis_imshow(img_data: np.ndarray, cmap: cmap.Colormap) -> None:
+#     from microvis import _util, imshow
+
+#     with _util.exec_if_new_qt_app():
+#         imshow(img_data, cmap=cmap)

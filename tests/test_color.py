@@ -53,7 +53,7 @@ def test_color_errors() -> None:
     with pytest.raises(TypeError, match="Cannot convert typ"):
         Color(1.2)
     with pytest.raises(AttributeError, match="Color is immutable"):
-        Color("red")._rgba = 1
+        Color("red")._rgba = (0, 1, 2, 3)  # type: ignore
 
 
 def test_rgb_conversions() -> None:

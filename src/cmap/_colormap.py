@@ -10,6 +10,7 @@ from typing import (
     Iterator,
     NamedTuple,
     Sequence,
+    TypedDict,
     Union,
     cast,
     overload,
@@ -25,21 +26,10 @@ if TYPE_CHECKING:
     from matplotlib.colors import LinearSegmentedColormap as MplLinearSegmentedColormap
     from napari.utils.colormaps import Colormap as NapariColormap
     from numpy.typing import ArrayLike, NDArray
-    from typing_extensions import Literal, TypeAlias, TypedDict
+    from typing_extensions import Literal, TypeAlias
     from vispy.color import Colormap as VispyColormap
 
     from ._color import ColorLike
-
-    class MPLSegmentData(TypedDict):
-        red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-        green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-        blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-
-    class ColormapDict(TypedDict):
-        name: str
-        identifier: str
-        category: str | None
-        color_stops: list[tuple[float, list[float]]]
 
     ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
     # All of the things that we can pass to the constructor of Colormap
@@ -47,10 +37,23 @@ if TYPE_CHECKING:
         str,  # single color string or colormap name, w/ optional "_r" suffix
         Iterable[ColorLike | ColorStopLike],
         np.ndarray,
-        MPLSegmentData,
+        "MPLSegmentData",
         dict[float, ColorLike],
         "ColorStops",
     ]
+
+
+class MPLSegmentData(TypedDict, total=False):
+    red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+    green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+    blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+
+
+class ColormapDict(TypedDict):
+    name: str
+    identifier: str
+    category: str | None
+    color_stops: list[tuple[float, list[float]]]
 
 
 class Colormap:
@@ -296,6 +299,22 @@ class Colormap:
         Suitable for passing to the range parameter of altair.Scale.
         """
         return [color.hex for color in self.iter_colors(N)]
+
+    def visualize(self, dpi: int = 100, dest: str | None = None) -> None:
+        """Plot colormap using viscm.  (Requires viscm to be installed.).
+
+        https://github.com/matplotlib/viscm
+
+        Parameters
+        ----------
+        dpi : int, optional
+            dpi for saved image. Defaults to 100.
+        dest : str, optional
+            If provided, the image will be saved to this path. Defaults to None.
+        """
+        from ._utils import viscm_plot
+
+        viscm_plot(self, dpi, dest)
 
 
 class ColorStop(NamedTuple):
@@ -681,7 +700,7 @@ def _mpl_segmentdata_to_stops(
     for index, color in enumerate(("red", "green", "blue", "alpha")):
         if color not in data and color == "alpha":
             continue  # pragma: no cover
-        cdata = data[color]  # type: ignore [literal-required]
+        cdata = cast(dict, data)[color]
         if callable(cdata):
             xind = np.linspace(0, 1, N) ** gamma
             values = np.clip(np.array(cdata(xind), dtype=float), 0, 1)

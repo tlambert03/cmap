@@ -15,13 +15,15 @@ basic color support, but they all either depend on matplotlib, provide a
 specialized set of colormaps intended to extend those provided by matplotlib, or
 roll their own colormap solution that vendors/duplicates other libraries.
 
-`cmap` is a lightweight library that provides all of the open-source colormaps
+`cmap` is a lightweight, library that provides all of the open-source colormaps
 from matplotlib and cmocean, with no dependencies beyond numpy.  It provides
 exports to a number of known third-party colormap objects, allowing it to be
 used across a wide range of python visualization libraries.  The intention is to provide
 a library that can be used by any python library that needs colormaps, without
 forcing the user to install matplotlib (while still being compatible with matplotlib
 and other libraries that use matplotlib colormaps).
+
+`cmap` is strictly typed and fully tested, with a focus on good developer experience.
 
 ## API
 

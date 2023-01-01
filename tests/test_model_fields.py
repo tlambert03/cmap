@@ -1,0 +1,57 @@
+import numpy as np
+import pytest
+
+try:
+    import pydantic
+    import pydantic.color
+except ImportError:
+    pytest.skip("pydantic not installed", allow_module_level=True)
+
+from cmap import Color, Colormap, ColorStops
+
+
+def test_pydantic_casting() -> None:
+    assert Color(pydantic.color.Color("red")) is Color("red")
+
+
+# we're interested in testing serializeability...
+# Color can serialized with `str`, and Colormap can be serialized with `as_dict`
+def test_pydantic_validate() -> None:
+    class MyModel(pydantic.BaseModel):
+        color: Color
+        colormap: Colormap
+
+        class Config:
+            # since json.dump is not extendable, this just needs to be documented.
+            json_encoders = {Color: str, Colormap: Colormap.as_dict}
+
+    obj = MyModel(color=np.array([1, 0, 0]), colormap=["r", (0.7, "b"), "w"])
+    assert obj.color is Color("red")
+    assert obj.colormap == Colormap(["r", (0.7, "b"), "w"])
+    serialized = obj.json()
+    assert serialized == (
+        '{"color": "red", '
+        '"colormap": {"name": "custom colormap", "identifier": "custom_colormap", '
+        '"category": null, '
+        '"color_stops": ['
+        "[0.0, [1.0, 0.0, 0.0, 1]], "
+        "[0.7, [0.0, 0.0, 1.0, 1]], "
+        "[1.0, [1.0, 1.0, 1.0, 1]]]}"
+        "}"
+    )
+    assert MyModel.parse_raw(serialized) == obj
+
+
+def test_psygnal_serialization() -> None:
+    # support for _json_encode_ is built into psygnal, ... don't need json_encoders
+    psygnal = pytest.importorskip("psygnal")
+
+    class MyModel(psygnal.EventedModel):  # type: ignore
+        color: Color
+        colormap: Colormap
+        stops: ColorStops
+
+    obj = MyModel(
+        color=np.array([1, 0, 0]), colormap=["r", (0.7, "b"), "w"], stops="g_r"
+    )
+    assert MyModel.parse_raw(obj.json()) == obj

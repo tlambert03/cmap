@@ -7,11 +7,12 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "uninstalled"
 
 from ._color import HSLA, HSVA, RGBA, RGBA8, Color
-from ._colormap import Colormap, ColorStops
+from ._colormap import Colormap, ColorStop, ColorStops
 
 __all__ = [
     "Color",
     "Colormap",
+    "ColorStop",
     "ColorStops",
     "HSLA",
     "HSVA",

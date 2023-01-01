@@ -28,12 +28,18 @@ if TYPE_CHECKING:
     from typing_extensions import Literal, TypeAlias, TypedDict
     from vispy.color import Colormap as VispyColormap
 
-    from ._color import ColorLike, RGBTuple
+    from ._color import ColorLike
 
     class MPLSegmentData(TypedDict):
         red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
         green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
         blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+
+    class ColormapDict(TypedDict):
+        name: str
+        identifier: str
+        category: str | None
+        color_stops: list[tuple[float, list[float]]]
 
     ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
     # All of the things that we can pass to the constructor of Colormap
@@ -95,9 +101,12 @@ class Colormap:
 
     _luts: dict[tuple[int, float], np.ndarray]
 
+    def _json_encode(self) -> ColormapDict:
+        return self.as_dict()
+
     def __init__(
         self,
-        color_data: ColorStopsLike,
+        color_stops: ColorStopsLike,
         *,
         name: str | None = None,
         identifier: str | None = None,
@@ -105,7 +114,7 @@ class Colormap:
     ) -> None:
         name = name or identifier or "custom colormap"
         # because we're using __setattr__ to make the object immutable
-        object.__setattr__(self, "color_stops", ColorStops.parse(color_data))
+        object.__setattr__(self, "color_stops", ColorStops.parse(color_stops))
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "identifier", _make_identifier(identifier or name))
         object.__setattr__(self, "category", category)
@@ -124,6 +133,19 @@ class Colormap:
             except Exception:
                 return NotImplemented
         return self.color_stops == other.color_stops
+
+    def as_dict(self) -> ColormapDict:
+        """Return a dictionary representation of the colormap.
+
+        The returned dictionary is suitable for serialization, or for passing to the
+        Colormap constructor.
+        """
+        return {
+            "name": self.name,
+            "identifier": self.identifier,
+            "category": self.category,
+            "color_stops": [(p, list(c)) for p, c in self.color_stops],
+        }
 
     def lut(self, N: int = 255, gamma: float = 1) -> np.ndarray:
         """Return a lookup table (LUT) for the colormap.
@@ -197,7 +219,9 @@ class Colormap:
 
     @classmethod
     def _validate(cls, v: Any) -> Colormap:
-        return v if isinstance(v, cls) else cls(v)
+        if isinstance(v, cls):
+            return v  # pragma: no cover
+        return cls(**v) if isinstance(v, dict) else cls(v)
 
     # ------------------------- THIRD PARTY SUPPORT ---------------------------------
 
@@ -246,7 +270,6 @@ class Colormap:
 
     def to_plotly(self) -> list[list[float | str]]:
         """Return a plotly colorscale."""
-        # :7 because plotly doesn't support alpha in hex values
         return [[pos, color.rgba_string] for pos, color in self.color_stops]
 
     def to_napari(self) -> NapariColormap:
@@ -295,7 +318,6 @@ class ColorStops(Sequence[ColorStop]):
     def parse(  # noqa: C901
         cls,
         colors: ColorStopsLike,
-        fill_mode: Literal["neighboring", "fractional"] = "neighboring",
     ) -> ColorStops:
         """Parse `colors` into a sequence of color stops.
 
@@ -314,20 +336,6 @@ class ColorStops(Sequence[ColorStop]):
         ----------
         colors : str | Iterable[Any]
             Colors and (optional) stop positions.
-        fill_mode : {'neighboring', 'fractional'}, optional
-            How to fill in missing stop positions.  If 'neighboring' (the default),
-            missing positions will be evenly distributed between the closest specified
-            neighboring positions.  If 'fractional', missing stop positions will be
-            replaced with `index / (len(colors)-1)`.  For example:
-
-            >>> s = ColorStops.parse(['r', 'y', (0.8,'g'), 'b'])
-            >>> s.stops
-            # 'y' is halfway between 'r' and 'g'
-            (0.0, 0.4, 0.8, 1.0)
-            >>> s = ColorStops.parse(['r', 'y', (0.8,'g'), 'b'], fill_mode='fractional')
-            >>> s.stops
-            # 'y' is 1/3 of the way between 0 and 1
-            (0.0, 0.3333333333333333, 0.8, 1.0)
 
         Returns
         -------
@@ -336,11 +344,6 @@ class ColorStops(Sequence[ColorStop]):
         """
         if isinstance(colors, ColorStops):
             return colors
-
-        if fill_mode not in {"neighboring", "fractional"}:
-            raise ValueError(
-                f"fill_mode must be 'neighboring' or 'fractional', not {fill_mode!r}"
-            )
 
         _clr_seq: Sequence[ColorLike | ColorStopLike]
         if isinstance(colors, str):
@@ -352,7 +355,7 @@ class ColorStops(Sequence[ColorStop]):
             elif {"red", "green", "blue"}.issubset(set(colors)):
                 _clr_seq = _mpl_segmentdata_to_stops(cast("MPLSegmentData", colors))
             else:
-                raise TypeError(
+                raise ValueError(
                     "If colors is a dict, it must be a mapping from position to color, "
                     "or a matplotlib-style segmentdata dict (with 'red', 'green', and "
                     "'blue' keys)."
@@ -379,7 +382,10 @@ class ColorStops(Sequence[ColorStop]):
             _positions.append(_position)
             _colors.append(Color(item))  # this will raise if invalid
 
-        _stops = _fill_stops(_positions, fill_mode)
+        if (np.diff([x for x in _positions if x is not None]) < 0).any():
+            raise ValueError("Color stops must be in ascending position order")
+
+        _stops = _fill_stops(_positions, "neighboring")  # TODO: expose fill_mode?
 
         return ColorStops(zip(_stops, _colors))
 
@@ -387,8 +393,8 @@ class ColorStops(Sequence[ColorStop]):
         # the internal representation is an (N, 5) array
         # the first column is the stop position, the next 4 are the RGBA values
         if isinstance(stops, np.ndarray):
-            if stops.shape[1] != 5:
-                raise ValueError("Expected (N, 5) array")
+            if len(stops.shape) != 2 or stops.shape[1] != 5:
+                raise ValueError("Expected (N, 5) array")  # pragma: no cover
             self._stops = stops
         else:
             self._stops = np.array([(p,) + tuple(c) for p, c in stops])
@@ -454,14 +460,18 @@ class ColorStops(Sequence[ColorStop]):
                 __o = ColorStops.parse(__o)  # type: ignore
             except Exception:
                 return NotImplemented
-        return np.array_equal(self._stops, __o._stops)
-
-    @classmethod
-    def __get_validators__(cls) -> Iterator[Callable]:
-        yield cls.parse  # pydantic validator
+        return np.allclose(self._stops, __o._stops)
 
     def to_lut(self, N: int = 256, gamma: float = 1.0) -> np.ndarray:
-        """Create (N, 4) LUT of RGBA values, interpolated between color stops."""
+        """Create (N, 4) LUT of RGBA values, interpolated between color stops.
+
+        Parameters
+        ----------
+        N : int
+            Number of colors to return.
+        gamma : float
+            Gamma correction to apply to the colors.
+        """
         return _interpolate_stops(N, self, gamma)
 
     def __reversed__(self) -> Iterator[ColorStop]:
@@ -469,9 +479,17 @@ class ColorStops(Sequence[ColorStop]):
             # reverse the colors, but not the positions
             yield ColorStop(1 - pos, Color(rgba))
 
+    @classmethod
+    def __get_validators__(cls) -> Iterator[Callable]:
+        yield cls.parse  # pydantic validator
+
+    def _json_encode(self) -> list:
+        return cast(list, self._stops.tolist())
+
 
 def _fill_stops(
-    stops: Iterable[float | None], fill_mode: Literal["neighboring", "fractional"]
+    stops: Iterable[float | None],
+    fill_mode: Literal["neighboring", "fractional"] = "neighboring",
 ) -> list[float]:
     """Fill in missing stop positions.
 
@@ -482,10 +500,20 @@ def _fill_stops(
     ----------
     stops : list[float | None]
         List of stop positions.
-    fill_mode : {'neighboring', 'fractional'}
-        If 'neighboring', fill in missing stops with evenly spaced values between
-        the nearest non-`None` values. If 'fractional', fill in missing stops with
-        evenly spaced values between 0 and 1.
+    fill_mode : {'neighboring', 'fractional'}, optional
+        How to fill in missing stop positions.  If 'neighboring' (the default),
+        missing positions will be evenly distributed between the closest specified
+        neighboring positions.  If 'fractional', missing stop positions will be
+        replaced with `index / (len(colors)-1)`.  For example:
+
+        >>> s = ColorStops.parse(['r', 'y', (0.8,'g'), 'b'])
+        >>> s.stops
+        # 'y' is halfway between 'r' and 'g'
+        (0.0, 0.4, 0.8, 1.0)
+        >>> s = ColorStops.parse(['r', 'y', (0.8,'g'), 'b'], fill_mode='fractional')
+        >>> s.stops
+        # 'y' is 1/3 of the way between 0 and 1
+        (0.0, 0.3333333333333333, 0.8, 1.0)
 
     Examples
     --------
@@ -496,9 +524,14 @@ def _fill_stops(
     >>> fill_stops([None, None, 0.8, None, 1.0])
     [0.0, 0.4, 0.8, 0.9, 1.0]
     """
+    if fill_mode not in {"neighboring", "fractional"}:
+        raise ValueError(  # pragma: no cover
+            f"fill_mode must be 'neighboring' or 'fractional', not {fill_mode!r}"
+        )
+
     _stops = list(stops)
     if not _stops:
-        return []
+        return []  # pragma: no cover
 
     if fill_mode == "fractional":
         N = len(_stops) - 1
@@ -569,7 +602,7 @@ def _interpolate_stops(N: int, data: ArrayLike, gamma: float = 1.0) -> np.ndarra
         (N, 4) LUT of RGBA values, interpolated between color stops.
     """
     adata = np.atleast_2d(np.array(data))
-    if adata.shape[1] < 2:
+    if adata.shape[1] < 2:  # pragma: no cover
         raise ValueError("data must have at least 2 columns")
 
     # make sure the first and last stops are at 0 and 1 ...
@@ -582,8 +615,10 @@ def _interpolate_stops(N: int, data: ArrayLike, gamma: float = 1.0) -> np.ndarra
     x = adata[:, 0]
     rgba = adata[:, 1:]
 
-    if (np.diff(x) < 0).any():
-        raise ValueError("Color stops must be in ascending position order")
+    # This is also validated in the ColorMap constructor...
+    # so we can skip it here unless this becomes a public function
+    # if (np.diff(x) < 0).any():  # pragma: no cover
+    #     raise ValueError("Color stops must be in ascending position order")
 
     # begin generation of lookup table
     if N == 1:
@@ -618,7 +653,7 @@ def _interpolate_stops(N: int, data: ArrayLike, gamma: float = 1.0) -> np.ndarra
 
 def _mpl_segmentdata_to_stops(
     data: MPLSegmentData, precision: int = 16, N: int = 256, gamma: float = 1.0
-) -> list[tuple[float, RGBTuple]]:
+) -> list[ColorStopLike]:
     """Converts a matplotlib colormap segmentdata dict to a list of stops.
 
     Parameters
@@ -641,9 +676,12 @@ def _mpl_segmentdata_to_stops(
     stops : list[tuple[float, RGBTuple]]
         A list of (position, [r, g, b]) tuples.
     """
-    out: DefaultDict[float, list[float]] = DefaultDict(lambda: [0, 0, 0])
-    for index, color in enumerate(("red", "green", "blue")):
-        cdata = data[color]  # type: ignore
+    out: DefaultDict[float, list[float]] = DefaultDict(lambda: [0, 0, 0, 1])
+    # I don't think alpha is ever in the data dict, but just in case
+    for index, color in enumerate(("red", "green", "blue", "alpha")):
+        if color not in data and color == "alpha":
+            continue  # pragma: no cover
+        cdata = data[color]  # type: ignore [literal-required]
         if callable(cdata):
             xind = np.linspace(0, 1, N) ** gamma
             values = np.clip(np.array(cdata(xind), dtype=float), 0, 1)
@@ -652,7 +690,8 @@ def _mpl_segmentdata_to_stops(
         else:
             for x, y, _ in cdata:
                 out[x][index] = round(y, precision)
-    return [(k, tuple(out[k])) for k in sorted(out)]  # type: ignore
+    # mypy doesn't know the length of the list will be 3 or 4
+    return [(k, tuple(out[k])) for k in sorted(out)]  # type: ignore [misc]
 
 
 def _make_identifier(name: str) -> str:

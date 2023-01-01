@@ -293,7 +293,9 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
         # NOTE! we assume that if any value is > 1, then all values are
         # in the 0-255 range.
         if any(x > 1 for x in val):
-            return RGBA8(*_bound_0_255(*val)).to_float()
+            r, g, b = _bound_0_255(*val[:3])
+            a = list(_bound_0_1(val[3]))[0] if len(val) > 3 else 1
+            return RGBA8(r, g, b, a).to_float()
         return RGBA(*_bound_0_1(*val))
 
     # None is transparent
@@ -314,9 +316,8 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
     # support for pydantic.color.Color
     pydantic_color = sys.modules.get("pydantic.color")
     if pydantic_color and isinstance(value, pydantic_color.Color):
-        r, g, b, *a = value.as_rgb_tuple()
-        _a = a[0] if a else 1
-        return RGBA(r / 255, g / 255, b / 255, _a)
+        r, g, b, *alph = value.as_rgb_tuple()
+        return RGBA(r / 255, g / 255, b / 255, alph[0] if alph else 1)
 
     # support for colour.Color
     colour_color = sys.modules.get("colour")
@@ -353,10 +354,6 @@ class Color:
     # also works for copy and deepcopy
     def __reduce__(self) -> tuple:
         return (self.__class__, (self._rgba,))
-
-    @classmethod
-    def __get_validators__(cls) -> Iterator[Callable]:
-        yield cls  # pydantic validator
 
     def __setattr__(self, __name: str, __value: Any) -> None:
         # Make Color immutable
@@ -440,6 +437,14 @@ class Color:
         console = rich.get_console()
         color_cell = Text("  ", style=Style(bgcolor=self.hex[:7]))
         console.print(color_cell, end="")
+
+    @classmethod
+    def __get_validators__(cls) -> Iterator[Callable]:
+        yield cls  # pydantic validator
+
+    def _json_encode(self) -> str:
+        # psygnal.EventedModel support
+        return str(self)
 
 
 CSS_COLORS: dict[str, tuple[int, ...]] = {

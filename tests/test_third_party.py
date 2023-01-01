@@ -14,18 +14,12 @@ CMAP = Colormap(["black", (0, 1, 0), "00FFFF33", "w"])
 IMG = np.random.rand(10, 10).astype("float32")
 
 
-def test_pydantic_support() -> None:
-    pydantic = pytest.importorskip("pydantic.color")
-
-    assert Color(pydantic.Color("red")) is Color("red")
-
-
 def test_colour_support() -> None:
     colour = pytest.importorskip("colour")
     assert Color(colour.Color("red")) is Color("red")
 
 
-def test_rich_repr() -> None:
+def test_rich_color_repr() -> None:
     rich = pytest.importorskip("rich")
     from rich.text import Text
 
@@ -33,6 +27,11 @@ def test_rich_repr() -> None:
     with patch.object(rich, "get_console", lambda: mock):
         Color("red").__rich_repr__()
     mock.print.assert_called_once_with(Text("  ", style="on red"), end="")
+
+    mock.reset_mock()
+    with patch.object(rich, "get_console", lambda: mock):
+        Colormap(["red", (0, 3, 192, 0.8)]).__rich_repr__()
+    mock.print.assert_called_once()  # smoke test
 
 
 def test_matplotlib() -> None:
@@ -67,7 +66,7 @@ def test_plotly() -> None:
     px.imshow(IMG, color_continuous_scale=CMAP.to_plotly())
 
 
-@pytest.mark.skip(reason="segfaults")
+@pytest.mark.skipif(bool(os.getenv("CI")), reason="segfaults")
 def test_pygfx(qapp) -> None:
     gfx = pytest.importorskip("pygfx")
     auto = pytest.importorskip("wgpu.gui.auto")
@@ -109,32 +108,10 @@ def test_bokeh() -> None:
 #         imshow(img_data, cmap=cmap)
 
 
-# def altair_chart(cmap: cmap.Colormap) -> None:
-#     # altair doesn't do images well... using random data
-#     import altair as alt
-#     import pandas as pd
-
-#     alt.renderers.enable("altair_viewer")
-
-#     values = np.random.randn(100).cumsum()
-#     data = pd.DataFrame(
-#         {"value": values},
-#         index=pd.date_range("2018", freq="D", periods=100),
-#     )
-#     chart = (
-#         alt.Chart(data.reset_index())
-#         .mark_circle()
-#         .encode(
-#             x="index:T",
-#             y="value:Q",
-#             color=alt.Color(
-#                 "value",
-#                 scale=alt.Scale(
-#                     domain=(values.min(), values.max()),
-#                     # this is the important part
-#                     range=cmap.to_altair(),
-#                 ),
-#             ),
-#         )
-#     )
-#     chart.show()
+def test_altair() -> None:
+    # altair doesn't do images well... using random data
+    cmap1 = Colormap(["red", "green", "blue"])
+    alt = cmap1.to_altair()
+    assert isinstance(alt, list) and all(isinstance(c, str) for c in alt)
+    assert alt[0] == "#FF0000"
+    assert alt[-1] == "#0000FF"

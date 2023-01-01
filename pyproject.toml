@@ -102,6 +102,7 @@ extend-ignore = [
 # https://docs.pytest.org/en/6.2.x/customize.html
 [tool.pytest.ini_options]
 minversion = "6.0"
+addopts = ["-v", "--cov=cmap"]
 testpaths = ["tests"]
 filterwarnings = [
     "error",

@@ -406,6 +406,14 @@ class Color:
         """Return the color as name."""
         return self._name
 
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, Color):
+            return self._rgba == __o._rgba
+        try:
+            return self._rgba == parse_rgba(__o)
+        except TypeError:
+            return NotImplemented
+
     def __str__(self) -> str:
         """Return a string representation of the color."""
         return self.name or self.hex

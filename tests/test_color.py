@@ -56,15 +56,32 @@ def test_color_errors() -> None:
         Color("red")._rgba = 1
 
 
-def test_conversions() -> None:
+def test_rgb_conversions() -> None:
     # this test is very sensitive to rounding errors
-    start = RGBA8(59, 84, 226, 0.6)
-    assert start == start.to_float().to_8bit()
-    assert start == start.to_hsl().to_rgba().to_8bit()
-    assert start == start.to_hsv().to_rgba().to_8bit()
-    assert int(start.to_hsl().in_degrees()[0]) == 231
-    assert start.to_hex() == start.to_float().to_hex() == "#3B54E299"
-    assert str(start) == str(start.to_float()) == "#3B54E299"
+    rgba = RGBA8(59, 84, 226, 0.6)
+    assert rgba == rgba.to_float().to_8bit()
+    assert rgba == rgba.to_hsl().to_rgba().to_8bit()
+    assert rgba == rgba.to_hsv().to_rgba().to_8bit()
+    assert int(rgba.to_hsl().in_degrees()[0]) == 231
+    assert rgba.to_hex() == rgba.to_float().to_hex() == "#3B54E299"
+    assert str(rgba) == str(rgba.to_float()) == "#3B54E299"
+
+
+def test_color_conversions() -> None:
+    color = Color("red")
+    np.testing.assert_array_equal(np.asarray(color), (1, 0, 0, 1))
+    assert color.hsl == (0, 1, 0.5, 1)
+    assert color.hsv == (0, 1, 1, 1)
+    assert color.hex == "#FF0000"
+    assert color.rgba == (1, 0, 0, 1)
+    assert color.rgba8 == (255, 0, 0, 1)
+    assert color == "#FF0000FF"
+    assert color == "#FF0000"
+    assert color == Color("r")
+    assert color != 1
+    assert color != {"1234"}
+    assert str(color) == "red"
+    assert repr(Color((0.1, 0.2, -0.1))) == "Color((0.1, 0.2, 0))"
 
 
 def test_copy() -> None:

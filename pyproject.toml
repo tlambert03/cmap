@@ -31,6 +31,7 @@ globs = ["LICENSE/*"]
 [project.optional-dependencies]
 test = ["pytest>=6.0", "pytest-cov"]
 thirdparty = [
+    "bokeh",
     "colour",
     "matplotlib",
     "napari",
@@ -40,8 +41,8 @@ thirdparty = [
     "pyqt5",
     "pytest-qt",
     "rich",
+    "viscm",
     "vispy",
-    "bokeh",
 ]
 dev = [
     "black",

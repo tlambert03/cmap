@@ -46,7 +46,6 @@ variety of inputs, including:
 - a [`pydantic.color.Color` object](https://docs.pydantic.dev/usage/types/#color-type)
 - a [`colour.Color` object](https://github.com/vaab/colour)
 
-
 ```python
 from cmap import Color
 
@@ -112,3 +111,126 @@ The `cmap.Colormap` object has convenience methods that allow it to be used with
     - `cmap.Colormap.to_pyqtgraph()` -->
 
 ... details to come ...
+
+## Colormap References
+
+Origins of colormaps in `cmap` are listed here (where i was able to
+track them down). If you know the origin of a colormap not listed here,
+please open an issue or PR.
+
+Colormaps based on color specifications developed by Cynthia Brewer (<http://colorbrewer2.org/>), included under the terms of the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+<!-- ColorBrewer Sequential maps -->
+Blues
+BrBG
+BuGn
+BuPu
+GnBu
+Greens
+Greys
+Oranges
+OrRd
+PiYG
+PRGn
+PuBu
+PuBuGn
+PuOr
+PuRd
+Purples
+RdBu
+RdGy
+RdPu
+RdYlBu
+RdYlGn
+Reds
+Spectral
+YlGn
+YlGnBu
+YlOrBr
+YlOrRd
+<!-- ColorBrewer qualitative maps -->
+Accent
+Dark2
+Paired
+Pastel1
+Pastel2
+Set1
+Set2
+Set3
+
+<!-- Implementation of Carey Rappaport's CMRmap. -->
+<!-- See `A Color Map for Effective Black-and-White Rendering of Color-Scale -->
+<!-- Images' by Carey Rappaport -->
+<!-- https://www.mathworks.com/matlabcentral/fileexchange/2662-cmrmap-m -->
+CMRmap
+
+<!-- An MIT licensed, colorblind-friendly heatmap from Wistia: -->
+<!-- https://github.com/wistia/heatmap-palette -->
+Wistia
+
+<!-- Gnuplot palettes -->
+gnuplot
+gnuplot2
+ocean
+afmhot
+rainbow
+seismic
+
+<!-- Vega categorical patlettes -->
+<!-- https://github.com/vega/vega/wiki/Scales -->
+tab10
+tab20
+tab20b
+tab20c
+
+<!-- This bipolar colormap was generated from CoolWarmFloat33.csv of -->
+<!-- "Diverging Color Maps for Scientific Visualization" by Kenneth Moreland. -->
+<!-- <http://www.kennethmoreland.com/color-maps/> -->
+coolwarm
+
+cubehelix
+
+---------
+
+autumn
+binary
+bone
+brg
+bwr
+cool
+copper
+flag
+gist_earth
+gist_gray
+gist_heat
+gist_ncar
+gist_rainbow
+gist_stern
+gist_yarg
+gray
+hot
+hsv
+jet
+nipy_spectral
+pink
+prism
+spring
+summer
+terrain
+winter
+
+magma
+inferno
+plasma
+viridis
+cividis
+twilight
+twilight_shifted
+turbo
+
+## Further reading
+
+- [Choosing Colormaps in Matplotlib](https://matplotlib.org/stable/tutorials/colors/colormaps.html)
+- [A Better Default Colormap for Matplotlib | SciPy 2015 | Nathaniel Smith and Stéfan van der Walt](https://www.youtube.com/watch?v=xAoljeRJ3lU)
+- [Origins of Colormaps, Cleve Moler, February 2, 2015](https://blogs.mathworks.com/cleve/2015/02/02/origins-of-colormaps/)
+- [Documenting the matplotlib colormaps, @endolith](https://gist.github.com/endolith/2719900)

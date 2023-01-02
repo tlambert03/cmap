@@ -16,6 +16,7 @@ from typing import (
 )
 
 import numpy as np
+import numpy.typing as npt
 
 from . import _external
 
@@ -88,7 +89,8 @@ class RGBA(NamedTuple):
 
     def to_8bit(self) -> RGBA8:
         """Convert to 8-bit integer form."""
-        r, g, b = (min(255, round(x * 255)) for x in (self.r, self.g, self.b))
+        # not performing min/max checks here
+        r, g, b = (round(x * 255) for x in (self.r, self.g, self.b))
         return RGBA8(r, g, b, self.a)
 
     def to_hex(self) -> str:
@@ -126,9 +128,8 @@ class RGBA8(NamedTuple):
 
     def to_hex(self) -> str:
         """Convert to hex color."""
-        r, g, b, a = self
-        out = f"#{r:02X}{g:02X}{b:02X}"
-        return f"{out}{round(a*255):02X}" if a != 1 else out
+        out = f"#{self.r:02X}{self.g:02X}{self.b:02X}"
+        return f"{out}{round(self.a*255):02X}" if self.a != 1 else out
 
     def to_hsv(self) -> HSVA:
         """Convert to Hue, Saturation, Value."""
@@ -361,14 +362,20 @@ class Color:
     def __setattr__(self, __name: str, __value: Any) -> None:
         raise AttributeError("Color is immutable")
 
-    def __iter__(self) -> Iterator[float]:
-        return iter(self._rgba)
+    # len and getitem implement the Sequence interface
+    # and are required for casting a list of colors to an array
 
     def __len__(self) -> int:
         return 4
 
-    def __array__(self) -> np.ndarray:
-        return np.asarray(self._rgba)
+    def __getitem__(self, key: int) -> float:
+        return self._rgba[key]
+
+    def __iter__(self) -> Iterator[float]:
+        return iter(self._rgba)
+
+    def __array__(self, dtype: npt.DTypeLike = None) -> np.ndarray:
+        return np.asarray(self._rgba, dtype=dtype)
 
     @property
     def hsl(self) -> HSLA:

@@ -17,6 +17,7 @@ from typing import (
 )
 
 import numpy as np
+import numpy.typing as npt
 
 from . import _external
 from ._color import Color
@@ -28,11 +29,12 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure as MplFigure
     from napari.utils.colormaps import Colormap as NapariColormap
     from numpy.typing import ArrayLike, NDArray
-    from typing_extensions import Literal, TypeAlias
+    from typing_extensions import Literal, TypeAlias, TypeGuard
     from vispy.color import Colormap as VispyColormap
 
     from ._color import ColorLike
 
+    LutCallable: TypeAlias = Callable[[NDArray], NDArray]
     ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
     # All of the things that we can pass to the constructor of Colormap
     ColorStopsLike: TypeAlias = Union[
@@ -42,6 +44,7 @@ if TYPE_CHECKING:
         "MPLSegmentData",
         dict[float, ColorLike],
         "ColorStops",
+        LutCallable,
     ]
 
 
@@ -63,7 +66,7 @@ class Colormap:
 
     Parameters
     ----------
-    color_data : Color | ColorStop | Iterable[Color | ColorStop] | dict[float, Color]
+    color_stops : Color | ColorStop | Iterable[Color | ColorStop] | dict[float, Color]
         The color data to use for the colormap. Can be a single color, a single
         color stop, a sequence of colors and/or color stops, or a dictionary
         mapping scalar values to colors.
@@ -79,12 +82,16 @@ class Colormap:
           When using color stops, the scalar values should be in the range [0, 1].
           If no scalar stop positions are given, they will be linearly interpolated
           between any neighboring stops (or 0-1 if there are no stops).  See the
-          ColorStops class for more details.
-        - a dictionary mapping scalar values to color-like values.
+          ColorStops class for more details. (Note that a ColorStops instance
+          may also be used here)
+        - a dictionary mapping scalar values to color-like values: e.g.
+          {0.0: "red", 0.5: (0, 1, 0), 1.0: "#0000FF"}.
         - a matplotlib-style segmentdata dictionary, with keys "red", "green", and
           "blue", each of which maps to a list of tuples of the form (x, y0, y1), or
           a callable that takes an array of values in the range [0, 1] and returns an
-          array of RGB(A) values in the range [0, 1].  See the matplotlib docs for more.
+          array of values in the range [0, 1].  See the matplotlib docs for more.
+        - a callable that takes an array of N values in the range [0, 1] and returns an
+          (N, 4) array of RGBA values in the range [0, 1].
 
     name : str | None
         A name for the colormap. If None, will be set to the identifier or the string
@@ -93,16 +100,28 @@ class Colormap:
         The identifier of the colormap. If None, will be set to the name, converted
         to lowercase and with spaces and dashes replaced by underscores.
     category : str | None
-        An optional category of the colormap (e.g. "diverging", "sequential").  Not
-        used internally, but can be useful for applications.
+        An optional category of the colormap (e.g. "diverging", "sequential").
+        Not used internally.
+    source : str | None
+        An optional source or reference for the colormap (e.g. "matplotlib", "napari").
+        Not used internally.
     """
 
-    __slots__ = ("color_stops", "name", "identifier", "category", "_luts")
+    __slots__ = (
+        "color_stops",
+        "name",
+        "identifier",
+        "category",
+        "source",
+        "_luts",
+        "__weakref__",
+    )
 
     color_stops: ColorStops
     name: str
     identifier: str
     category: str | None
+    source: str | None
 
     _luts: dict[tuple[int, float], np.ndarray]
 
@@ -116,6 +135,7 @@ class Colormap:
         name: str | None = None,
         identifier: str | None = None,
         category: str | None = None,
+        source: str | None = None,
     ) -> None:
         name = name or identifier or "custom colormap"
         # because we're using __setattr__ to make the object immutable
@@ -123,6 +143,7 @@ class Colormap:
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "identifier", _make_identifier(identifier or name))
         object.__setattr__(self, "category", category)
+        object.__setattr__(self, "source", source)
         object.__setattr__(self, "_luts", {})
 
     def __setattr__(self, _name: str, _value: Any) -> None:
@@ -152,7 +173,7 @@ class Colormap:
             "color_stops": [(p, list(c)) for p, c in self.color_stops],
         }
 
-    def lut(self, N: int = 255, gamma: float = 1) -> np.ndarray:
+    def lut(self, N: int = 256, gamma: float = 1) -> np.ndarray:
         """Return a lookup table (LUT) for the colormap.
 
         The returned LUT is a numpy array of RGBA values, with shape (N, 4), where N is
@@ -201,6 +222,12 @@ class Colormap:
         nums = np.linspace(0, 1, N) if isinstance(N, int) else np.asarray(N)
         for c in self(nums):
             yield Color(c)
+
+    def __repr__(self) -> str:
+        # in case we're in init
+        name = getattr(self, "name", None)
+        n_stops = len(self.color_stops) if hasattr(self, "color_stops") else 0
+        return f"Colormap(name={name!r}, {n_stops} colors)"
 
     # -------------------------- RICH REPR SUPPORT ----------------------------------
 
@@ -307,6 +334,9 @@ class ColorStops(Sequence[ColorStop]):
 
     Convenience class allowing various operations on a sequence of color stops,
     including casting to an (N, 5) array (e.g. `np.asarray(ColorStops(...))`)
+
+    This is the main internal representation of a colormap, and is used to construct
+    the LUT used in the Colormap.__call__ method.
     """
 
     _stops: np.ndarray  # internally, stored as an (N, 5) array
@@ -341,16 +371,18 @@ class ColorStops(Sequence[ColorStop]):
         """
         if isinstance(colors, ColorStops):
             return colors
+        if callable(colors):
+            return cls.from_callable(colors)
 
         _clr_seq: Sequence[ColorLike | ColorStopLike]
         if isinstance(colors, str):
             _clr_seq = [colors[:-2], None] if colors.endswith("_r") else [None, colors]
         elif isinstance(colors, dict):
-            if all(isinstance(x, Number) for x in colors):
+            if _is_mpl_segmentdata(colors):
+                _clr_seq = _mpl_segmentdata_to_stops(colors)
+            elif all(isinstance(x, Number) for x in colors):
                 colors = cast("dict[float, ColorLike]", colors)
                 _clr_seq = [(x, colors[x]) for x in sorted(colors)]
-            elif {"red", "green", "blue"}.issubset(set(colors)):
-                _clr_seq = _mpl_segmentdata_to_stops(cast("MPLSegmentData", colors))
             else:
                 raise ValueError(
                     "If colors is a dict, it must be a mapping from position to color, "
@@ -385,6 +417,62 @@ class ColorStops(Sequence[ColorStop]):
         _stops = _fill_stops(_positions, "neighboring")  # TODO: expose fill_mode?
 
         return ColorStops(zip(_stops, _colors))
+
+    @classmethod
+    def from_color_array(cls, colors: ArrayLike) -> ColorStops:
+        """Create ColorStops from an (N, 3) or (N, 4) array-like.
+
+        This is a faster constructor for creating a ColorStops from a numeric
+        array-like of 3- or 4-element color vectors.  e.g.
+
+        - [[0, 0, 0], [1, 1, 1]]
+        - [[0, 0, 0, 1], [1, 1, 1, 1]]
+        - [Color('green'), Color('red')]
+
+        Returns
+        -------
+        ColorStops
+            A sequence of color stops.
+        """
+        _colors = np.atleast_2d(np.asarray(colors))
+        if np.issubdtype(_colors.dtype, int) and _colors.max() > 1:
+            # assume 8 bit colors
+            _colors = np.clip(_colors.astype(float) / 255, 0, 1)
+        elif not np.issubdtype(_colors.dtype, np.number):
+            raise ValueError("Expected numeric array")
+        if _colors.shape[1] == 3:
+            # add alpha channel
+            _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)
+        elif _colors.shape[1] != 4:
+            raise ValueError("Expected (N, 3) or (N, 4) array")
+        # add stop positions
+        stops = np.linspace(0, 1, _colors.shape[0])
+        _colors = np.concatenate([stops[:, None], _colors], axis=1)
+        return cls(_colors)
+
+    @classmethod
+    def from_callable(
+        cls,
+        func: Callable[[NDArray[np.floating]], NDArray],
+        N: int | Sequence[float] = 256,
+    ) -> ColorStops:
+        """Create ColorStops from a callable that returns an (N, 4) array.
+
+        We sample this function at N evenly spaced positions between 0 and 1, and
+        use the resulting colors as the color stops.
+
+        Examples
+        --------
+        >>> ColorStops.from_callable(lambda x: np.array([[1, 0, 0, 1]]))
+        ColorStops([(0.0, Color('red')), (1.0, Color('red'))])
+        """
+        stops = np.linspace(0, 1, N) if isinstance(N, int) else np.array(N)
+        colors = func(stops)
+        if len(colors) != len(stops):
+            raise ValueError(  # pragma: no cover
+                f"Requested {len(stops)} colors, but function returned {len(colors)}"
+            )
+        return cls.from_color_array(colors)
 
     def __init__(self, stops: np.ndarray | Iterable[tuple[float, Color]]) -> None:
         # the internal representation is an (N, 5) array
@@ -443,9 +531,9 @@ class ColorStops(Sequence[ColorStop]):
         pos, *rgba = self._stops[key]
         return ColorStop(pos, Color(rgba))
 
-    def __array__(self) -> np.ndarray:
+    def __array__(self, dtype: npt.DTypeLike = None) -> np.ndarray:
         """Return (N, 5) array, N rows of (position, r, g, b, a)."""
-        return self._stops
+        return self._stops if dtype is None else self._stops.astype(dtype)
 
     def __repr__(self) -> str:
         m = ",\n  ".join(repr((pos, Color(rgba))) for pos, *rgba in self._stops)
@@ -469,6 +557,9 @@ class ColorStops(Sequence[ColorStop]):
         gamma : float
             Gamma correction to apply to the colors.
         """
+        if len(self) == N:
+            # no interpolation needed
+            return self.color_array
         return _interpolate_stops(N, self, gamma)
 
     def __reversed__(self) -> Iterator[ColorStop]:
@@ -695,3 +786,8 @@ def _make_identifier(name: str) -> str:
     """Return a valid Python identifier from a string."""
     out = "".join(c for c in name if c.isalnum() or c in ("_", "-", " "))
     return out.lower().replace(" ", "_").replace("-", "_")
+
+
+def _is_mpl_segmentdata(obj: Any) -> TypeGuard[MPLSegmentData]:
+    """Return True if obj is a matplotlib segmentdata dict."""
+    return isinstance(obj, dict) and all(k in obj for k in ("red", "green", "blue"))

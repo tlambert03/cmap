@@ -91,8 +91,7 @@ def _combine_gnufunc(mappers: Sequence["ArrayMapper"], ary: "NDArray") -> "NDArr
 
 def _combine_gnufunc_hsv(mappers: Sequence["ArrayMapper"], ary: "NDArray") -> "NDArray":
     """Helper function for combining multiple gnuplot formulae in hsv space."""
-    hsv_data = np.stack([_g(np.asarray(ary)) for _g in mappers], axis=-1)
-    return hsv_to_rgb(hsv_data)
+    return hsv_to_rgb(_combine_gnufunc(mappers, ary))
 
 
 def hsv_to_rgb(hsv: "NDArray") -> "NDArray":

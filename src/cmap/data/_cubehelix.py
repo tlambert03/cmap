@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import cast
 
 import numpy as np
@@ -10,7 +11,7 @@ def cubehelix(
     start: float = 0.5,
     rotation: float = -1.5,
     gamma: float = 1.0,
-    sat: float | np.ndarray = 1.2,
+    sat: float | np.ndarray = 1.0,
     reverse: bool = False,
 ) -> np.ndarray:
     """Create Cubehelix colors.

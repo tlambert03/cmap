@@ -473,7 +473,7 @@ class ColorStops(Sequence[ColorStop]):
         ColorStops([(0.0, Color('red')), (1.0, Color('red'))])
         """
         stops = np.linspace(0, 1, N) if isinstance(N, int) else np.array(N)
-        colors = func(stops)
+        colors = np.clip(func(stops), 0, 1)
         if len(colors) != len(stops):
             raise ValueError(  # pragma: no cover
                 f"Requested {len(stops)} colors, but function returned {len(colors)}"

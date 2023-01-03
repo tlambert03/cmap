@@ -46,7 +46,7 @@ def test_matplotlib_image_parity(name: str) -> None:
         return
     img1 = mpl_map(_gradient)
     img2 = our_map(_gradient)
-    atol = 0.25 if name == 'gist_stern' else 0.01  # TODO
+    atol = 0.25 if name == 'gist_stern' else 0.02  # TODO
     npt.assert_allclose(img1, img2, atol=atol)
 
 

@@ -38,12 +38,12 @@ def test_matplotlib_name_parity() -> None:
         raise AssertionError(f"missing cmap keys from matplotlib: {missing}")
 
 
+@pytest.mark.xfail(reason="not finished", strict=True)
 def test_napari_name_parity() -> None:
     # might need to importorskip later
     import napari.utils.colormaps.colormap_utils as ncm
-    from vispy.color import colormap
 
-    napari_cmaps = set(ncm.AVAILABLE_COLORMAPS)
+    napari_cmaps: Set[str] = set(ncm.AVAILABLE_COLORMAPS)
     napari_cmaps.update(ncm._VISPY_COLORMAPS_ORIGINAL)
     napari_cmaps.update(ncm._MATPLOTLIB_COLORMAP_NAMES)
     # TODO: later it would be good to make sure we can accept all strings

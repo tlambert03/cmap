@@ -1,4 +1,5 @@
 from __future__ import annotations
+from functools import partial
 
 from numbers import Number
 from typing import (
@@ -48,7 +49,7 @@ if TYPE_CHECKING:
     ]
 
 
-class MPLSegmentData(TypedDict, total=False):
+class MPLSegmentData(TypedDict):
     red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
     green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
     blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
@@ -381,7 +382,10 @@ class ColorStops(Sequence[ColorStop]):
             _clr_seq = [colors[:-2], None] if colors.endswith("_r") else [None, colors]
         elif isinstance(colors, dict):
             if _is_mpl_segmentdata(colors):
-                _clr_seq = _mpl_segmentdata_to_stops(colors)
+                _mpl_stops = _mpl_segmentdata_to_stops(colors)
+                if callable(_mpl_stops):
+                    return cls.from_callable(_mpl_stops)
+                _clr_seq = _mpl_stops
             elif all(isinstance(x, Number) for x in colors):
                 colors = cast("dict[float, ColorLike]", colors)
                 _clr_seq = [(x, colors[x]) for x in sorted(colors)]
@@ -741,9 +745,14 @@ def _interpolate_stops(N: int, data: ArrayLike, gamma: float = 1.0) -> np.ndarra
     return np.clip(lut, 0.0, 1.0)  # type: ignore
 
 
+def _map_rgb(mappers: Iterable[LutCallable], ary: "NDArray") -> "NDArray":
+    """Helper function for combining multiple LutCallables into single rgb array."""
+    return np.stack([_g(np.asarray(ary)) for _g in mappers], axis=-1)
+
+
 def _mpl_segmentdata_to_stops(
     data: MPLSegmentData, precision: int = 16, N: int = 256, gamma: float = 1.0
-) -> list[ColorStopLike]:
+) -> list[ColorStopLike] | LutCallable:
     """Converts a matplotlib colormap segmentdata dict to a list of stops.
 
     Parameters
@@ -766,22 +775,19 @@ def _mpl_segmentdata_to_stops(
     stops : list[tuple[float, RGBTuple]]
         A list of (position, [r, g, b]) tuples.
     """
-    out: DefaultDict[float, list[float]] = DefaultDict(lambda: [0, 0, 0, 1])
-    # I don't think alpha is ever in the data dict, but just in case
-    for index, color in enumerate(("red", "green", "blue", "alpha")):
-        if color not in data and color == "alpha":
-            continue  # pragma: no cover
-        cdata = cast(dict, data)[color]
-        if callable(cdata):
-            xind = np.linspace(0, 1, N) ** gamma
-            values = np.clip(np.array(cdata(xind), dtype=float), 0, 1)
-            for x, y in zip(xind, values):
-                out[x][index] = round(y, precision)
-        else:
-            for x, y, _ in cdata:
-                out[x][index] = round(y, precision)
-    # mypy doesn't know the length of the list will be 3 or 4
-    return [(k, tuple(out[k])) for k in sorted(out)]  # type: ignore [misc]
+    if all(callable(v) for v in data.values()):
+        return partial(_map_rgb, (data["red"], data["green"], data["blue"]))
+    if any(callable(v) for v in data.values()):
+        raise ValueError(
+            "All values in segmentdata dict must be either callable or a sequence"
+        )
+    rgb_stops = [
+        [i[:2] for i in data[c]] for c in ("red", "green", "blue")  # type: ignore
+    ]
+    all_positions = np.array(sorted({i for n in rgb_stops for i, _ in n}))
+    rgb = [np.interp(all_positions, *np.asarray(s).T) for s in rgb_stops]
+    rgba = np.stack(rgb + [np.ones_like(all_positions)], axis=1)
+    return [(a, tuple(b)) for a, b in zip(all_positions, rgba.tolist())]
 
 
 def _make_identifier(name: str) -> str:

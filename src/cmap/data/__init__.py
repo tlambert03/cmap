@@ -362,6 +362,12 @@ if TYPE_CHECKING:
 
 
 _DATA = {
+    "red": "_primary_colors:red",
+    "green": "_primary_colors:green",
+    "blue": "_primary_colors:blue",
+    "yellow": "_primary_colors:yellow",
+    "magenta": "_primary_colors:magenta",
+    "cyan": "_primary_colors:cyan",
     "CMRmap": "_CMRmap:CMRmap",
     "cubehelix": "_cubehelix:cubehelix",
     "Blues_3": "_colorbrewer:Blues_3",
@@ -697,6 +703,7 @@ _DATA = {
     "coolwarm": "_moreland:CoolWarm",
     "flag": "_matlab:flag",
     "gray": "_matlab:gray",
+    "grays": "_matlab:gray",  # alias
     "autumn": "_matlab:autumn",
     "bone": "_matlab:bone",
     "cool": "_matlab:cool",
@@ -717,6 +724,19 @@ _DATA = {
     "tab20b": "_tableau:Tableau20b",
     "tab20c": "_tableau:Tableau20c",
     "tab_traffic_light": "_tableau:Traffic_Light",
+    "BOP_Blue": "_leterrier:BOP_Blue",
+    "BOP_Orange": "_leterrier:BOP_Orange",
+    "BOP_Purple": "_leterrier:BOP_Purple",
+    "I_Blue": "_leterrier:I_Blue",
+    "I_Green": "_leterrier:I_Green",
+    "I_Red": "_leterrier:I_Red",
+    "I_Yellow": "_leterrier:I_Yellow",
+    "I_Cyan": "_leterrier:I_Cyan",
+    "I_Magenta": "_leterrier:I_Magenta",
+    "I_Purple": "_leterrier:I_Purple",
+    "I_Orange": "_leterrier:I_Orange",
+    "I_Forest": "_leterrier:I_Forest",
+    "I_Bordeaux": "_leterrier:I_Bordeaux",
 }
 
 

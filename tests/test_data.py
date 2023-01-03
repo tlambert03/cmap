@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Set, cast
 
 import numpy as np
 import numpy.testing as npt
@@ -7,10 +7,12 @@ from cmap import Colormap, data
 
 try:
     import matplotlib as mpl
-except ImportError:
-    pytest.skip("matplotlib not installed", allow_module_level=True)
 
-MPL_CMAPS = {c for c in mpl.colormaps if not c.endswith("_r")}
+    MPL_CMAPS: Set[str] = {c for c in mpl.colormaps if not c.endswith("_r")}
+except ImportError:
+    MPL_CMAPS = {}
+
+_GRADIENT = np.linspace(0, 1, 256)
 
 if TYPE_CHECKING:
     from matplotlib.colors import Colormap as MPLColormap
@@ -30,11 +32,30 @@ def test_data_loading() -> None:
 
 
 def test_matplotlib_name_parity() -> None:
+    if not MPL_CMAPS:
+        pytest.skip("matplotlib not installed")
     if missing := (MPL_CMAPS - set(data._DATA)):
         raise AssertionError(f"missing cmap keys from matplotlib: {missing}")
 
 
-_gradient = np.linspace(0, 1, 256)
+def test_napari_name_parity() -> None:
+    # might need to importorskip later
+    import napari.utils.colormaps.colormap_utils as ncm
+    from vispy.color import colormap
+
+    napari_cmaps = set(ncm.AVAILABLE_COLORMAPS)
+    napari_cmaps.update(ncm._VISPY_COLORMAPS_ORIGINAL)
+    napari_cmaps.update(ncm._MATPLOTLIB_COLORMAP_NAMES)
+    # TODO: later it would be good to make sure we can accept all strings
+    # without having to do any extra work
+    napari_cmaps = {
+        n.lower().replace(" ", "_")
+        for n in napari_cmaps
+        if not n.endswith(("_r", " r"))
+    }
+    our_cmaps = {n.lower() for n in data._DATA}
+    if missing := (napari_cmaps - our_cmaps):
+        raise AssertionError(f"missing cmap keys from napari: {missing}")
 
 
 @pytest.mark.parametrize("name", sorted(MPL_CMAPS), ids=str)
@@ -45,9 +66,9 @@ def test_matplotlib_image_parity(name: str) -> None:
     if isinstance(mpl_map, mpl.colors.ListedColormap):
         pytest.xfail("ListedColormap not supported")
         return
-    img1 = mpl_map(_gradient)
-    img2 = our_map_to_mpl(_gradient)
-    img3 = our_map(_gradient)
+    img1 = mpl_map(_GRADIENT)
+    img2 = our_map_to_mpl(_GRADIENT)
+    img3 = our_map(_GRADIENT)
     atol = 0.25 if name == "gist_stern" else 0.02  # TODO
 
     npt.assert_allclose(img1, img2, atol=atol)

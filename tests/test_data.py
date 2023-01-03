@@ -40,21 +40,25 @@ _gradient = np.linspace(0, 1, 256)
 @pytest.mark.parametrize("name", sorted(MPL_CMAPS), ids=str)
 def test_matplotlib_image_parity(name: str) -> None:
     mpl_map = cast("MPLColormap", mpl.colormaps[name])
-    our_map = Colormap(getattr(data, name)).to_mpl()
+    our_map = Colormap(getattr(data, name))
+    our_map_to_mpl = our_map.to_mpl()
     if isinstance(mpl_map, mpl.colors.ListedColormap):
         pytest.xfail("ListedColormap not supported")
         return
     img1 = mpl_map(_gradient)
-    img2 = our_map(_gradient)
-    atol = 0.25 if name == 'gist_stern' else 0.02  # TODO
+    img2 = our_map_to_mpl(_gradient)
+    img3 = our_map(_gradient)
+    atol = 0.25 if name == "gist_stern" else 0.02  # TODO
+
     npt.assert_allclose(img1, img2, atol=atol)
+    npt.assert_allclose(img1, img3, atol=atol)
 
 
-def test_functions() -> None:
-    """Testing colormaps from functions"""
+def test_cubehelix() -> None:
+    """Testing colormaps from functions, using cubehelix as an example."""
     ch = Colormap(data.cubehelix)
     assert ch(0.0) == (0.0, 0.0, 0.0, 1.0)
-    npt.assert_allclose(ch(0.5), (0.659019, 0.469366, 0.24845, 1.0), rtol=1e-5)
+    npt.assert_allclose(ch(0.5), (0.632842, 0.474798, 0.290702, 1.0), rtol=1e-5)
     assert ch(1.0) == (1.0, 1.0, 1.0, 1.0)
 
 
@@ -101,4 +105,7 @@ def test_mpl_conversion() -> None:
         (1.0, (0.5, 0.0, 0.0, 1.0)),
     ]
 
-    assert _mpl_segmentdata_to_stops(data) == expected
+    result = _mpl_segmentdata_to_stops(data)
+    for (rstop, rcolor), (estop, ecolor) in zip(result, expected):
+        assert rstop == estop
+        assert np.allclose(rcolor, ecolor)

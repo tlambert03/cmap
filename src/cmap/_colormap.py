@@ -16,6 +16,7 @@ from typing import (
     cast,
     overload,
 )
+import warnings
 
 import numpy as np
 import numpy.typing as npt
@@ -49,10 +50,11 @@ if TYPE_CHECKING:
     ]
 
 
-class MPLSegmentData(TypedDict):
+class MPLSegmentData(TypedDict, total=False):
     red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
     green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
     blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+    alpha: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
 
 
 class ColormapDict(TypedDict):
@@ -174,7 +176,7 @@ class Colormap:
             "color_stops": [(p, list(c)) for p, c in self.color_stops],
         }
 
-    def lut(self, N: int = 255, gamma: float = 1) -> np.ndarray:
+    def lut(self, N: int = 256, gamma: float = 1) -> np.ndarray:
         """Return a lookup table (LUT) for the colormap.
 
         The returned LUT is a numpy array of RGBA values, with shape (N, 4), where N is
@@ -193,8 +195,16 @@ class Colormap:
         return self._luts[(N, gamma)]
 
     def __call__(
-        self, X: float | ArrayLike, *, N: int = 255, gamma: float = 1
+        self, X: float | ArrayLike, *, N: int = 256, gamma: float = 1
     ) -> Color | NDArray[np.float64]:
+        """Map scalar values in X to an RGBA array.
+
+        NOTE: the N value here (which determines how finely we sample the LUT)
+        can cause slight rounding errors in some cases.
+        N of 256 is the default in matplotlib, so it is here as well, but note that
+        N=255 (odd numbered) will result in an exact "halfway" value in, for example,
+        a colormap with 3 colors.
+        """
         lut = self.lut(N=N, gamma=gamma)
         xa = np.array(X, copy=True)
         if not xa.dtype.isnative:
@@ -223,7 +233,7 @@ class Colormap:
         positions specified by the iterable.
         """
         nums = np.linspace(0, 1, N) if isinstance(N, int) else np.asarray(N)
-        for c in self(nums):
+        for c in self(nums, N=len(nums)):
             yield Color(c)
 
     def __repr__(self) -> str:
@@ -343,6 +353,46 @@ class ColorStops(Sequence[ColorStop]):
     """
 
     _stops: np.ndarray  # internally, stored as an (N, 5) array
+    _lut_func: LutCallable | None  # overrides if provided
+
+    def __init__(
+        self,
+        stops: np.ndarray | Iterable[tuple[float, Color]] | None = None,
+        *,
+        lut_func: LutCallable | None = None,
+    ) -> None:
+        self._lut_func: LutCallable | None = None
+        if lut_func is not None:
+            self._lut_func = lut_func
+            if stops is not None:
+                warnings.warn(
+                    "lut_func argument overrides stops argument. Don't pass both."
+                )
+
+            stops = np.linspace(0, 1, 256)
+            colors = self._call_lut_func(stops)
+            stop_colors = np.concatenate([stops[:, None], colors], axis=1)
+            self._stops = stop_colors
+        else:
+            if stops is None:  # pragma: no cover
+                raise ValueError("Must pass either stops or callable")
+
+            # the internal representation is an (N, 5) array
+            # the first column is the stop position, the next 4 are the RGBA values
+            if isinstance(stops, np.ndarray):
+                if len(stops.shape) != 2 or stops.shape[1] != 5:
+                    raise ValueError("Expected (N, 5) array")  # pragma: no cover
+                self._stops = stops
+            else:
+                self._stops = np.array([(p,) + tuple(c) for p, c in stops])
+
+    def _call_lut_func(self, X: np.ndarray) -> np.ndarray:
+        if self._lut_func is None:
+            raise ValueError("No lut_func provided")  # pragma: no cover
+        colors = np.clip(self._lut_func(X), 0, 1)
+        if colors.shape[1] == 3:
+            colors = np.concatenate([colors, np.ones((len(X), 1))], axis=1)
+        return colors
 
     @classmethod
     def parse(  # noqa: C901
@@ -375,7 +425,7 @@ class ColorStops(Sequence[ColorStop]):
         if isinstance(colors, ColorStops):
             return colors
         if callable(colors):
-            return cls.from_callable(colors)
+            return cls(lut_func=colors)
 
         _clr_seq: Sequence[ColorLike | ColorStopLike]
         if isinstance(colors, str):
@@ -384,7 +434,7 @@ class ColorStops(Sequence[ColorStop]):
             if _is_mpl_segmentdata(colors):
                 _mpl_stops = _mpl_segmentdata_to_stops(colors)
                 if callable(_mpl_stops):
-                    return cls.from_callable(_mpl_stops)
+                    return cls(lut_func=_mpl_stops)
                 _clr_seq = _mpl_stops
             elif all(isinstance(x, Number) for x in colors):
                 colors = cast("dict[float, ColorLike]", colors)
@@ -456,40 +506,6 @@ class ColorStops(Sequence[ColorStop]):
         _colors = np.concatenate([stops[:, None], _colors], axis=1)
         return cls(_colors)
 
-    @classmethod
-    def from_callable(
-        cls,
-        func: Callable[[NDArray[np.floating]], NDArray],
-        N: int | Sequence[float] = 256,
-    ) -> ColorStops:
-        """Create ColorStops from a callable that returns an (N, 4) array.
-
-        We sample this function at N evenly spaced positions between 0 and 1, and
-        use the resulting colors as the color stops.
-
-        Examples
-        --------
-        >>> ColorStops.from_callable(lambda x: np.array([[1, 0, 0, 1]]))
-        ColorStops([(0.0, Color('red')), (1.0, Color('red'))])
-        """
-        stops = np.linspace(0, 1, N) if isinstance(N, int) else np.array(N)
-        colors = np.clip(func(stops), 0, 1)
-        if len(colors) != len(stops):
-            raise ValueError(  # pragma: no cover
-                f"Requested {len(stops)} colors, but function returned {len(colors)}"
-            )
-        return cls.from_color_array(colors)
-
-    def __init__(self, stops: np.ndarray | Iterable[tuple[float, Color]]) -> None:
-        # the internal representation is an (N, 5) array
-        # the first column is the stop position, the next 4 are the RGBA values
-        if isinstance(stops, np.ndarray):
-            if len(stops.shape) != 2 or stops.shape[1] != 5:
-                raise ValueError("Expected (N, 5) array")  # pragma: no cover
-            self._stops = stops
-        else:
-            self._stops = np.array([(p,) + tuple(c) for p, c in stops])
-
     @property
     def stops(self) -> tuple[float, ...]:
         """Return tuple of color stop positions."""
@@ -548,12 +564,12 @@ class ColorStops(Sequence[ColorStop]):
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, ColorStops):
             try:
-                __o = ColorStops.parse(__o)  # type: ignore
+                __o = ColorStops.parse(__o)
             except Exception:
                 return NotImplemented
         return np.allclose(self._stops, __o._stops)
 
-    def to_lut(self, N: int = 255, gamma: float = 1.0) -> np.ndarray:
+    def to_lut(self, N: int = 256, gamma: float = 1.0) -> np.ndarray:
         """Create (N, 4) LUT of RGBA values, interpolated between color stops.
 
         Parameters
@@ -563,6 +579,9 @@ class ColorStops(Sequence[ColorStop]):
         gamma : float
             Gamma correction to apply to the colors.
         """
+        if self._lut_func is not None:
+            return self._call_lut_func(np.linspace(0, 1, N) ** gamma)
+
         if 100 < len(self._stops) == N + 1:
             # no interpolation needed
             return self.color_array
@@ -776,17 +795,25 @@ def _mpl_segmentdata_to_stops(
         A list of (position, [r, g, b]) tuples.
     """
     if all(callable(v) for v in data.values()):
-        return partial(_map_rgb, (data["red"], data["green"], data["blue"]))
+        funcs = (data["red"], data["green"], data["blue"])
+        if "alpha" in data:
+            return partial(_map_rgb, funcs + (data["alpha"],))
+        return partial(_map_rgb, funcs)
     if any(callable(v) for v in data.values()):
         raise ValueError(
             "All values in segmentdata dict must be either callable or a sequence"
         )
-    rgb_stops = [
-        [i[:2] for i in data[c]] for c in ("red", "green", "blue")  # type: ignore
-    ]
+    keys = ("red", "green", "blue")
+    rgb_stops = [[i[:2] for i in data[c]] for c in keys]  # type: ignore
     all_positions = np.array(sorted({i for n in rgb_stops for i, _ in n}))
     rgb = [np.interp(all_positions, *np.asarray(s).T) for s in rgb_stops]
-    rgba = np.stack(rgb + [np.ones_like(all_positions)], axis=1)
+    if "alpha" in data:
+        _a = [i[:2] for i in cast("Sequence", data["alpha"])]
+        alpha = np.interp(all_positions, *np.asarray(_a).T)
+    else:
+        alpha = np.ones_like(all_positions)
+
+    rgba = np.stack(rgb + [alpha], axis=1)
     return [(a, tuple(b)) for a, b in zip(all_positions, rgba.tolist())]
 
 

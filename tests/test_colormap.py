@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Any
 
 import numpy as np
@@ -34,7 +35,8 @@ SEGDICT = {
     ],
 )
 def test_parse_colorstops(color_stops: Any) -> None:
-    assert ColorStops.parse(color_stops) == EXPECT == Colormap(color_stops).color_stops
+    assert ColorStops.parse(color_stops) == EXPECT
+    assert Colormap(color_stops).color_stops == EXPECT
 
 
 @pytest.mark.parametrize(
@@ -50,15 +52,16 @@ def test_colormap() -> None:
     cmap = Colormap(["red", "magenta", "blue"], name="mymap")
     assert cmap(0.0) == (1, 0, 0, 1)
     assert cmap(0.0) is Color("r")
-    assert cmap(0.5) == (1, 0, 1, 1)
-    assert cmap(0.5) is Color("m")
+    assert cmap(0.5, N=255) == (1, 0, 1, 1)
+    assert cmap(0.5, N=255) is Color("m")
     assert cmap(1.0) == (0, 0, 1, 1)
     assert cmap(1.0) is Color("b")
     assert cmap(1.5) == (0, 0, 1, 1)
     assert repr(cmap) == "Colormap(name='mymap', 3 colors)"
 
+    # also test with a sequence
     npt.assert_array_equal(
-        cmap([0, 0.5, 1.0]), [(1, 0, 0, 1), (1, 0, 1, 1), (0, 0, 1, 1)]
+        cmap([0, 0.5, 1.0], N=255), [(1, 0, 0, 1), (1, 0, 1, 1), (0, 0, 1, 1)]
     )
 
 
@@ -120,7 +123,7 @@ def test_colormap_methods() -> None:
     assert list(cmap1.iter_colors(3)) == [Color("r"), Color("m"), Color("b")]
 
 
-def test_colormap_apply():
+def test_colormap_apply() -> None:
     cmap1 = Colormap(["red", "magenta", "blue"])
     img = np.zeros((10, 10))
     assert cmap1(img).shape == (10, 10, 4)
@@ -159,4 +162,4 @@ def test_mpl_segment_conversion() -> None:
 
     for val in vars(_cm).values():
         if isinstance(val, dict) and "red" in val:
-            assert isinstance(_mpl_segmentdata_to_stops(val), list)  # type: ignore
+            assert isinstance(_mpl_segmentdata_to_stops(val), (list, partial))

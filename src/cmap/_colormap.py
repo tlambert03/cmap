@@ -364,7 +364,7 @@ class ColorStops(Sequence[ColorStop]):
         self._lut_func: LutCallable | None = None
         if lut_func is not None:
             self._lut_func = lut_func
-            if stops is not None:
+            if stops is not None:  # pragma: no cover
                 warnings.warn(
                     "lut_func argument overrides stops argument. Don't pass both."
                 )
@@ -474,37 +474,37 @@ class ColorStops(Sequence[ColorStop]):
 
         return ColorStops(zip(_stops, _colors))
 
-    @classmethod
-    def from_color_array(cls, colors: ArrayLike) -> ColorStops:
-        """Create ColorStops from an (N, 3) or (N, 4) array-like.
+    # @classmethod
+    # def from_color_array(cls, colors: ArrayLike) -> ColorStops:
+    #     """Create ColorStops from an (N, 3) or (N, 4) array-like.
 
-        This is a faster constructor for creating a ColorStops from a numeric
-        array-like of 3- or 4-element color vectors.  e.g.
+    #     This is a faster constructor for creating a ColorStops from a numeric
+    #     array-like of 3- or 4-element color vectors.  e.g.
 
-        - [[0, 0, 0], [1, 1, 1]]
-        - [[0, 0, 0, 1], [1, 1, 1, 1]]
-        - [Color('green'), Color('red')]
+    #     - [[0, 0, 0], [1, 1, 1]]
+    #     - [[0, 0, 0, 1], [1, 1, 1, 1]]
+    #     - [Color('green'), Color('red')]
 
-        Returns
-        -------
-        ColorStops
-            A sequence of color stops.
-        """
-        _colors = np.atleast_2d(np.asarray(colors))
-        if np.issubdtype(_colors.dtype, int) and _colors.max() > 1:
-            # assume 8 bit colors
-            _colors = np.clip(_colors.astype(float) / 255, 0, 1)
-        elif not np.issubdtype(_colors.dtype, np.number):
-            raise ValueError("Expected numeric array")  # pragma: no cover
-        if _colors.shape[1] == 3:
-            # add alpha channel
-            _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)
-        elif _colors.shape[1] != 4:  # pragma: no cover
-            raise ValueError("Expected (N, 3) or (N, 4) array")
-        # add stop positions
-        stops = np.linspace(0, 1, _colors.shape[0])
-        _colors = np.concatenate([stops[:, None], _colors], axis=1)
-        return cls(_colors)
+    #     Returns
+    #     -------
+    #     ColorStops
+    #         A sequence of color stops.
+    #     """
+    #     _colors = np.atleast_2d(np.asarray(colors))
+    #     if np.issubdtype(_colors.dtype, int) and _colors.max() > 1:
+    #         # assume 8 bit colors
+    #         _colors = np.clip(_colors.astype(float) / 255, 0, 1)
+    #     elif not np.issubdtype(_colors.dtype, np.number):
+    #         raise ValueError("Expected numeric array")  # pragma: no cover
+    #     if _colors.shape[1] == 3:
+    #         # add alpha channel
+    #         _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)
+    #     elif _colors.shape[1] != 4:  # pragma: no cover
+    #         raise ValueError("Expected (N, 3) or (N, 4) array")
+    #     # add stop positions
+    #     stops = np.linspace(0, 1, _colors.shape[0])
+    #     _colors = np.concatenate([stops[:, None], _colors], axis=1)
+    #     return cls(_colors)
 
     @property
     def stops(self) -> tuple[float, ...]:

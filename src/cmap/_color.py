@@ -13,6 +13,7 @@ from typing import (
     NamedTuple,
     Sequence,
     SupportsFloat,
+    overload,
 )
 
 import numpy as np
@@ -257,11 +258,20 @@ def _parse_hex_string(hex: str) -> RGBA8:
     return RGBA8(r, g, b, a)
 
 
-def _bound_0_1(*values: SupportsFloat) -> Iterable[float]:
-    return (round(max(0, min(1, float(v))), 15) for v in values)
+# fmt: off
+@overload
+def _bound_0_1(values: SupportsFloat) -> float: ...
+@overload
+def _bound_0_1(values: Sequence[SupportsFloat]) -> Sequence[float]: ...
+def _bound_0_1(
+    values: SupportsFloat | Sequence[SupportsFloat],
+) -> float | Sequence[SupportsFloat]:
+    # round here?
+    return np.clip(values, 0, 1).astype(float)  # type: ignore
+# fmt: on
 
 
-def _bound_0_255(*values: SupportsFloat) -> Iterable[int]:
+def _bound_0_255(values: Iterable[SupportsFloat]) -> Iterable[int]:
     return (max(0, min(255, round(float(v)))) for v in values)
 
 
@@ -295,10 +305,10 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
         # NOTE! we assume that if any value is > 1, then all values are
         # in the 0-255 range.
         if any(x > 1 for x in val):
-            r, g, b = _bound_0_255(*val[:3])
-            a = list(_bound_0_1(val[3]))[0] if len(val) > 3 else 1
+            r, g, b = _bound_0_255(val[:3])
+            a = _bound_0_1(val[3]) if len(val) > 3 else 1
             return RGBA8(r, g, b, a).to_float()
-        return RGBA(*_bound_0_1(*val))
+        return RGBA(*_bound_0_1(val))
 
     # None is transparent
     if value is None:
@@ -324,7 +334,7 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
     # support for colour.Color
     colour_color = sys.modules.get("colour")
     if colour_color and isinstance(value, colour_color.Color):
-        return RGBA(*_bound_0_1(*value.get_rgb()))
+        return RGBA(*_bound_0_1(value.get_rgb()))
 
     raise TypeError(f"Cannot convert type {type(value)!r} to Color")
 
@@ -362,8 +372,8 @@ class Color:
     def __setattr__(self, __name: str, __value: Any) -> None:
         raise AttributeError("Color is immutable")
 
-    # len and getitem implement the Sequence interface
-    # and are required for casting a list of colors to an array
+    # len and getitem are required for proper handling when casting
+    # a list of colors to an array (e.g. np.array([Color('red'), Color('blue')]))
 
     def __len__(self) -> int:
         return 4

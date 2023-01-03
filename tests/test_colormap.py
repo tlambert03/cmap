@@ -34,7 +34,7 @@ SEGDICT = {
     ],
 )
 def test_parse_colorstops(color_stops: Any) -> None:
-    assert ColorStops.parse(color_stops) == EXPECT == Colormap(color_stops)
+    assert ColorStops.parse(color_stops) == EXPECT == Colormap(color_stops).color_stops
 
 
 @pytest.mark.parametrize(
@@ -47,7 +47,7 @@ def test_misc_colormap_args(color_stops: Any) -> None:
 
 def test_colormap() -> None:
     """Test Colormap."""
-    cmap = Colormap(["red", "magenta", "blue"])
+    cmap = Colormap(["red", "magenta", "blue"], name="mymap")
     assert cmap(0.0) == (1, 0, 0, 1)
     assert cmap(0.0) is Color("r")
     assert cmap(0.5) == (1, 0, 1, 1)
@@ -55,6 +55,7 @@ def test_colormap() -> None:
     assert cmap(1.0) == (0, 0, 1, 1)
     assert cmap(1.0) is Color("b")
     assert cmap(1.5) == (0, 0, 1, 1)
+    assert repr(cmap) == "Colormap(name='mymap', 3 colors)"
 
     npt.assert_array_equal(
         cmap([0, 0.5, 1.0]), [(1, 0, 0, 1), (1, 0, 1, 1), (0, 0, 1, 1)]
@@ -64,6 +65,7 @@ def test_colormap() -> None:
 def test_colorstops() -> None:
     cmap = Colormap(["red", "magenta", "blue"])
     assert cmap.color_stops.stops == (0, 0.5, 1.0)
+    assert cmap.color_stops != {"1234"}  # just check a random comparison
     for x, e in zip(cmap.color_stops.colors, "rmb"):
         assert isinstance(x, Color)
         assert x == e

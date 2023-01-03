@@ -27,6 +27,7 @@ def test_colour_support() -> None:
 
 def test_rich_color_repr() -> None:
     rich = pytest.importorskip("rich")
+    from cmap._external import rich_print_colormap
     from rich.text import Text
 
     mock = MagicMock()
@@ -36,8 +37,10 @@ def test_rich_color_repr() -> None:
 
     mock.reset_mock()
     with patch.object(rich, "get_console", lambda: mock):
-        Colormap(["red", (0, 3, 192, 0.8)]).__rich_repr__()
-    mock.print.assert_called_once()  # smoke test
+        cm = Colormap(["red", (0, 3, 192, 0.8)])
+        cm.__rich_repr__()
+        rich_print_colormap(cm, 100)  # for coverage... could be fixed with PropertyMock
+    mock.print.assert_called()
 
 
 def test_matplotlib() -> None:

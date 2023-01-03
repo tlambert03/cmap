@@ -18,7 +18,7 @@ def cubehelix(
     http://adsabs.harvard.edu/abs/2011arXiv1108.5083G
     """
     x = np.linspace(0, 1, X) if isinstance(X, int) else np.asarray(X)
-    if isinstance(sat, np.ndarray) and len(sat) != len(x):
+    if isinstance(sat, np.ndarray) and len(sat) != len(x):  # pragma: no cover
         raise ValueError("sat must be a scalar or an array of the same length as X")
 
     # apply the gamma correction

@@ -173,7 +173,7 @@ class Colormap:
             "color_stops": [(p, list(c)) for p, c in self.color_stops],
         }
 
-    def lut(self, N: int = 256, gamma: float = 1) -> np.ndarray:
+    def lut(self, N: int = 255, gamma: float = 1) -> np.ndarray:
         """Return a lookup table (LUT) for the colormap.
 
         The returned LUT is a numpy array of RGBA values, with shape (N, 4), where N is
@@ -191,8 +191,10 @@ class Colormap:
             self._luts[(N, gamma)] = self.color_stops.to_lut(N, gamma)
         return self._luts[(N, gamma)]
 
-    def __call__(self, X: float | ArrayLike) -> Color | NDArray[np.float64]:
-        lut = self.lut()
+    def __call__(
+        self, X: float | ArrayLike, *, N: int = 255, gamma: float = 1
+    ) -> Color | NDArray[np.float64]:
+        lut = self.lut(N=N, gamma=gamma)
         xa = np.array(X, copy=True)
         if not xa.dtype.isnative:
             xa = xa.byteswap().newbyteorder()  # Native byteorder is faster.
@@ -439,11 +441,11 @@ class ColorStops(Sequence[ColorStop]):
             # assume 8 bit colors
             _colors = np.clip(_colors.astype(float) / 255, 0, 1)
         elif not np.issubdtype(_colors.dtype, np.number):
-            raise ValueError("Expected numeric array")
+            raise ValueError("Expected numeric array")  # pragma: no cover
         if _colors.shape[1] == 3:
             # add alpha channel
             _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)
-        elif _colors.shape[1] != 4:
+        elif _colors.shape[1] != 4:  # pragma: no cover
             raise ValueError("Expected (N, 3) or (N, 4) array")
         # add stop positions
         stops = np.linspace(0, 1, _colors.shape[0])
@@ -547,7 +549,7 @@ class ColorStops(Sequence[ColorStop]):
                 return NotImplemented
         return np.allclose(self._stops, __o._stops)
 
-    def to_lut(self, N: int = 256, gamma: float = 1.0) -> np.ndarray:
+    def to_lut(self, N: int = 255, gamma: float = 1.0) -> np.ndarray:
         """Create (N, 4) LUT of RGBA values, interpolated between color stops.
 
         Parameters
@@ -557,10 +559,10 @@ class ColorStops(Sequence[ColorStop]):
         gamma : float
             Gamma correction to apply to the colors.
         """
-        if len(self) == N:
+        if 100 < len(self._stops) == N + 1:
             # no interpolation needed
             return self.color_array
-        return _interpolate_stops(N, self, gamma)
+        return _interpolate_stops(N, self._stops, gamma)
 
     def __reversed__(self) -> Iterator[ColorStop]:
         for pos, *rgba in self._stops[::-1]:

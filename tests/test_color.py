@@ -82,7 +82,7 @@ def test_color_conversions() -> None:
     assert color != 1
     assert color != {"1234"}
     assert str(color) == "red"
-    assert repr(Color((0.1, 0.2, -0.1))) == "Color((0.1, 0.2, 0))"
+    assert repr(Color((0.1, 0.2, -0.1))) == "Color((0.1, 0.2, 0.0))"
 
 
 def test_copy() -> None:
@@ -96,3 +96,14 @@ def test_copy() -> None:
     assert deepcopy(color) is color
     assert pickle.loads(pickle.dumps(color)) is color
     assert ref(color)() is color
+
+
+def test_to_array_in_list() -> None:
+    """Test that colors in a list get converted when using asarray"""
+    ary = np.asarray([Color("r"), Color("g"), Color("b")])
+    assert ary.shape == (3, 4)
+    assert np.array_equal(ary, np.array([[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]]))
+
+    # seemingly unrelated, but __getitem__ is apparently necessary for the above,
+    # but not actually called... so we test it here
+    assert Color("r")[0] == 1

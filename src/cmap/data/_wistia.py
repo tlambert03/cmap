@@ -25,10 +25,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+# Wistia = [
+#     (228, 255, 122),  # #e4ff7a
+#     (255, 232, 26),  # #ffe81a
+#     (255, 189, 0),  # ffbd00
+#     (255, 160, 0),  # ffa000
+#     (255, 127, 0),  # fc7f00
+# ]
+
+# these are the values in matplotlib ...
 Wistia = [
-    (228, 255, 122),  # #e4ff7a
-    (255, 232, 26),  # #ffe81a
-    (255, 189, 0),  # ffbd00
-    (255, 160, 0),  # ffa000
-    (255, 127, 0),  # fc7f00
+    (0.8941176470588236, 1.0, 0.4784313725490196),
+    (1.0, 0.9098039215686274, 0.1019607843137255),
+    (1.0, 0.7411764705882353, 0.0),
+    (1.0, 0.6274509803921569, 0.0),
+    (0.9882352941176471, 0.4980392156862745, 0.0),
 ]

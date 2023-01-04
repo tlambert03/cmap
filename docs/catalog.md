@@ -9,6 +9,14 @@ from cmap import Colormap
 cmap = Colormap('viridis')
 ```
 
+!!!note  "Coming from matplotlib?"
+
+    We test against all of the named colormaps in matplotlib, so any `'name'`
+    that you can use with `matplotlib.colormaps['name']` can also be passed to
+    `cmap.Colormap`. To convert a `cmap.Colormap` to a native
+    `matplotlib.colors.Colormap` instance, you may call
+    [`.to_mpl()`][cmap.Colormap.to_mpl].
+
 See the [Colormap API docs](api/colormap.md) for more details.
 See the [cookbook](cookbook.md) for usage examples.
 
@@ -30,6 +38,21 @@ plt.imshow(img, cmap=cmap.to_mpl())
 from napari import view_image
 view_image(img, colormap=cmap.to_napari())
 ``` -->
+
+!!!tip "Tip: Reversed colormaps"
+
+    You can append `'_r'` to any of the colormap names listed below to get a
+    reversed version of that colormap. For example, `'viridis_r'`
+
+    {{ cmap: viridis }}
+    {{ cmap: viridis_r }}
+
+    This works with function based colormaps as well:
+
+    {{ cmap: cubehelix }}
+    {{ cmap: cubehelix_r }}
+
+
 
 ## Colormaps by category
 

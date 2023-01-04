@@ -479,7 +479,7 @@ CATALOG: CatalogDict = {
     'tab20c': {'data': 'cmap.data._tableau:Tableau20c', 'tags': [], 'category': 'Qualitative'},
     'tab_traffic_light': {'data': 'cmap.data._tableau:Traffic_Light', 'tags': [], 'category': 'Qualitative'},
     'terrain': {'data': 'cmap.data._igor:terrain', 'tags': [], 'category': 'Miscellaneous'},
-    'turbo': {'data': 'cmap.data._matplotlib:Turbo', 'tags': [], 'category': 'Miscellaneous'},
+    'turbo': {'data': 'cmap.data._turbo:Turbo', 'tags': [], 'category': 'Miscellaneous'},
     'twilight': {'data': 'cmap.data._matplotlib:Twilight', 'tags': [], 'category': 'Cyclic'},
     'twilight_shifted': {'data': 'cmap.data._matplotlib:Twilight_shifted', 'tags': [], 'category': 'Cyclic'},
     'viridis': {'data': 'cmap.data._matplotlib:Viridis', 'tags': ['uniform'], 'category': 'Sequential'},
@@ -501,7 +501,7 @@ def get_data(name: str) -> Any:
         raise ValueError(f"Colormap {name!r} not found.")
 
     # TODO: should we somehow check if the provided name was the correct case?
-    pointer = CATALOG[key]["data"]
+    pointer = _CATALOG_LOWER[key]["data"]
     module, attr = pointer.rsplit(":", 1)
     # not encouraged... but significantly faster than importlib
     # well tested on internal data though

@@ -1,7 +1,7 @@
 import re
 from typing import Any, Sequence
 
-from cmap import Colormap, data
+from cmap import Colormap
 
 # markdown tag for a single colormap: {{ cmap: name }}
 CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}]+)\s?}}")
@@ -21,23 +21,9 @@ def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
     {{ cmap: name }} -> <div class="cmap">
     """
     map_name = match if isinstance(match, str) else match[1].strip()
-    if not hasattr(data, map_name):
-        return str(match[0] if isinstance(match, re.Match) else match)
-    cm = Colormap(getattr(data, map_name))
+    cm = Colormap(map_name)
     css = cm.to_css().strip()
     return CMAP_DIV.format(name=map_name, css=css, class_list=" ".join(class_list))
-
-
-def _cmap_group(match: re.Match) -> str:
-    """Convert a `cmaps` tag to a div with the colormap.
-
-    {{ cmaps: category }} -> list of individual {{ cmap: ...}}
-    """
-    category = match[1].strip()
-    if category == "all":
-        maps = list(data._DATA)
-    out = [f"{{{{ cmap: {name} }}}}" for name in maps]
-    return "\n".join(out)
 
 
 def on_page_content(html: str, **kwargs: Any) -> str:
@@ -56,7 +42,7 @@ def _cmap_catalog() -> str:
 
     categories = set()
     lines = []
-    for cmap_name, details in sorted(CATALOG.items()):
+    for cmap_name, details in sorted(CATALOG.items(), key=lambda x: x[0].lower()):
         category = details.get("category") or "Uncategorized"
         categories.add(category)
         classes = ["filterDiv"] + [category.lower()]

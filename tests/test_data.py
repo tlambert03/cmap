@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Set, cast
 import numpy as np
 import numpy.testing as npt
 import pytest
-from cmap import Colormap, data
+from cmap import Colormap, _catalog
 
 try:
     import matplotlib as mpl
@@ -21,20 +21,18 @@ if TYPE_CHECKING:
 def test_lower_map() -> None:
     # make sure the lower map is the same length as the original
     # ... i.e. that we have no name collisions
-    assert len(data._DATA_LOWER) == len(data._DATA)
+    assert len(_catalog._CATALOG_LOWER) == len(_catalog.CATALOG)
 
 
 def test_data_loading() -> None:
-    assert data.__dir__() == list(data._DATA)
-
-    for name in data._DATA:
-        Colormap(getattr(data, name))
+    for name in _catalog.CATALOG:
+        Colormap(name)
 
 
 def test_matplotlib_name_parity() -> None:
     if not MPL_CMAPS:
         pytest.skip("matplotlib not installed")
-    if missing := (MPL_CMAPS - set(data._DATA)):
+    if missing := (MPL_CMAPS - set(_catalog.CATALOG)):
         raise AssertionError(f"missing cmap keys from matplotlib: {missing}")
 
 
@@ -53,15 +51,14 @@ def test_napari_name_parity() -> None:
         for n in napari_cmaps
         if not n.endswith(("_r", " r"))
     }
-    our_cmaps = {n.lower() for n in data._DATA}
-    if missing := (napari_cmaps - our_cmaps):
+    if missing := (napari_cmaps - set(_catalog._CATALOG_LOWER)):
         raise AssertionError(f"missing cmap keys from napari: {missing}")
 
 
 @pytest.mark.parametrize("name", sorted(MPL_CMAPS), ids=str)
 def test_matplotlib_image_parity(name: str) -> None:
     mpl_map = cast("MPLColormap", mpl.colormaps[name])
-    our_map = Colormap(getattr(data, name))
+    our_map = Colormap(name)
     our_map_to_mpl = our_map.to_mpl()
     if isinstance(mpl_map, mpl.colors.ListedColormap):
         pytest.xfail("ListedColormap not supported")
@@ -77,7 +74,7 @@ def test_matplotlib_image_parity(name: str) -> None:
 
 def test_cubehelix() -> None:
     """Testing colormaps from functions, using cubehelix as an example."""
-    ch = Colormap(data.cubehelix)
+    ch = Colormap("cubehelix")
     assert ch(0.0) == (0.0, 0.0, 0.0, 1.0)
     npt.assert_allclose(ch(0.5), (0.632842, 0.474798, 0.290702, 1.0), rtol=1e-5)
     assert ch(1.0) == (1.0, 1.0, 1.0, 1.0)

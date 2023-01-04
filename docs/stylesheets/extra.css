@@ -45,7 +45,7 @@ a.autorefs-external:hover::after {
 
 .md-header {
   background: rgba(0, 0, 4, 1);
-  /* magma ... generated with Colormap(data.magma).to_css() */
+  /* magma ... generated with Colormap('magma').to_css() */
   background: linear-gradient(
     90deg,
     rgba(0, 0, 4, 1) 0%,

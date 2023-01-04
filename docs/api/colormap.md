@@ -1,0 +1,3 @@
+# cmap.Colormap
+
+::: cmap.Colormap

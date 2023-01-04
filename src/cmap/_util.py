@@ -1,5 +1,5 @@
 import sys
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 
 import numpy as np
 
@@ -7,6 +7,9 @@ from cmap import Colormap, data
 
 gradient = np.linspace(0, 1, 256)
 gradient = np.vstack((gradient, gradient))
+
+if TYPE_CHECKING:
+    from matplotlib.figure import Figure as MplFigure
 
 
 def plot_color_gradients(cmap_list: Sequence[str], compare: bool = False) -> None:
@@ -50,18 +53,46 @@ def plot_color_gradients(cmap_list: Sequence[str], compare: bool = False) -> Non
         ax.set_axis_off()
 
 
-def plot_rgb(cmap, N: int=256):
+def plot_rgb(cmap: Colormap, N: int = 256) -> "MplFigure":
     """Plot the R,G,B,A components of a colormap individually."""
     import matplotlib.pyplot as plt
 
-    X = np.linspace(0, 1, N)
+    x = np.linspace(0, 1, N)
     fig, ax = plt.subplots()
-    colors = cmap(X, N=N)
-    ax.plot(X, colors[:, 0], color="r", label="Red")
-    ax.plot(X, colors[:, 1], color="g", label="Green")
-    ax.plot(X, colors[:, 2], color="b", label="Blue")
-    ax.plot(X, colors[:, 3], color="k", label="Alpha", linestyle='--', alpha=0.5)
+    colors = cmap(x, N=N)
+    ax.plot(x, colors[:, 0], color="r", label="Red")
+    ax.plot(x, colors[:, 1], color="g", label="Green")
+    ax.plot(x, colors[:, 2], color="b", label="Blue")
+    ax.plot(x, colors[:, 3], color="k", label="Alpha", linestyle="--", alpha=0.5)
+    return fig
 
+
+def plot_lightness(cmap: Colormap, N: int = 100, reverse: bool = False) -> None:
+    """Plot L* component of a colormap in CAM02-UCS color space over range 0-1."""
+    import matplotlib.pyplot as plt
+
+    try:
+        from colorspacious import cspace_converter
+    except ImportError as e:
+        raise ImportError(
+            "This function requires the colorspacious package. "
+            "Please `pip install colorspacious` and try again."
+        ) from e
+
+    x = np.linspace(0.0, 1.0, N)
+    rgb = cmap(x)[None, :, :3]
+    lab = cspace_converter("sRGB1", "CAM02-UCS")(rgb)
+    lslice = np.s_[::-1] if reverse else np.s_[:]
+    y_ = lab[0, lslice, 0]
+    c_ = x[lslice]
+
+    if hasattr(cmap, "to_mpl"):
+        cmap = cmap.to_mpl()
+    plt.scatter(x, y_, c=c_, cmap=cmap, s=250, linewidths=0)
+    plt.plot(x, y_, c="black", linewidth=1, alpha=0.2)
+    plt.gca().set_ylabel("Lightness $L^*$", fontsize=12)
+    plt.gca().set_xlabel("Value", fontsize=12)
+    plt.show()
 
 
 if __name__ == "__main__":

@@ -347,6 +347,11 @@ class Color:
 
     Instances of this class are immutable and cached (based on the rgba tuple),
     you can compare them with `is`.
+
+    Parameters
+    ----------
+    value : str, tuple, list, array, Color, or int
+        The color to represent.  Can be any "ColorLike".
     """
 
     __slots__ = ("_rgba", "_name", "__weakref__")
@@ -386,6 +391,11 @@ class Color:
 
     def __array__(self, dtype: npt.DTypeLike = None) -> np.ndarray:
         return np.asarray(self._rgba, dtype=dtype)
+
+    @property
+    def alpha(self) -> float:
+        """Return the alpha value."""
+        return self._rgba[3]
 
     @property
     def hsl(self) -> HSLA:

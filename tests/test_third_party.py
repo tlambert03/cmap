@@ -56,9 +56,6 @@ def test_napari(qapp: "QApplication") -> None:
     v.close()
 
 
-    
-
-
 def test_vispy(qapp: "QApplication") -> None:
     scene = pytest.importorskip("vispy.scene")
 

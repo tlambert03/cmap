@@ -1,12 +1,12 @@
 from __future__ import annotations
-from functools import partial
 
+import warnings
+from functools import partial
 from numbers import Number
 from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
-    DefaultDict,
     Iterable,
     Iterator,
     NamedTuple,
@@ -16,12 +16,12 @@ from typing import (
     cast,
     overload,
 )
-import warnings
 
 import numpy as np
 import numpy.typing as npt
 
 from . import _external
+from ._catalog import get_data
 from ._color import Color
 
 if TYPE_CHECKING:
@@ -140,7 +140,9 @@ class Colormap:
         category: str | None = None,
         source: str | None = None,
     ) -> None:
-        name = name or identifier or "custom colormap"
+        name = name or identifier
+        if not name:
+            name = color_stops if isinstance(color_stops, str) else "custom colormap"
         # because we're using __setattr__ to make the object immutable
         object.__setattr__(self, "color_stops", ColorStops.parse(color_stops))
         object.__setattr__(self, "name", name)
@@ -194,8 +196,19 @@ class Colormap:
             self._luts[(N, gamma)] = self.color_stops.to_lut(N, gamma)
         return self._luts[(N, gamma)]
 
+    # would prefer to make this Arraylike, but that overlaps with float
+    @overload
     def __call__(
-        self, X: float | ArrayLike, *, N: int = 256, gamma: float = 1
+        self, X: NDArray, *, N: int = 256, gamma: float = 1
+    ) -> NDArray[np.float64]:
+        ...
+
+    @overload
+    def __call__(self, X: float, *, N: int = 256, gamma: float = 1) -> Color:
+        ...
+
+    def __call__(
+        self, X: float | NDArray, *, N: int = 256, gamma: float = 1
     ) -> Color | NDArray[np.float64]:
         """Map scalar values in X to an RGBA array.
 
@@ -225,13 +238,15 @@ class Colormap:
         result = lut.take(xa, axis=0, mode="clip")
         return result if np.iterable(X) else Color(result)
 
-    def iter_colors(self, N: Iterable[int] | int = 256) -> Iterator[Color]:
+    def iter_colors(self, N: Iterable[int] | int | None = None) -> Iterator[Color]:
         """Return a list of N color objects sampled evenly over the range of the LUT.
 
         If N is an integer, it will return a list of N colors spanning the full range
         of the colormap. If N is an iterable, it will return a list of colors at the
         positions specified by the iterable.
         """
+        if N is None:
+            N = len(self.color_stops)
         nums = np.linspace(0, 1, N) if isinstance(N, int) else np.asarray(N)
         for c in self(nums, N=len(nums)):
             yield Color(c)
@@ -260,6 +275,16 @@ class Colormap:
         return cls(**v) if isinstance(v, dict) else cls(v)
 
     # ------------------------- THIRD PARTY SUPPORT ---------------------------------
+
+    def to_css(
+        self,
+        N: int | None = None,
+        angle: int = 90,
+        radial: bool = False,
+        as_hex: bool = False,
+    ) -> str:
+        """Return a CSS representation of the colormap."""
+        return self.color_stops.to_css(N=N, angle=angle, radial=radial, as_hex=as_hex)
 
     def to_mpl(self, N: int = 256, gamma: float = 1.0) -> MplLinearSegmentedColormap:
         """Return a matplotlib colormap."""
@@ -429,7 +454,7 @@ class ColorStops(Sequence[ColorStop]):
 
         _clr_seq: Sequence[ColorLike | ColorStopLike]
         if isinstance(colors, str):
-            _clr_seq = [colors[:-2], None] if colors.endswith("_r") else [None, colors]
+            return cls.parse(get_data(colors))
         elif isinstance(colors, dict):
             if _is_mpl_segmentdata(colors):
                 _mpl_stops = _mpl_segmentdata_to_stops(colors)
@@ -498,7 +523,7 @@ class ColorStops(Sequence[ColorStop]):
     #         raise ValueError("Expected numeric array")  # pragma: no cover
     #     if _colors.shape[1] == 3:
     #         # add alpha channel
-    #         _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)
+    #         _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)  # noqa: E501
     #     elif _colors.shape[1] != 4:  # pragma: no cover
     #         raise ValueError("Expected (N, 3) or (N, 4) array")
     #     # add stop positions
@@ -564,13 +589,13 @@ class ColorStops(Sequence[ColorStop]):
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, ColorStops):
             try:
-                __o = ColorStops.parse(__o)
+                __o = ColorStops.parse(__o)  # type: ignore
             except Exception:
                 return NotImplemented
         return np.allclose(self._stops, __o._stops)
 
     def to_lut(self, N: int = 256, gamma: float = 1.0) -> np.ndarray:
-        """Create (N, 4) LUT of RGBA values, interpolated between color stops.
+        """Create (N, 4) LUT of RGBA values from 0-1, interpolated between color stops.
 
         Parameters
         ----------
@@ -586,6 +611,34 @@ class ColorStops(Sequence[ColorStop]):
             # no interpolation needed
             return self.color_array
         return _interpolate_stops(N, self._stops, gamma)
+
+    def to_css(
+        self,
+        N: int | None = None,
+        angle: int = 90,
+        radial: bool = False,
+        as_hex: bool = False,
+    ) -> str:
+        """Return a CSS representation of the color stops."""
+        if N is None:
+            stops, colors = self.stops, self.colors
+        else:
+            stops = tuple(np.linspace(0, 1, N))
+            colors = tuple(Color(c) for c in self.to_lut(N))
+        if not colors:
+            return ""
+
+        out = f"background: {colors[0].hex if as_hex else colors[0].rgba_string};\n"
+        type_ = "radial" if radial else "linear"
+        middle = ", ".join(
+            [
+                f"{c.hex if as_hex else c.rgba_string} {s*100:g}%"
+                for c, s in zip(colors, stops)
+            ]
+        )
+        angle_ = "" if radial else f"{angle}deg, "
+        out += f"background: {type_}-gradient({angle_}{middle});\n"
+        return out
 
     def __reversed__(self) -> Iterator[ColorStop]:
         for pos, *rgba in self._stops[::-1]:
@@ -814,7 +867,7 @@ def _mpl_segmentdata_to_stops(
         alpha = np.ones_like(all_positions)
 
     rgba = np.stack(rgb + [alpha], axis=1)
-    return [(a, tuple(b)) for a, b in zip(all_positions, rgba.tolist())]
+    return [(a, tuple(b)) for a, b in zip(all_positions, rgba.tolist())]  # type: ignore
 
 
 def _make_identifier(name: str) -> str:

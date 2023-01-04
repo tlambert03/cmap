@@ -4,7 +4,8 @@ from typing import Any
 import numpy as np
 import numpy.testing as npt
 import pytest
-from cmap import Color, Colormap, ColorStop, ColorStops
+from cmap import Color, Colormap
+from cmap._colormap import ColorStop, ColorStops
 from cmap._colormap import _fill_stops
 
 DATA = [
@@ -105,7 +106,7 @@ def test_colormap_copy() -> None:
 
 
 def test_colormap_errors() -> None:
-    with pytest.raises(ValueError, match="Invalid color string"):
+    with pytest.raises(ValueError, match="Colormap 'bad_string' not found"):
         Colormap("bad_string")
     with pytest.raises(AttributeError, match="Colormap is immutable"):
         Colormap("red")._luts = {}

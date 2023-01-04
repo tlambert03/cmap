@@ -251,6 +251,24 @@ class Colormap:
         for c in self(nums, N=len(nums)):
             yield Color(c)
 
+    def reversed(self, name: str | None = None) -> Colormap:
+        """Return a new Colormap, with reversed colors.
+
+        By default, the name of the new colormap will be the name of the original
+        colormap with "_r" appended. If the original colormap name ends in "_r", the
+        new colormap name will be the original name with "_r" removed. If the name
+        argument is provided, it will be used as the name of the new colormap.
+        """
+        if name is None:
+            name = self.name[:-2] if self.name.endswith("_r") else f"{self.name}_r"
+
+        return type(self)(
+            self.color_stops.reversed(),
+            name=name,
+            source=self.source,
+            category=self.category,
+        )
+
     def __repr__(self) -> str:
         # in case we're in init
         name = getattr(self, "name", None)
@@ -454,7 +472,9 @@ class ColorStops(Sequence[ColorStop]):
 
         _clr_seq: Sequence[ColorLike | ColorStopLike]
         if isinstance(colors, str):
-            return cls.parse(get_data(colors))
+            rev = colors.endswith("_r")
+            obj = cls.parse(get_data(colors[:-2] if rev else colors))
+            return obj.reversed() if rev else obj
         elif isinstance(colors, dict):
             if _is_mpl_segmentdata(colors):
                 _mpl_stops = _mpl_segmentdata_to_stops(colors)
@@ -578,11 +598,29 @@ class ColorStops(Sequence[ColorStop]):
         pos, *rgba = self._stops[key]
         return ColorStop(pos, Color(rgba))
 
+    def __reversed__(self) -> Iterator[ColorStop]:
+        # this for the reversed() builtin ... when iterating single
+        # ColorStops.  But see the reversed() method below for when
+        # you want to create a new ColorStops object that is "permantently"
+        # reversed.
+        for pos, *rgba in self._stops[::-1]:
+            # reverse the colors, but not the positions
+            yield ColorStop(1 - pos, Color(rgba))
+
     def __array__(self, dtype: npt.DTypeLike = None) -> np.ndarray:
         """Return (N, 5) array, N rows of (position, r, g, b, a)."""
         return self._stops if dtype is None else self._stops.astype(dtype)
 
     def __repr__(self) -> str:
+        """Return a string representation of the ColorStops."""
+        if self._lut_func is not None:
+            f = self._lut_func
+            rev = ""
+            if self._is_reversed_lut_func(f):
+                f = f.args[0]
+                rev = " <reversed>"
+            name = f"{f.__module__}{f.__qualname__}"
+            return f"ColorStops(lut_func={name!r}{rev})"
         m = ",\n  ".join(repr((pos, Color(rgba))) for pos, *rgba in self._stops)
         return f"ColorStops(\n  {m}\n)"
 
@@ -640,10 +678,29 @@ class ColorStops(Sequence[ColorStop]):
         out += f"background: {type_}-gradient({angle_}{middle});\n"
         return out
 
-    def __reversed__(self) -> Iterator[ColorStop]:
-        for pos, *rgba in self._stops[::-1]:
-            # reverse the colors, but not the positions
-            yield ColorStop(1 - pos, Color(rgba))
+    # Helper ensuring picklability of the reversed cmap.
+    @staticmethod
+    def _reverser(func: LutCallable, x: NDArray) -> NDArray:
+        return func(1 - x)
+
+    def _is_reversed_lut_func(self, f: Callable) -> TypeGuard[partial]:
+        return isinstance(f, partial) and f.func is self._reverser
+        
+    def reversed(self) -> ColorStops:
+        """Return a new ColorStops object with reversed colors."""
+        if (lut_func := self._lut_func) is not None:
+            # check if we're already a reversed lut_func
+            if self._is_reversed_lut_func(lut_func):
+                # and "unpartialize" it if so
+                return type(self)(lut_func=lut_func.args[0])
+            else:
+                # partial to maintain picklability
+                rev_lutfunc = partial(self._reverser, lut_func)
+            return type(self)(lut_func=rev_lutfunc)
+        # invert the positions in the stops
+        rev_stops = self._stops[::-1]
+        rev_stops[:, 0] = 1 - rev_stops[:, 0]
+        return type(self)(rev_stops)
 
     @classmethod
     def __get_validators__(cls) -> Iterator[Callable]:

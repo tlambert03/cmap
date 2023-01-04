@@ -7,8 +7,8 @@ try:
 except ImportError:
     pytest.skip("pydantic not installed", allow_module_level=True)
 
-from cmap import Color, Colormap, ColorStops
-
+from cmap import Color, Colormap
+from cmap._colormap import  ColorStops
 
 def test_pydantic_casting() -> None:
     assert Color(pydantic.color.Color("red")) is Color("red")
@@ -52,6 +52,6 @@ def test_psygnal_serialization() -> None:
         stops: ColorStops
 
     obj = MyModel(
-        color=np.array([1, 0, 0]), colormap=["r", (0.7, "b"), "w"], stops="g_r"
+        color=np.array([1, 0, 0]), colormap=["r", (0.7, "b"), "w"], stops="green_r"
     )
     assert MyModel.parse_raw(obj.json()) == obj

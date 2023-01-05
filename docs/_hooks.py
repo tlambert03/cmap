@@ -11,10 +11,12 @@ CMAP_LINEARITY = re.compile(r"{{\s?cmap_linearity:\s?([^}]+)\s?}}")
 
 # the template for a single colormap
 CMAP_DIV = """
+<a href="{url}">
 <div class="cmap {class_list}" id="cmap-{name}">
     <div class="cmap-name">{name}</div>
     <div class="cmap-bar" style="{css}"></div>
 </div>
+</a>
 """
 
 
@@ -45,7 +47,10 @@ def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
     map_name = match if isinstance(match, str) else match[1].strip()
     cm = Colormap(map_name)
     css = cm.to_css().strip()
-    return CMAP_DIV.format(name=map_name, css=css, class_list=" ".join(class_list))
+    url = f'/cmap/cmaps/{cm.category}/{map_name.replace("_r", "")}/'
+    return CMAP_DIV.format(
+        name=map_name, css=css, class_list=" ".join(class_list), url=url
+    )
 
 
 def _cmap_linearity(match: re.Match, N: int = 101) -> str:

@@ -2,4 +2,4 @@
 
 ## some linearity plot
 
-{{ cmap_linearity: cubehelix }}
+{{ cmap_linearity: magma }}

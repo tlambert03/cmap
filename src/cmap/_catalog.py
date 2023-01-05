@@ -494,7 +494,7 @@ CATALOG: CatalogDict = {
 _CATALOG_LOWER = {k.lower().replace(" ", "_"): v for k, v in CATALOG.items()}
 
 
-def _get_data(name: str) -> tuple[ColorStopsLike, bool]:
+def _get_data(name: str) -> dict:
     """Get the data for a named colormap."""
     key = name.lower().replace(" ", "_")
     if key not in _CATALOG_LOWER:
@@ -504,9 +504,10 @@ def _get_data(name: str) -> tuple[ColorStopsLike, bool]:
         raise ValueError(f"Colormap {name!r} not found.")
 
     # TODO: should we somehow check if the provided name was the correct case?
-    item = _CATALOG_LOWER[key]
+    item = _CATALOG_LOWER[key].copy()
     module, attr = item["data"].rsplit(":", 1)
     # not encouraged... but significantly faster than importlib
     # well tested on internal data though
     mod = __import__(module, fromlist=[attr])
-    return getattr(mod, attr), item.get("interpolation", True)
+    item['data']= getattr(mod, attr)
+    return item

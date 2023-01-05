@@ -79,6 +79,11 @@ div.cmap {
 div.cmap-bar {
   height: 30px;
 }
+div.cmap-bar:hover{
+  cursor: pointer;
+  filter: drop-shadow(0 0 0.4rem gray);
+}
+
 div.cmap-name {
   position: absolute;
   vertical-align: middle;
@@ -90,7 +95,9 @@ div.cmap-name {
   color: white;
   mix-blend-mode: difference;
 }
-
+div.cmap:hover .cmap-name{
+  color: red;
+}
 
 
 .container {

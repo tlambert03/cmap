@@ -139,22 +139,30 @@ class Colormap:
         identifier: str | None = None,
         category: str | None = None,
         source: str | None = None,
-        interpolation: Interpolation | bool = "linear",
+        interpolation: Interpolation | bool | None = None,
     ) -> None:
         name = name or identifier
         if not name:
             name = color_stops if isinstance(color_stops, str) else "custom colormap"
 
+        if isinstance(color_stops, str):
+            rev = color_stops.endswith("_r")
+            info = _get_data(color_stops[:-2] if rev else color_stops)
+            interpolation = interpolation or info.get("interpolation", "linear")
+            stops = _parse_colorstops(info["data"], interpolation)
+            category = category or info["category"]
+            if rev:
+                stops = stops.reversed()
+
         # because we're using __setattr__ to make the object immutable
-        stops = _parse_colorstops(color_stops, interpolation)
         object.__setattr__(self, "color_stops", stops)
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "identifier", _make_identifier(identifier or name))
-        object.__setattr__(self, "category", category)
+        object.__setattr__(self, "category", category or info["category"])
         object.__setattr__(self, "source", source)
         # TODO: this just clobbers the interpolation from the user...
         # need to unify with the catalog
-        object.__setattr__(self, "interpolation", stops._interpolation)
+        object.__setattr__(self, "interpolation", interpolation)
         object.__setattr__(self, "_luts", {})
 
     def __setattr__(self, _name: str, _value: Any) -> None:
@@ -614,12 +622,12 @@ class ColorStops(Sequence[ColorStop]):
             # with two colors to get the same effect.
             # https://blog.prototypr.io/css-only-multi-color-backgrounds-4d96a5569a20
 
-            # FIXME: this actually just ignores stop info... but we should be able 
+            # FIXME: this actually just ignores stop info... but we should be able
             # to make non-interpolated css that isn't just evenly spaced.
             # I think we have the same problem with the real colormaps too though.
             # (mpl ListedColormap assumes even spacing too though, so this is unlikely
             # to be a problem in practice)
-            midpoints = np.linspace(0,1, len(colors) +1)[1:-1]
+            midpoints = np.linspace(0, 1, len(colors) + 1)[1:-1]
             _midstops = []
             for m, (c1, c2) in zip(midpoints, zip(colors[:-1], colors[1:])):
                 s1 = f"{c1.hex if as_hex else c1.rgba_string} {m*100:g}%"

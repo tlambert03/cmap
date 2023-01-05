@@ -40,7 +40,7 @@ if TYPE_CHECKING:
     ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
     # All of the things that we can pass to the constructor of Colormap
     ColorStopsLike: TypeAlias = Union[
-        str,  # single color string or colormap name, w/ optional "_r" suffix
+        str,  # colormap name, w/ optional "_r" suffix
         Iterable[ColorLike | ColorStopLike],
         np.ndarray,
         "MPLSegmentData",
@@ -153,12 +153,13 @@ class Colormap:
             category = category or info["category"]
             if rev:
                 stops = stops.reversed()
-
+        else:
+            stops = _parse_colorstops(color_stops)
         # because we're using __setattr__ to make the object immutable
         object.__setattr__(self, "color_stops", stops)
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "identifier", _make_identifier(identifier or name))
-        object.__setattr__(self, "category", category or info["category"])
+        object.__setattr__(self, "category", category)
         object.__setattr__(self, "source", source)
         # TODO: this just clobbers the interpolation from the user...
         # need to unify with the catalog
@@ -458,9 +459,11 @@ class ColorStops(Sequence[ColorStop]):
     def _call_lut_func(self, X: np.ndarray) -> np.ndarray:
         if self._lut_func is None:
             raise ValueError("No lut_func provided")  # pragma: no cover
-        colors = np.clip(self._lut_func(X), 0, 1)
+        colors = np.atleast_2d(np.clip(self._lut_func(X), 0, 1))
         if colors.shape[1] == 3:
             colors = np.concatenate([colors, np.ones((len(X), 1))], axis=1)
+        elif colors.shape[1] != 4:
+            raise ValueError("lut_func must return RGB or RGBA values")
         return colors
 
     @classmethod

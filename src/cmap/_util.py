@@ -89,7 +89,7 @@ def calc_lightness(
     cmap : Colormap
         The colormap to calculate lightness for.
     x : np.ndarray, optional
-        The values to calculate lightness for, by default np.linspace(0.0, 1.0, 100)
+        The values to calculate lightness for, by default np.linspace(0.0, 1.0, 101)
     colorspace : str, optional
         The colorspace to calculate lightness in, by default "CAM02-UCS"
     """
@@ -101,7 +101,7 @@ def calc_lightness(
             "Please `pip install colorspacious` and try again."
         ) from e
 
-    x = np.linspace(0.0, 1.0, 100) if x is None else np.asarray(x)
+    x = np.linspace(0.0, 1.0, 101) if x is None else np.asarray(x)
     rgb = _ensure_cmap(cmap)(x)[None, :, :3]
     lab = cspace_converter("sRGB1", colorspace)(rgb)
     return cast("np.ndarray", lab[0, :, 0])
@@ -123,7 +123,7 @@ def plot_lightness(
     cmap : Colormap
         The colormap to calculate lightness for.
     x : np.ndarray, optional
-        The values to calculate lightness for, by default np.linspace(0.0, 1.0, 100)
+        The values to calculate lightness for, by default np.linspace(0.0, 1.0, 101)
     colorspace : str, optional
         The colorspace to calculate lightness in, by default "CAM02-UCS"
     reverse : bool, optional
@@ -131,7 +131,7 @@ def plot_lightness(
     """
     import matplotlib.pyplot as plt
 
-    x = np.linspace(0.0, 1.0, 100) if x is None else np.asarray(x)
+    x = np.linspace(0.0, 1.0, 101) if x is None else np.asarray(x)
     cmap = _ensure_cmap(cmap)
     lab = calc_lightness(cmap, x, colorspace)
     lslice = np.s_[::-1] if reverse else np.s_[:]

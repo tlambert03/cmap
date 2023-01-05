@@ -48,7 +48,7 @@ def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
     return CMAP_DIV.format(name=map_name, css=css, class_list=" ".join(class_list))
 
 
-def _cmap_linearity(match: re.Match, N: int = 100) -> str:
+def _cmap_linearity(match: re.Match, N: int = 101) -> str:
     """Convert a `cmap_linearity` tag to a plot of the colormap linearity."""
     cmap_name = match[1].strip()
     cm = Colormap(cmap_name)

@@ -1,10 +1,13 @@
+import json
 import re
 from typing import Any, Sequence
 
-from cmap import Colormap
+import numpy as np
+from cmap import RGBA, Colormap, _util
 
 # markdown tag for a single colormap: {{ cmap: name }}
 CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}]+)\s?}}")
+CMAP_LINEARITY = re.compile(r"{{\s?cmap_linearity:\s?([^}]+)\s?}}")
 
 # the template for a single colormap
 CMAP_DIV = """
@@ -12,6 +15,25 @@ CMAP_DIV = """
     <div class="cmap-name">{name}</div>
     <div class="cmap-bar" style="{css}"></div>
 </div>
+"""
+
+
+CMAP_LINEARITY_PLOT = """
+<canvas id="bar-chart" width="800" height="450"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.1.1/chart.umd.min.js" integrity="sha512-RnIvaWVgsDUVriCOO7ZbDOwPqBY1kdE8KJFmJbCSFTI+a+/s+B1maHN513SFhg1QwAJdSKbF8t2Obb8MIcTwxA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+new Chart(document.getElementById("bar-chart"), {{
+    type: 'scatter',
+    data: {{
+        datasets: [{{backgroundColor: {colors}, data: {data}}}]
+    }},
+    options: {{
+        scales: {{y: {{ title: {{ text: "Lightness 𝐿*", display: true}} }} }},
+        plugins: {{legend: {{display: false}} }},
+        elements: {{point: {{radius: {radius}, borderWidth: 0}} }},
+    }}
+}});
+</script>
 """
 
 
@@ -26,8 +48,26 @@ def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
     return CMAP_DIV.format(name=map_name, css=css, class_list=" ".join(class_list))
 
 
+def _cmap_linearity(match: re.Match, N: int = 100) -> str:
+    """Convert a `cmap_linearity` tag to a plot of the colormap linearity."""
+    cmap_name = match[1].strip()
+    cm = Colormap(cmap_name)
+    data = []
+    colors = []
+
+    x = np.linspace(0.0, 1.0, N)
+    lab = _util.calc_lightness(cm, x)
+
+    data = [{"x": round(a, 2), "y": round(b, 2)} for a, b in zip(x, lab)]
+    colors = [RGBA(*c).to_hex() for c in cm(x)]
+    return CMAP_LINEARITY_PLOT.format(
+        data=json.dumps(data), colors=json.dumps(colors), radius=12
+    )
+
+
 def on_page_content(html: str, **kwargs: Any) -> str:
     html = CSS_CMAP.sub(_cmap_div, html)
+    html = CMAP_LINEARITY.sub(_cmap_linearity, html)
     if "{{ CMAP_CATALOG }}" in html:
         html = html.replace(r"{{ CMAP_CATALOG }}", _cmap_catalog())
     return html

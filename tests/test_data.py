@@ -58,11 +58,10 @@ def test_napari_name_parity() -> None:
 @pytest.mark.parametrize("name", sorted(MPL_CMAPS), ids=str)
 def test_matplotlib_image_parity(name: str) -> None:
     mpl_map = cast("MPLColormap", mpl.colormaps[name])
-    our_map = Colormap(name)
+    interp = not isinstance(mpl_map, mpl.colors.ListedColormap)
+    interp = not isinstance(mpl_map, mpl.colors.ListedColormap)
+    our_map = Colormap(name, interpolation=interp)
     our_map_to_mpl = our_map.to_mpl()
-    if isinstance(mpl_map, mpl.colors.ListedColormap):
-        pytest.xfail("ListedColormap not supported")
-        return
     img1 = mpl_map(_GRADIENT)
     img2 = our_map_to_mpl(_GRADIENT)
     img3 = our_map(_GRADIENT)

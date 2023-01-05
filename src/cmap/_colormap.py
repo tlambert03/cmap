@@ -11,7 +11,6 @@ from typing import (
     Iterator,
     NamedTuple,
     Sequence,
-    TypedDict,
     Union,
     cast,
     overload,
@@ -21,7 +20,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import _external
-from ._catalog import get_data
+from ._catalog import _get_data
 from ._color import Color
 
 if TYPE_CHECKING:
@@ -31,11 +30,12 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure as MplFigure
     from napari.utils.colormaps import Colormap as NapariColormap
     from numpy.typing import ArrayLike, NDArray
-    from typing_extensions import Literal, TypeAlias, TypeGuard
+    from typing_extensions import Literal, TypeAlias, TypedDict, TypeGuard
     from vispy.color import Colormap as VispyColormap
 
     from ._color import ColorLike
 
+    Interpolation = Literal["linear", "nearest"]
     LutCallable: TypeAlias = Callable[[NDArray], NDArray]
     ColorStopLike: TypeAlias = Union[tuple[float, ColorLike], np.ndarray]
     # All of the things that we can pass to the constructor of Colormap
@@ -49,19 +49,17 @@ if TYPE_CHECKING:
         LutCallable,
     ]
 
+    class MPLSegmentData(TypedDict, total=False):
+        red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+        green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+        blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
+        alpha: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
 
-class MPLSegmentData(TypedDict, total=False):
-    red: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-    green: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-    blue: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-    alpha: list[tuple[float, float, float]] | Callable[[np.ndarray], np.ndarray]
-
-
-class ColormapDict(TypedDict):
-    name: str
-    identifier: str
-    category: str | None
-    color_stops: list[tuple[float, list[float]]]
+    class ColormapDict(TypedDict):
+        name: str
+        identifier: str
+        category: str | None
+        color_stops: list[tuple[float, list[float]]]
 
 
 class Colormap:
@@ -117,6 +115,7 @@ class Colormap:
         "category",
         "source",
         "_luts",
+        "interpolation",
         "__weakref__",
     )
 
@@ -125,6 +124,7 @@ class Colormap:
     identifier: str
     category: str | None
     source: str | None
+    interpolation: Interpolation
 
     _luts: dict[tuple[int, float], np.ndarray]
 
@@ -139,16 +139,22 @@ class Colormap:
         identifier: str | None = None,
         category: str | None = None,
         source: str | None = None,
+        interpolation: Interpolation | bool = "linear",
     ) -> None:
         name = name or identifier
         if not name:
             name = color_stops if isinstance(color_stops, str) else "custom colormap"
+
         # because we're using __setattr__ to make the object immutable
-        object.__setattr__(self, "color_stops", ColorStops.parse(color_stops))
+        stops = _parse_colorstops(color_stops, interpolation)
+        object.__setattr__(self, "color_stops", stops)
         object.__setattr__(self, "name", name)
         object.__setattr__(self, "identifier", _make_identifier(identifier or name))
         object.__setattr__(self, "category", category)
         object.__setattr__(self, "source", source)
+        # TODO: this just clobbers the interpolation from the user...
+        # need to unify with the catalog
+        object.__setattr__(self, "interpolation", stops._interpolation)
         object.__setattr__(self, "_luts", {})
 
     def __setattr__(self, _name: str, _value: Any) -> None:
@@ -296,13 +302,15 @@ class Colormap:
 
     def to_css(
         self,
-        N: int | None = None,
+        max_stops: int | None = None,
         angle: int = 90,
         radial: bool = False,
         as_hex: bool = False,
     ) -> str:
         """Return a CSS representation of the colormap."""
-        return self.color_stops.to_css(N=N, angle=angle, radial=radial, as_hex=as_hex)
+        return self.color_stops.to_css(
+            max_stops=max_stops, angle=angle, radial=radial, as_hex=as_hex
+        )
 
     def to_mpl(self, N: int = 256, gamma: float = 1.0) -> MplLinearSegmentedColormap:
         """Return a matplotlib colormap."""
@@ -403,7 +411,17 @@ class ColorStops(Sequence[ColorStop]):
         stops: np.ndarray | Iterable[tuple[float, Color]] | None = None,
         *,
         lut_func: LutCallable | None = None,
+        interpolation: Interpolation | bool = "linear",
     ) -> None:
+        if isinstance(interpolation, bool):
+            interpolation = "linear" if interpolation else "nearest"
+        elif interpolation not in {"linear", "nearest"}:
+            raise ValueError(
+                f"Invalid interpolation mode: {interpolation!r}. "
+                "Must be one of 'linear' or 'nearest'"
+            )
+
+        self._interpolation = interpolation
         self._lut_func: LutCallable | None = None
         if lut_func is not None:
             self._lut_func = lut_func
@@ -438,22 +456,11 @@ class ColorStops(Sequence[ColorStop]):
         return colors
 
     @classmethod
-    def parse(  # noqa: C901
-        cls,
-        colors: ColorStopsLike,
-    ) -> ColorStops:
-        """Parse `colors` into a sequence of color stops.
+    def parse(cls, colors: ColorStopsLike) -> ColorStops:
+        """Parse any colorstops-like object into a ColorStops object.
 
-        This is the more flexible constructor.t
-
-        Each item in `colors` can be a color, or a 2-tuple of (position, color), where
-        position (the "stop" along a color gradient) is a float between 0 and 1.  Where
-        not provided, color positions will be evenly distributed between neighboring
-        specified positions (if `fill_mode` is 'neighboring') or will be replaced with
-        `index / (len(colors)-1)` (if `fill_mode` is 'fractional').
-
-        Colors can be expressed as anything that can be converted to a Color, including
-        a string, or 3/4-sequence of RGB(A) values.
+        This is the more flexible constructor.
+        see `_parse_colorstops` docstring for details.
 
         Parameters
         ----------
@@ -465,91 +472,7 @@ class ColorStops(Sequence[ColorStop]):
         ColorStops
             A sequence of color stops.
         """
-        if isinstance(colors, ColorStops):
-            return colors
-        if callable(colors):
-            return cls(lut_func=colors)
-
-        _clr_seq: Sequence[ColorLike | ColorStopLike]
-        if isinstance(colors, str):
-            rev = colors.endswith("_r")
-            obj = cls.parse(get_data(colors[:-2] if rev else colors))
-            return obj.reversed() if rev else obj
-        elif isinstance(colors, dict):
-            if _is_mpl_segmentdata(colors):
-                _mpl_stops = _mpl_segmentdata_to_stops(colors)
-                if callable(_mpl_stops):
-                    return cls(lut_func=_mpl_stops)
-                _clr_seq = _mpl_stops
-            elif all(isinstance(x, Number) for x in colors):
-                colors = cast("dict[float, ColorLike]", colors)
-                _clr_seq = [(x, colors[x]) for x in sorted(colors)]
-            else:
-                raise ValueError(
-                    "If colors is a dict, it must be a mapping from position to color, "
-                    "or a matplotlib-style segmentdata dict (with 'red', 'green', and "
-                    "'blue' keys)."
-                )
-        else:  # all other iterables
-            _clr_seq = list(colors)
-
-        if len(_clr_seq) == 1:
-            _clr_seq = [None, _clr_seq[0]]
-
-        _positions: list[float | None] = []
-        _colors: list[Color] = []
-        for item in _clr_seq:
-            if isinstance(item, (tuple, list)) and len(item) == 2:
-                # a 2-tuple cannot be a valid color, so it must be a stop
-                _position, item = cast("tuple[float, ColorLike]", item)
-            elif (isinstance(item, (tuple, list)) and len(item) == 5) or (
-                isinstance(item, np.ndarray) and item.shape == (5,)
-            ):
-                # 5-element vector must be (position, r, g, b, a)
-                _position, *item = cast("Sequence[float]", item)
-            else:
-                _position = None
-            _positions.append(_position)
-            _colors.append(Color(item))  # this will raise if invalid
-
-        if (np.diff([x for x in _positions if x is not None]) < 0).any():
-            raise ValueError("Color stops must be in ascending position order")
-
-        _stops = _fill_stops(_positions, "neighboring")  # TODO: expose fill_mode?
-
-        return ColorStops(zip(_stops, _colors))
-
-    # @classmethod
-    # def from_color_array(cls, colors: ArrayLike) -> ColorStops:
-    #     """Create ColorStops from an (N, 3) or (N, 4) array-like.
-
-    #     This is a faster constructor for creating a ColorStops from a numeric
-    #     array-like of 3- or 4-element color vectors.  e.g.
-
-    #     - [[0, 0, 0], [1, 1, 1]]
-    #     - [[0, 0, 0, 1], [1, 1, 1, 1]]
-    #     - [Color('green'), Color('red')]
-
-    #     Returns
-    #     -------
-    #     ColorStops
-    #         A sequence of color stops.
-    #     """
-    #     _colors = np.atleast_2d(np.asarray(colors))
-    #     if np.issubdtype(_colors.dtype, int) and _colors.max() > 1:
-    #         # assume 8 bit colors
-    #         _colors = np.clip(_colors.astype(float) / 255, 0, 1)
-    #     elif not np.issubdtype(_colors.dtype, np.number):
-    #         raise ValueError("Expected numeric array")  # pragma: no cover
-    #     if _colors.shape[1] == 3:
-    #         # add alpha channel
-    #         _colors = np.concatenate([_colors, np.ones((_colors.shape[0], 1))], axis=1)  # noqa: E501
-    #     elif _colors.shape[1] != 4:  # pragma: no cover
-    #         raise ValueError("Expected (N, 3) or (N, 4) array")
-    #     # add stop positions
-    #     stops = np.linspace(0, 1, _colors.shape[0])
-    #     _colors = np.concatenate([stops[:, None], _colors], axis=1)
-    #     return cls(_colors)
+        return _parse_colorstops(colors, cls=cls)
 
     @property
     def stops(self) -> tuple[float, ...]:
@@ -642,40 +565,76 @@ class ColorStops(Sequence[ColorStop]):
         gamma : float
             Gamma correction to apply to the colors.
         """
+        if self._interpolation == "nearest":
+            return self.color_array
+
         if self._lut_func is not None:
             return self._call_lut_func(np.linspace(0, 1, N) ** gamma)
 
-        if 100 < len(self._stops) == N + 1:
+        # the 50 is a magic number... we're just saying "if a lot of colors are being
+        # requested, and that number is one more than the number of stops, then just
+        # return color_array without interpolation.  This is a bit of a hack, but it
+        # avoids some edge cases of rounding errors.  Could be done better.
+        if 50 < len(self._stops) == N + 1:
             # no interpolation needed
             return self.color_array
         return _interpolate_stops(N, self._stops, gamma)
 
     def to_css(
         self,
-        N: int | None = None,
+        max_stops: int | None = None,
         angle: int = 90,
         radial: bool = False,
         as_hex: bool = False,
     ) -> str:
-        """Return a CSS representation of the color stops."""
-        if N is None:
-            stops, colors = self.stops, self.colors
+        """Return a CSS representation of the color stops.
+
+        Parameters
+        ----------
+        max_stops : int, optional
+            May be used to limit the number of color stops in the css.
+        angle : int, optional
+            Angle of the gradient in degrees. by default 90. (ignored for radial)
+        radial : bool, optional
+            If True, return a radial gradient, by default False.
+        as_hex : bool, optional
+            If True, return colors as hex strings, by default use `rgba()` strings.
+        """
+        if max_stops and len(self._stops) > max_stops:
+            stops = tuple(np.linspace(0, 1, max_stops))
+            colors = tuple(Color(c) for c in self.to_lut(max_stops))
         else:
-            stops = tuple(np.linspace(0, 1, N))
-            colors = tuple(Color(c) for c in self.to_lut(N))
+            stops, colors = self.stops, self.colors
         if not colors:
             return ""
-
         out = f"background: {colors[0].hex if as_hex else colors[0].rgba_string};\n"
         type_ = "radial" if radial else "linear"
-        middle = ", ".join(
-            [
-                f"{c.hex if as_hex else c.rgba_string} {s*100:g}%"
-                for c, s in zip(colors, stops)
-            ]
-        )
+        if self._interpolation == "nearest":
+            # if we're using nearest interpolation, for css we can create double stops
+            # with two colors to get the same effect.
+            # https://blog.prototypr.io/css-only-multi-color-backgrounds-4d96a5569a20
+
+            # FIXME: this actually just ignores stop info... but we should be able 
+            # to make non-interpolated css that isn't just evenly spaced.
+            # I think we have the same problem with the real colormaps too though.
+            # (mpl ListedColormap assumes even spacing too though, so this is unlikely
+            # to be a problem in practice)
+            midpoints = np.linspace(0,1, len(colors) +1)[1:-1]
+            _midstops = []
+            for m, (c1, c2) in zip(midpoints, zip(colors[:-1], colors[1:])):
+                s1 = f"{c1.hex if as_hex else c1.rgba_string} {m*100:g}%"
+                s2 = f"{c2.hex if as_hex else c2.rgba_string} {m*100:g}%"
+                _midstops.extend([s1, s2])
+            _stops = ", ".join(_midstops)
+        else:
+            _stops = ", ".join(
+                [
+                    f"{c.hex if as_hex else c.rgba_string} {s*100:g}%"
+                    for c, s in zip(colors, stops)
+                ]
+            )
         angle_ = "" if radial else f"{angle}deg, "
-        out += f"background: {type_}-gradient({angle_}{middle});\n"
+        out += f"background: {type_}-gradient({angle_}{_stops});\n"
         return out
 
     # Helper ensuring picklability of the reversed cmap.
@@ -685,7 +644,7 @@ class ColorStops(Sequence[ColorStop]):
 
     def _is_reversed_lut_func(self, f: Callable) -> TypeGuard[partial]:
         return isinstance(f, partial) and f.func is self._reverser
-        
+
     def reversed(self) -> ColorStops:
         """Return a new ColorStops object with reversed colors."""
         if (lut_func := self._lut_func) is not None:
@@ -936,3 +895,90 @@ def _make_identifier(name: str) -> str:
 def _is_mpl_segmentdata(obj: Any) -> TypeGuard[MPLSegmentData]:
     """Return True if obj is a matplotlib segmentdata dict."""
     return isinstance(obj, dict) and all(k in obj for k in ("red", "green", "blue"))
+
+
+def _parse_colorstops(  # noqa: C901
+    val: ColorStopsLike,
+    interpolation: Interpolation | bool = "linear",
+    cls: type[ColorStops] = ColorStops,
+) -> ColorStops:
+    """Parse `colors` into a sequence of color stops.
+
+    Each item in `colors` can be a color, or a 2-tuple of (position, color), where
+    position (the "stop" along a color gradient) is a float between 0 and 1.  Where
+    not provided, color positions will be evenly distributed between neighboring
+    specified positions (if `fill_mode` is 'neighboring') or will be replaced with
+    `index / (len(colors)-1)` (if `fill_mode` is 'fractional').
+
+    Colors can be expressed as anything that can be converted to a Color, including
+    a string, or 3/4-sequence of RGB(A) values.
+
+    Parameters
+    ----------
+    val : str | Iterable[Any]
+        Colors and (optional) stop positions.
+    interpolation : bool | str, optional
+        Whether to interpolate between color stops. If a string, should be one of
+        'linear', 'nearest'.  If True, will use 'linear' interpolation.  If False,
+        will use 'nearest', by default 'linear'.
+    cls : type, optional
+        The class to instantiate, by default ColorStops
+
+    Returns
+    -------
+    ColorStops
+        A sequence of color stops.
+    """
+    if isinstance(val, cls):
+        return val
+    if callable(val):
+        return cls(lut_func=val, interpolation=interpolation)
+
+    _clr_seq: Sequence[ColorLike | ColorStopLike]
+    if isinstance(val, str):
+        rev = val.endswith("_r")
+        data, interpolation = _get_data(val[:-2] if rev else val)
+        obj = _parse_colorstops(data, interpolation=interpolation, cls=cls)
+        return obj.reversed() if rev else obj
+
+    if _is_mpl_segmentdata(val):
+        _mpl_stops = _mpl_segmentdata_to_stops(val)
+        if callable(_mpl_stops):
+            return cls(lut_func=_mpl_stops, interpolation=interpolation)
+        _clr_seq = _mpl_stops
+    elif isinstance(val, dict):
+        if not all(isinstance(x, Number) for x in val):
+            raise ValueError(
+                "If colors is a dict, it must be a mapping from position to color, "
+                "or a matplotlib-style segmentdata dict (with 'red', 'green', and "
+                "'blue' keys)."
+            )
+        val = cast("dict[float, ColorLike]", val)
+        _clr_seq = [(x, val[x]) for x in sorted(val)]
+    else:  # all other iterables
+        _clr_seq = list(val)
+
+    if len(_clr_seq) == 1:
+        _clr_seq = [None, _clr_seq[0]]
+
+    _positions: list[float | None] = []
+    _colors: list[Color] = []
+    for item in _clr_seq:
+        if isinstance(item, (tuple, list)) and len(item) == 2:
+            # a 2-tuple cannot be a valid color, so it must be a stop
+            _position, item = cast("tuple[float, ColorLike]", item)
+        elif (isinstance(item, (tuple, list)) and len(item) == 5) or (
+            isinstance(item, np.ndarray) and item.shape == (5,)
+        ):
+            # 5-element vector must be (position, r, g, b, a)
+            _position, *item = cast("Sequence[float]", item)
+        else:
+            _position = None
+        _positions.append(_position)
+        _colors.append(Color(item))  # this will raise if invalid
+
+    if (np.diff([x for x in _positions if x is not None]) < 0).any():
+        raise ValueError("Color stops must be in ascending position order")
+
+    _stops = _fill_stops(_positions, "neighboring")  # TODO: expose fill_mode?
+    return cls(zip(_stops, _colors), interpolation=interpolation)

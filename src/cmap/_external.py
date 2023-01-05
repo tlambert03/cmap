@@ -25,6 +25,8 @@ def to_mpl(
     """Return a matplotlib colormap."""
     import matplotlib.colors as mplc
 
+    if cm.interpolation == "nearest":
+        return mplc.ListedColormap(colors=cm.color_stops.color_array, name=cm.name)
     return mplc.LinearSegmentedColormap.from_list(
         cm.name, cm.color_stops, N=N, gamma=gamma
     )

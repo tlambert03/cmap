@@ -8,7 +8,8 @@ except ImportError:
     pytest.skip("pydantic not installed", allow_module_level=True)
 
 from cmap import Color, Colormap
-from cmap._colormap import  ColorStops
+from cmap._colormap import ColorStops
+
 
 def test_pydantic_casting() -> None:
     assert Color(pydantic.color.Color("red")) is Color("red")

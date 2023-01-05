@@ -1,3 +1,5 @@
 # Overview
 
-cmap is a thing.
+## some linearity plot
+
+{{ cmap_linearity: cubehelix }}

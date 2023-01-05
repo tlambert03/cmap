@@ -5,8 +5,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 from cmap import Color, Colormap
-from cmap._colormap import ColorStop, ColorStops
-from cmap._colormap import _fill_stops
+from cmap._colormap import ColorStop, ColorStops, _fill_stops
 
 DATA = [
     [0.0, 1.0, 0.0, 0.0, 1.0],

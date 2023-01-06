@@ -1,6 +1,21 @@
+from typing import Any
 import numpy as np
 import pytest
 from cmap._color import RGBA, RGBA8, Color
+
+try:
+    import colour
+
+    colourRed = colour.Color("red")
+except ImportError:
+    colourRed = "red"
+
+try:
+    import pydantic.color
+
+    pydanticRed = pydantic.color.Color("red")
+except ImportError:
+    pydanticRed = "red"
 
 
 @pytest.mark.parametrize(
@@ -45,6 +60,41 @@ def test_rgb_parse(color: str, expected: tuple) -> None:
     assert RGBA.parse(color).to_8bit()[: len(expected)] == expected
 
 
+REDS = (
+    "red",
+    "r",
+    "#F00",
+    "#FF0000",
+    "#FF0000FF",
+    "rgb(255, 0, 0)",
+    "rgba(255, 0, 0)",
+    "rgba(255, 0, 0, 1)",
+    "hsl(0, 100%, 50%)",
+    "hsla(0, 100%, 50%)",
+    "hsla(0, 100%, 50%, 1)",
+    Color("r"),
+    (255, 0, 0),
+    (1.0, 0.0, 0.0),
+    [1.0, 0.0, 0.0],
+    np.array([1.0, 0.0, 0.0]),
+    np.array([255, 0, 0]),
+    0xFF0000,
+    16711680,
+)
+
+
+@pytest.mark.parametrize("arg", REDS, ids=str)
+def test_red_args(arg: Any) -> None:
+    assert Color(arg) is Color("red")
+
+
+def test_int_ambiguity() -> None:
+    assert Color((1.0, 0, 0)) is Color("red")
+    assert Color((1, 0, 0)) is not Color("red")
+    # the floating np.ndarray is always interpreted as 0-1
+    assert Color(np.array([0, 128, 255, 0.5])) is not Color([0, 128, 255, 0.5])
+
+
 def test_color_errors() -> None:
     with pytest.raises(ValueError, match="Invalid color string"):
         Color("rgb(100%, 200%, 300%, 400%, 500%)")
@@ -75,7 +125,7 @@ def test_color_conversions() -> None:
     assert color.hex == "#FF0000"
     assert color.rgba == (1, 0, 0, 1)
     assert color.rgba8 == (255, 0, 0, 1)
-    assert color.rgba_string == "rgba(255, 0, 0, 1)"
+    assert color.rgba_string == "rgb(255, 0, 0)"
     assert color == "#FF0000FF"
     assert color == "#FF0000"
     assert color == Color("r")
@@ -107,3 +157,7 @@ def test_to_array_in_list() -> None:
     # seemingly unrelated, but __getitem__ is apparently necessary for the above,
     # but not actually called... so we test it here
     assert Color("r")[0] == 1
+
+def test_hashable():
+    assert hash(Color("red")) == hash(Color("red"))
+    assert hash(Color("red")) != hash(Color("blue"))

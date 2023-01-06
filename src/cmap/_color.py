@@ -145,8 +145,9 @@ class RGBA8(NamedTuple):
 
     def rgba_string(self) -> str:
         """Return a string representation of the color."""
-        out = f"rgba({self.r}, {self.g}, {self.b}"
-        return f"{out}, {self.a})" if self.a != 1 else f"{out})"
+        if self.a == 1:
+            return f"rgb({self.r}, {self.g}, {self.b})"
+        return f"rgba({self.r}, {self.g}, {self.b}, {self.a})"
 
 
 # Parsers
@@ -297,30 +298,36 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
         raise ValueError(f"Invalid color string: {value!r}")
 
     # parse tuples/lists/arrays
-    if isinstance(value, RGBA):
-        return value
-    if isinstance(value, RGBA8):
-        return value.to_float()
-    if isinstance(value, (np.ndarray, Sequence)):
-        val = tuple(np.squeeze(tuple(value)))
-        # NOTE! we assume that if any value is > 1, then all values are
-        # in the 0-255 range.
-        if any(x > 1 for x in val):
-            r, g, b = _bound_0_255(val[:3])
-            a = _bound_0_1(val[3]) if len(val) > 3 else 1
+    if isinstance(value, np.ndarray):
+        # val = tuple(np.squeeze(tuple(value)))
+        if np.issubdtype(value.dtype, np.integer) and len(value) == 3:
+            return RGBA8(*_bound_0_255(value)).to_float()
+        if np.issubdtype(value.dtype, np.floating) and len(value) in {3, 4}:
+            return RGBA(*_bound_0_1(value))
+        raise ValueError(f"Invalid color array: {value!r}")
+
+    if isinstance(value, Sequence):
+        if isinstance(value, RGBA):
+            return value
+        if isinstance(value, RGBA8):
+            return value.to_float()
+        if all(isinstance(v, int) for v in value[:3]):
+            r, g, b = _bound_0_255(value[:3])
+            a = _bound_0_1(value[3]) if len(value) > 3 else 1
             return RGBA8(r, g, b, a).to_float()
-        return RGBA(*_bound_0_1(val))
+        return RGBA(*_bound_0_1(value))
 
     # None is transparent
     if value is None:
         return RGBA(0, 0, 0, 0)
 
     # support our own Color class
+
     if isinstance(value, Color):
         return value._rgba
 
     if isinstance(value, int):
-        # convert integer to RGBA8 with bit shifting
+        # convert 24-bit integer to RGBA8 with bit shifting
         r = (value >> 16) & 0xFF
         g = (value >> 8) & 0xFF
         b = value & 0xFF
@@ -433,6 +440,9 @@ class Color:
         """Return the color as name."""
         return self._name
 
+    def __hash__(self) -> int:
+        return hash(self._rgba)
+
     def __eq__(self, __o: object) -> bool:
         if isinstance(__o, Color):
             return self._rgba == __o._rgba
@@ -468,24 +478,35 @@ class Color:
         return str(self)
 
 
-CSS_COLORS: dict[str, tuple[int, ...]] = {
+ALL_COLORS: dict[str, tuple[int, ...]] = {
     # https://www.w3.org/TR/CSS1/
     "black": (0, 0, 0),
-    "silver": (192, 192, 192),
+    "k": (0, 0, 0),
     "gray": (128, 128, 128),
+    "grey": (128, 128, 128),
+    "silver": (192, 192, 192),
     "white": (255, 255, 255),
+    "w": (255, 255, 255),
     "maroon": (128, 0, 0),
     "red": (255, 0, 0),
+    "r": (255, 0, 0),
     "purple": (128, 0, 128),
     "fuchsia": (255, 0, 255),
+    "magenta": (255, 0, 255),
+    "m": (255, 0, 255),
     "green": (0, 128, 0),
     "lime": (0, 255, 0),
+    "g": (0, 255, 0),
     "olive": (128, 128, 0),
     "yellow": (255, 255, 0),
+    "y": (255, 255, 0),
     "navy": (0, 0, 128),
     "blue": (0, 0, 255),
+    "b": (0, 0, 255),
     "teal": (0, 128, 128),
     "aqua": (0, 255, 255),
+    "cyan": (0, 255, 255),
+    "c": (0, 255, 255),
     # https://www.w3.org/TR/CSS2/
     "orange": (255, 165, 0),
     # https://drafts.csswg.org/css-color-3/
@@ -506,13 +527,12 @@ CSS_COLORS: dict[str, tuple[int, ...]] = {
     "cornflowerblue": (100, 149, 237),
     "cornsilk": (255, 248, 220),
     "crimson": (220, 20, 60),
-    "cyan": (0, 255, 255),
     "darkblue": (0, 0, 139),
     "darkcyan": (0, 139, 139),
     "darkgoldenrod": (184, 134, 11),
     "darkgray": (169, 169, 169),
-    "darkgreen": (0, 100, 0),
     "darkgrey": (169, 169, 169),
+    "darkgreen": (0, 100, 0),
     "darkkhaki": (189, 183, 107),
     "darkmagenta": (139, 0, 139),
     "darkolivegreen": (85, 107, 47),
@@ -539,7 +559,6 @@ CSS_COLORS: dict[str, tuple[int, ...]] = {
     "gold": (255, 215, 0),
     "goldenrod": (218, 165, 32),
     "greenyellow": (173, 255, 47),
-    "grey": (128, 128, 128),
     "honeydew": (240, 255, 240),
     "hotpink": (255, 105, 180),
     "indianred": (205, 92, 92),
@@ -555,8 +574,8 @@ CSS_COLORS: dict[str, tuple[int, ...]] = {
     "lightcyan": (224, 255, 255),
     "lightgoldenrodyellow": (250, 250, 210),
     "lightgray": (211, 211, 211),
-    "lightgreen": (144, 238, 144),
     "lightgrey": (211, 211, 211),
+    "lightgreen": (144, 238, 144),
     "lightpink": (255, 182, 193),
     "lightsalmon": (255, 160, 122),
     "lightseagreen": (32, 178, 170),
@@ -567,7 +586,6 @@ CSS_COLORS: dict[str, tuple[int, ...]] = {
     "lightyellow": (255, 255, 224),
     "limegreen": (50, 205, 50),
     "linen": (250, 240, 230),
-    "magenta": (255, 0, 255),
     "mediumaquamarine": (102, 205, 170),
     "mediumblue": (0, 0, 205),
     "mediumorchid": (186, 85, 211),
@@ -596,6 +614,7 @@ CSS_COLORS: dict[str, tuple[int, ...]] = {
     "pink": (255, 192, 203),
     "plum": (221, 160, 221),
     "powderblue": (176, 224, 230),
+    "rebeccapurple": (102, 51, 153),
     "rosybrown": (188, 143, 143),
     "royalblue": (65, 105, 225),
     "saddlebrown": (139, 69, 19),
@@ -620,20 +639,7 @@ CSS_COLORS: dict[str, tuple[int, ...]] = {
     "whitesmoke": (245, 245, 245),
     "yellowgreen": (154, 205, 50),
     "transparent": (0, 0, 0, 0),
-    # https://drafts.csswg.org/css-color-4/
-    "rebeccapurple": (102, 51, 153),
-}
-EXTRA = {
-    "r": (255, 0, 0),
-    "g": (0, 255, 0),
-    "b": (0, 0, 255),
-    "c": (0, 255, 255),
-    "m": (255, 0, 255),
-    "y": (255, 255, 0),
-    "k": (0, 0, 0),
-    "w": (255, 255, 255),
     "none": (0, 0, 0, 0),
 }
-ALL_COLORS = {**CSS_COLORS, **EXTRA}
 NAME_TO_RGB = {name: RGBA8(*values) for name, values in ALL_COLORS.items()}
 RGB_TO_NAME = {values: name for name, values in NAME_TO_RGB.items()}

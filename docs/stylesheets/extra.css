@@ -150,3 +150,17 @@ body[data-md-color-scheme="slate"] .btn.active{
   background-color: #a0a3b7;
   color: black;
 }
+
+.colorlist {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 0.7rem;
+}
+.colorbox {
+  width: 7rem;
+  height: 3.8rem;
+  padding-top: 0.22rem;
+  margin: 0.2rem;
+  text-align: center;
+}

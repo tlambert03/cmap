@@ -145,7 +145,8 @@ class RGBA8(NamedTuple):
 
     def rgba_string(self) -> str:
         """Return a string representation of the color."""
-        return f"rgba({self.r}, {self.g}, {self.b}, {self.a})"
+        out = f"rgba({self.r}, {self.g}, {self.b}"
+        return f"{out}, {self.a})" if self.a != 1 else f"{out})"
 
 
 # Parsers
@@ -633,6 +634,6 @@ EXTRA = {
     "w": (255, 255, 255),
     "none": (0, 0, 0, 0),
 }
-ALL_COLORS = {**EXTRA, **CSS_COLORS}
+ALL_COLORS = {**CSS_COLORS, **EXTRA}
 NAME_TO_RGB = {name: RGBA8(*values) for name, values in ALL_COLORS.items()}
 RGB_TO_NAME = {values: name for name, values in NAME_TO_RGB.items()}

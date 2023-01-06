@@ -101,8 +101,6 @@ from typing import TYPE_CHECKING, Literal
 if TYPE_CHECKING:
     from typing_extensions import NotRequired, TypeAlias, TypedDict
 
-    from ._colormap import ColorStopsLike
-
     class CatalogItem(TypedDict):
         data: str
         tags: list[str]
@@ -509,5 +507,5 @@ def _get_data(name: str) -> dict:
     # not encouraged... but significantly faster than importlib
     # well tested on internal data though
     mod = __import__(module, fromlist=[attr])
-    item['data']= getattr(mod, attr)
+    item["data"] = getattr(mod, attr)
     return item

@@ -1,5 +1,5 @@
 from pathlib import Path
-import os
+
 import mkdocs_gen_files
 from cmap._catalog import CATALOG
 
@@ -17,18 +17,18 @@ cm = Colormap({name!r})  # case insensitive
 
 Source: ...
 
-### Perceptual Uniformity 
+### Perceptual Uniformity
 
 <p style="text-align: center;">
 <em style="font-size: small; color: gray;">
-𝐿* measured in
+L* measured in
 <a href="https://onlinelibrary.wiley.com/doi/10.1002/col.20227">CAM02 Uniform Color Space (CAM02-UCS)</a>
 </em>
 </p>
 
 {{{{ cmap_linearity: {name} }}}}
 
-### RGB components 
+### RGB components
 
 {{{{ cmap_rgb: {name} }}}}
 """

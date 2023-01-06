@@ -65,6 +65,7 @@ def plot_color_gradients(
         ax.set_axis_off()
     return fig
 
+
 def plot_rgb(cmap: Colormap | str, N: int = 256) -> "MplFigure":
     """Plot the R,G,B,A components of a colormap individually."""
     import matplotlib.pyplot as plt

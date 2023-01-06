@@ -1,16 +1,11 @@
-from functools import partial
 import json
 import re
+from functools import partial
 from typing import Any, Sequence
 
 import numpy as np
 from cmap import RGBA, Colormap, _util
-
-# markdown tag for a single colormap: {{ cmap: name }}
-CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}^\s]+)\s?(\d+)?\s?}}")
-CSS_CMAP_GRAY = re.compile(r"{{\s?cmap_gray:\s?([^}^\s]+)\s?(\d+)?\s?}}")
-CMAP_LINEARITY = re.compile(r"{{\s?cmap_linearity:\s?([^}]+)\s?}}")
-CMAP_RGB = re.compile(r"{{\s?cmap_rgb:\s?([^}]+)\s?}}")
+from cmap._color import NAME_TO_RGB
 
 # the template for a single colormap
 CMAP_DIV = """
@@ -33,7 +28,7 @@ new Chart(document.getElementById("{name}-linearity-chart"), {{
         datasets: [{{backgroundColor: {colors}, data: {data}}}]
     }},
     options: {{
-        scales: {{y: {{ title: {{ text: "Lightness 𝐿*", display: true}} }} }},
+        scales: {{y: {{ title: {{ text: "Lightness L*", display: true}} }} }},
         plugins: {{legend: {{display: false}} }},
         elements: {{point: {{radius: {radius}, borderWidth: 0}} }},
     }}
@@ -48,7 +43,7 @@ CMAP_RGB_PLOT = """
 <script>
 new Chart(document.getElementById("{name}-rgb-chart"), {{
     type: 'line',
-    data: {{    
+    data: {{
         labels: {labels},
         datasets: [
             {{label: "red", borderColor: "#FF0000BB", data: {rdata} }},
@@ -59,8 +54,8 @@ new Chart(document.getElementById("{name}-rgb-chart"), {{
     options: {{
         scales: {{
             y: {{ title: {{ text: "Component Value", display: true}} }},
-            x: {{ 
-                ticks: {{ 
+            x: {{
+                ticks: {{
                     callback: function(val, index) {{
                         return index % 10 === 0 ? this.getLabelForValue(val) : '';
                     }},
@@ -130,16 +125,6 @@ def _cmap_rgb_plot(match: re.Match) -> str:
     )
 
 
-def on_page_content(html: str, **kwargs: Any) -> str:
-    html = CSS_CMAP.sub(_cmap_div, html)
-    html = CSS_CMAP_GRAY.sub(partial(_cmap_div, class_list=['grayscale']), html)
-    html = CMAP_LINEARITY.sub(_cmap_linearity_plot, html)
-    html = CMAP_RGB.sub(_cmap_rgb_plot, html)
-    if "{{ CMAP_CATALOG }}" in html:
-        html = html.replace(r"{{ CMAP_CATALOG }}", _cmap_catalog())
-    return html
-
-
 def _cmap_catalog() -> str:
     """Return the HTML for the colormap catalog page.
 
@@ -167,3 +152,53 @@ def _cmap_catalog() -> str:
     lines = btns + lines
 
     return "\n".join(lines)
+
+
+COLORBOX = """<div class="colorbox" style="background-color: {hex}; color: {text_color}">
+    <strong class="colornamespan">{name}</strong><br />
+    <span class="colorhexspan">{hex}</span><br />
+    <span class="colortuple">{rgb}</span><br />
+</div>
+"""
+
+
+def _color_list() -> str:
+    """Return the HTML for the color list page."""
+    colors = []
+    for name, c in NAME_TO_RGB.items():
+        if (hsl := c.to_hsl()).l == 0.5:
+            text_color = "#000" if hsl.h <= 0.5 else "#FFF"
+        else:
+            text_color = "#000" if hsl.l > 0.50 or not c.a else "#FFF"
+        cbox = COLORBOX.format(
+            name=name,
+            hex=c.to_hex(),
+            text_color=text_color,
+            rgb=c.rgba_string(),
+        )
+        colors.append(cbox)
+    return '<div class="colorlist">{}</div>'.format("\n".join(colors))
+
+
+# -----------------------------------------------------------------------------
+# mkdocs hooks
+# -----------------------------------------------------------------------------
+# markdown tag for a single colormap: {{ cmap: name }}
+CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}^\s]+)\s?(\d+)?\s?}}")
+CSS_CMAP_GRAY = re.compile(r"{{\s?cmap_gray:\s?([^}^\s]+)\s?(\d+)?\s?}}")
+CMAP_LINEARITY = re.compile(r"{{\s?cmap_linearity:\s?([^}]+)\s?}}")
+CMAP_RGB = re.compile(r"{{\s?cmap_rgb:\s?([^}]+)\s?}}")
+CMAP_CATALOG = r"{{ CMAP_CATALOG }}"
+COLOR_LIST = r"{{ COLOR_LIST }}"
+
+
+def on_page_content(html: str, **kwargs: Any) -> str:
+    html = CSS_CMAP.sub(_cmap_div, html)
+    html = CSS_CMAP_GRAY.sub(partial(_cmap_div, class_list=["grayscale"]), html)
+    html = CMAP_LINEARITY.sub(_cmap_linearity_plot, html)
+    html = CMAP_RGB.sub(_cmap_rgb_plot, html)
+    if CMAP_CATALOG in html:
+        html = html.replace(CMAP_CATALOG, _cmap_catalog())
+    if COLOR_LIST in html:
+        html = html.replace(COLOR_LIST, _color_list())
+    return html

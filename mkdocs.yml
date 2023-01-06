@@ -13,6 +13,7 @@ watch:
 
 nav:
   - Home: index.md
+  - Color: color.md
   - Catalog: catalog.md
   - Colormaps: cmaps/
   - API: api/
@@ -64,9 +65,9 @@ plugins:
   - search
   - autorefs
   - literate-nav
-  - gen-files:
-      scripts:
-      - docs/_gen_cmaps.py
+  # - gen-files:
+  #     scripts:
+  #     - docs/_gen_cmaps.py
   - mkdocstrings:
       handlers:
         python:

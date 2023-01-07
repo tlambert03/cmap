@@ -9,13 +9,12 @@ from cmap._color import NAME_TO_RGB
 
 # the template for a single colormap
 CMAP_DIV = """
-<a href="{url}">
 <div class="cmap {class_list}" id="cmap-{name}">
     <div class="cmap-name">{name}</div>
     <div class="cmap-bar" style="{css}"></div>
 </div>
-</a>
 """
+CMAP_LINK = '<a href="{url}">' + CMAP_DIV + "</a>"
 
 
 CMAP_LINEARITY_PLOT = """
@@ -28,7 +27,8 @@ new Chart(document.getElementById("{name}-linearity-chart"), {{
         datasets: [{{backgroundColor: {colors}, data: {data}}}]
     }},
     options: {{
-        scales: {{y: {{ title: {{ text: "Lightness L*", display: true}} }} }},
+        animation: {{ duration: 800 }},
+        scales: {{y: {{ max: 100, min: 0, title: {{ text: "Lightness L*", display: true}} }} }},
         plugins: {{legend: {{display: false}} }},
         elements: {{point: {{radius: {radius}, borderWidth: 0}} }},
     }}
@@ -53,7 +53,7 @@ new Chart(document.getElementById("{name}-rgb-chart"), {{
     }},
     options: {{
         scales: {{
-            y: {{ title: {{ text: "Component Value", display: true}} }},
+            y: {{ max: 1, min: 0, title: {{ text: "Component Value", display: true}} }},
             x: {{
                 ticks: {{
                     callback: function(val, index) {{
@@ -81,12 +81,23 @@ def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
     map_name = match if isinstance(match, str) else match[1].strip()
     cm = Colormap(map_name)
     css = cm.to_css().strip()
-    url = f'/cmap/cmaps/{cm.category}/{map_name.replace("_r", "")}/'
+    url = f'/cmap/catalog/{cm.category}/{map_name.replace("_r", "")}/'
     if isinstance(match, re.Match) and match[2] is not None:
         css += f" height: {match[2]}px;"
-    return CMAP_DIV.format(
+    return CMAP_LINK.format(
         name=map_name, css=css, class_list=" ".join(class_list), url=url
     )
+
+
+def _cmap_expr(match: re.Match) -> str:
+    """Convert a `cmap_expr` tag to a div with the colormap.
+
+    {{ cmap_expr: {0: 'blue', 0.5: 'yellow', 1: 'red'} }} -> <div class="cmap">...
+    """
+    map_name = match[1].strip()
+    cm = Colormap(eval(map_name))
+    css = cm.to_css().strip()
+    return CMAP_DIV.format(name="", css=css, class_list="cmap-expr")
 
 
 def _cmap_linearity_plot(match: re.Match, N: int = 101) -> str:
@@ -188,6 +199,7 @@ CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}^\s]+)\s?(\d+)?\s?}}")
 CSS_CMAP_GRAY = re.compile(r"{{\s?cmap_gray:\s?([^}^\s]+)\s?(\d+)?\s?}}")
 CMAP_LINEARITY = re.compile(r"{{\s?cmap_linearity:\s?([^}]+)\s?}}")
 CMAP_RGB = re.compile(r"{{\s?cmap_rgb:\s?([^}]+)\s?}}")
+CMAP_EXPR = re.compile(r"{{\s?cmap_expr:\s(.+)\s}}")
 CMAP_CATALOG = r"{{ CMAP_CATALOG }}"
 COLOR_LIST = r"{{ COLOR_LIST }}"
 
@@ -197,6 +209,7 @@ def on_page_content(html: str, **kwargs: Any) -> str:
     html = CSS_CMAP_GRAY.sub(partial(_cmap_div, class_list=["grayscale"]), html)
     html = CMAP_LINEARITY.sub(_cmap_linearity_plot, html)
     html = CMAP_RGB.sub(_cmap_rgb_plot, html)
+    html = CMAP_EXPR.sub(_cmap_expr, html)
     if CMAP_CATALOG in html:
         html = html.replace(CMAP_CATALOG, _cmap_catalog())
     if COLOR_LIST in html:

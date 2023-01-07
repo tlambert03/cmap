@@ -1,6 +1,6 @@
 # Colors
 
-The `cmap.Color` type is used to represent an individual color.
+The `cmap.Color` type represents an individual color.
 
 ```python
 from cmap import Color
@@ -22,6 +22,21 @@ red10 = Color(16711680)
 
 The following objects can be interpreted as a color, and used as the first argument
 to the `Color` constructor; `cmap` refers to these objects collectively as "`ColorLike`".
+
+Briefly, valid arguments are of type:
+
+- `str`
+- `tuple[float | int, float | int, float | int]`
+- `tuple[float | int, float | int, float | int, float]`
+- `Sequence[int | float]`
+- `numpy.ndarray`
+- `None`
+- `int`
+- `cmap.Color`
+- `pydantic.color.Color`
+- `colour.Color`
+
+In detail:
 
 1. A string containing a color name. All CSS color names are supported, case is
    ignored along with spaces, underscores and dashes  (see [complete list
@@ -122,7 +137,7 @@ from cmap import Color
 trq = Color('turquoise')
 ```
 
-### Useful  properties
+### Useful properties
 
 Convert to a variety of forms:
 

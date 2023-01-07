@@ -80,11 +80,15 @@ div.cmap-bar {
   height: 30px;
 }
 
+div.cmap-expr > .cmap-bar {
+  height: 24px;
+}
+
 div.cmap.grayscale > .cmap-bar {
   filter: grayscale(100%);
 }
 
-div.cmap-bar:hover{
+a div.cmap-bar:hover{
   cursor: pointer;
   filter: drop-shadow(0 0 0.4rem gray);
 }

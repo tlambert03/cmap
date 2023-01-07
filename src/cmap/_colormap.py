@@ -322,9 +322,13 @@ class Colormap:
             max_stops=max_stops, angle=angle, radial=radial, as_hex=as_hex
         )
 
-    def to_mpl(self, N: int = 256, gamma: float = 1.0) -> MplLinearSegmentedColormap:
+    def to_matplotlib(
+        self, N: int = 256, gamma: float = 1.0
+    ) -> MplLinearSegmentedColormap:
         """Return a matplotlib colormap."""
         return _external.to_mpl(self, N=N, gamma=gamma)
+
+    to_mpl = to_matplotlib  # alias
 
     def to_vispy(self) -> VispyColormap:
         """Return a vispy colormap."""

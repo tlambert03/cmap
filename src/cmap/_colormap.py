@@ -20,7 +20,7 @@ import numpy as np
 import numpy.typing as npt
 
 from . import _external
-from ._catalog import _get_data
+from ._catalog import catalog
 from ._color import Color
 
 if TYPE_CHECKING:
@@ -147,9 +147,9 @@ class Colormap:
 
         if isinstance(color_stops, str):
             rev = color_stops.endswith("_r")
-            info = _get_data(color_stops[:-2] if rev else color_stops)
-            interpolation = interpolation or info.get("interpolation", "linear")
-            stops = _parse_colorstops(info["data"], interpolation)
+            info = catalog[color_stops[:-2] if rev else color_stops]
+            _interp = interpolation or info.get("interpolation", "linear")
+            stops = _parse_colorstops(info["data"], _interp)  # type: ignore
             category = category or info["category"]
             if rev:
                 stops = stops.reversed()
@@ -464,7 +464,7 @@ class ColorStops(Sequence[ColorStop]):
             colors = np.concatenate([colors, np.ones((len(X), 1))], axis=1)
         elif colors.shape[1] != 4:
             raise ValueError("lut_func must return RGB or RGBA values")
-        return colors
+        return cast("np.ndarray", colors)
 
     @classmethod
     def parse(cls, colors: ColorStopsLike) -> ColorStops:
@@ -948,8 +948,11 @@ def _parse_colorstops(  # noqa: C901
     _clr_seq: Sequence[ColorLike | ColorStopLike]
     if isinstance(val, str):
         rev = val.endswith("_r")
-        data, interpolation = _get_data(val[:-2] if rev else val)
-        obj = _parse_colorstops(data, interpolation=interpolation, cls=cls)
+        data = catalog[val[:-2] if rev else val]
+
+        obj = _parse_colorstops(
+            data, interpolation=data.get("interpolation", True), cls=cls
+        )
         return obj.reversed() if rev else obj
 
     if _is_mpl_segmentdata(val):

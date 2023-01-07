@@ -1,4 +1,5 @@
 from typing import Any
+
 import numpy as np
 import pytest
 from cmap._color import RGBA, RGBA8, Color
@@ -157,6 +158,7 @@ def test_to_array_in_list() -> None:
     # seemingly unrelated, but __getitem__ is apparently necessary for the above,
     # but not actually called... so we test it here
     assert Color("r")[0] == 1
+
 
 def test_hashable():
     assert hash(Color("red")) == hash(Color("red"))

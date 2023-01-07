@@ -66,8 +66,8 @@ to the `Color` constructor; `cmap` refers to these objects collectively as "`Col
         amgiguity in the case of a tuple of integers containing only zeros
         and ones (e.g. `(0, 0, 1)`).  The convention in `cmap` is to treat a
         tuple of *all* integers as 8-bit RGB values, and a tuple with *any*
-        floats (excepting the 4th alpha value) as float RGB values, so 
-        
+        floats (excepting the 4th alpha value) as float RGB values, so
+
         - `(0, 0, 1) == (0, 0, 1/255) == '#000001'`
         - `(0, 0, 1.) == (0, 0, 255) == '#0000FF'`
 
@@ -216,7 +216,7 @@ foo.color is Color('red')  # True
 
         class Config:
             json_encoders = {Color: str}
-    
+
     #example
     Foo(color=(0, 11, 23)).json()  # '{"color": "#000B17"}'
     ```

@@ -13,6 +13,7 @@ from typing import (
     NamedTuple,
     Sequence,
     SupportsFloat,
+    cast,
     overload,
 )
 
@@ -303,7 +304,7 @@ def parse_rgba(value: Any) -> RGBA:  # noqa: C901
         if np.issubdtype(value.dtype, np.integer) and len(value) == 3:
             return RGBA8(*_bound_0_255(value)).to_float()
         if np.issubdtype(value.dtype, np.floating) and len(value) in {3, 4}:
-            return RGBA(*_bound_0_1(value))
+            return RGBA(*_bound_0_1(cast("Sequence", value)))
         raise ValueError(f"Invalid color array: {value!r}")
 
     if isinstance(value, Sequence):

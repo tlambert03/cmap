@@ -35,7 +35,7 @@ L* measured in
 
 for name, info in CATALOG.items():
     category = info["category"]
-    output = f"cmaps/{category}/{name}.md"
-    with mkdocs_gen_files.open(f"cmaps/{category}/{name}.md", "w") as f:
+    output = f"catalog/{category}/{name}.md"
+    with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
         f.write(TEMPLATE.format(name=name))
     # mkdocs_gen_files.set_edit_path(filename, "gen_pages.py")

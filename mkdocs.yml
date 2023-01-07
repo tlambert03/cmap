@@ -14,8 +14,8 @@ watch:
 nav:
   - Home: index.md
   - Colors: color.md
-  - Catalog: catalog.md
-  - Colormaps: cmaps/
+  - Colormap: colormap.md
+  - Catalog: catalog/
   - API: api/
 
 theme:
@@ -23,6 +23,7 @@ theme:
   features:
     - content.tabs.link
     - content.code.annotate
+    - navigation.indexes
   icon:
     logo: fontawesome/solid/eye-dropper
     repo: fontawesome/brands/github
@@ -65,9 +66,9 @@ plugins:
   - search
   - autorefs
   - literate-nav
-  # - gen-files:
-  #     scripts:
-  #     - docs/_gen_cmaps.py
+  - gen-files:
+      scripts:
+      - docs/_gen_cmaps.py
   - mkdocstrings:
       handlers:
         python:

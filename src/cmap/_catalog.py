@@ -49,9 +49,9 @@ colorbrewer2.org: https://colorbrewer2.org
 
 - from colorcet.com:
     Have colours that are matched at each end. They are intended for the
-    presentation of data that is cyclic such as orientation values or angular phase data.
-    They require particular care in their design (the standard colour circle is not a good
-    map).
+    presentation of data that is cyclic such as orientation values or angular phase
+    data. They require particular care in their design (the standard colour circle is
+    not a good map).
 
 
 ## Qualitative
@@ -96,13 +96,21 @@ the distances of the values they represent.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, ItemsView, Iterator, Literal, cast
 
 if TYPE_CHECKING:
     from typing_extensions import NotRequired, TypeAlias, TypedDict
 
+    from ._colormap import ColorStopsLike
+
     class CatalogItem(TypedDict):
         data: str
+        tags: list[str]
+        category: Category
+        interpolation: NotRequired[bool]
+
+    class LoadedCatalogItem(TypedDict):
+        data: ColorStopsLike
         tags: list[str]
         category: Category
         interpolation: NotRequired[bool]
@@ -489,23 +497,46 @@ CATALOG: CatalogDict = {
 }
 # fmt: on
 
-_CATALOG_LOWER = {k.lower().replace(" ", "_"): v for k, v in CATALOG.items()}
+
+def _norm_name(name: str) -> str:
+    return name.lower().replace(" ", "_")
 
 
-def _get_data(name: str) -> dict:
-    """Get the data for a named colormap."""
-    key = name.lower().replace(" ", "_")
-    if key not in _CATALOG_LOWER:
-        # TODO: print a list of available colormaps or something
-        if name != key:
-            raise ValueError(f"Colormap {name!r} (or {key!r}) not found.")
-        raise ValueError(f"Colormap {name!r} not found.")
+_CATALOG_LOWER = {_norm_name(k): v for k, v in CATALOG.items()}
 
-    # TODO: should we somehow check if the provided name was the correct case?
-    item = _CATALOG_LOWER[key].copy()
-    module, attr = item["data"].rsplit(":", 1)
-    # not encouraged... but significantly faster than importlib
-    # well tested on internal data though
-    mod = __import__(module, fromlist=[attr])
-    item["data"] = getattr(mod, attr)
-    return item
+
+class Catalog:
+
+    _loaded: dict[str, LoadedCatalogItem] = {}
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(CATALOG)
+
+    def items(self) -> ItemsView[str, dict[str, CatalogItem]]:
+        return CATALOG.items()  # type: ignore
+
+    def __getitem__(self, name: str) -> LoadedCatalogItem:
+        if name not in self._loaded:
+            if (key := _norm_name(name)) not in _CATALOG_LOWER:
+                # TODO: print a list of available colormaps or something
+                if name != key:
+                    raise ValueError(f"Colormap {name!r} (or {key!r}) not found.")
+                raise ValueError(f"Colormap {name!r} not found.")
+
+            self._loaded[name] = self._load(key)
+            if key != name:
+                self._loaded[key] = self._loaded[name]
+        return self._loaded[name]
+
+    def _load(self, key: str) -> LoadedCatalogItem:
+        """Get the data for a named colormap."""
+        item = _CATALOG_LOWER[key].copy()
+        module, attr = item["data"].rsplit(":", 1)
+        # not encouraged... but significantly faster than importlib
+        # well tested on internal data though
+        mod = __import__(module, fromlist=[attr])
+        item["data"] = getattr(mod, attr)
+        return cast("LoadedCatalogItem", item)
+
+
+catalog = Catalog()

@@ -50,13 +50,13 @@ def test_misc_colormap_args(color_stops: Any) -> None:
 def test_colormap() -> None:
     """Test Colormap."""
     cmap = Colormap(["red", "magenta", "blue"], name="mymap")
-    assert cmap(0.0) == (1, 0, 0, 1)
+    assert cmap(0.0) == (1.0, 0, 0, 1.0)
     assert cmap(0.0) is Color("r")
-    assert cmap(0.5, N=255) == (1, 0, 1, 1)
+    assert cmap(0.5, N=255) == (1.0, 0, 1.0, 1.0)
     assert cmap(0.5, N=255) is Color("m")
-    assert cmap(1.0) == (0, 0, 1, 1)
+    assert cmap(1.0) == (0, 0, 1.0, 1.0)
     assert cmap(1.0) is Color("b")
-    assert cmap(1.5) == (0, 0, 1, 1)
+    assert cmap(1.5) == (0, 0, 1.0, 1.0)
     assert repr(cmap) == "Colormap(name='mymap', 3 colors)"
 
     # also test with a sequence

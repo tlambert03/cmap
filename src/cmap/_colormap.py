@@ -148,13 +148,14 @@ class Colormap:
         if isinstance(color_stops, str):
             rev = color_stops.endswith("_r")
             info = catalog[color_stops[:-2] if rev else color_stops]
-            _interp = interpolation or info.get("interpolation", "linear")
-            stops = _parse_colorstops(info["data"], _interp)  # type: ignore
+            interpolation = interpolation or info.get("interpolation", "linear")
+            stops = _parse_colorstops(info["data"], interpolation)  # type: ignore
             category = category or info["category"]
             if rev:
                 stops = stops.reversed()
         else:
             stops = _parse_colorstops(color_stops)
+
         # because we're using __setattr__ to make the object immutable
         object.__setattr__(self, "color_stops", stops)
         object.__setattr__(self, "name", name)
@@ -163,7 +164,7 @@ class Colormap:
         object.__setattr__(self, "source", source)
         # TODO: this just clobbers the interpolation from the user...
         # need to unify with the catalog
-        object.__setattr__(self, "interpolation", interpolation)
+        object.__setattr__(self, "interpolation", _norm_interp(interpolation))
         object.__setattr__(self, "_luts", {})
 
     def __setattr__(self, _name: str, _value: Any) -> None:
@@ -214,7 +215,7 @@ class Colormap:
     # would prefer to make this Arraylike, but that overlaps with float
     @overload
     def __call__(
-        self, X: NDArray, *, N: int = 256, gamma: float = 1
+        self, X: NDArray | Sequence[float], *, N: int = 256, gamma: float = 1
     ) -> NDArray[np.float64]:
         ...
 
@@ -223,7 +224,7 @@ class Colormap:
         ...
 
     def __call__(
-        self, X: float | NDArray, *, N: int = 256, gamma: float = 1
+        self, X: float | NDArray | Sequence[float], *, N: int = 256, gamma: float = 1
     ) -> Color | NDArray[np.float64]:
         """Map scalar values in X to an RGBA array.
 
@@ -402,6 +403,19 @@ class ColorStop(NamedTuple):
     color: Color
 
 
+def _norm_interp(interp: Interpolation | bool | str | None) -> Interpolation:
+    if isinstance(interp, bool):
+        return "linear" if interp else "nearest"
+    elif not interp:
+        return "linear"
+    if interp not in {"linear", "nearest"}:
+        raise ValueError(
+            f"Invalid interpolation mode: {interp!r}. "
+            "Must be one of 'linear' or 'nearest'"
+        )
+    return cast("Interpolation", interp)
+
+
 class ColorStops(Sequence[ColorStop]):
     """A sequence of color stops in a color gradient.
 
@@ -422,15 +436,7 @@ class ColorStops(Sequence[ColorStop]):
         lut_func: LutCallable | None = None,
         interpolation: Interpolation | bool = "linear",
     ) -> None:
-        if isinstance(interpolation, bool):
-            interpolation = "linear" if interpolation else "nearest"
-        elif interpolation not in {"linear", "nearest"}:
-            raise ValueError(
-                f"Invalid interpolation mode: {interpolation!r}. "
-                "Must be one of 'linear' or 'nearest'"
-            )
-
-        self._interpolation = interpolation
+        self._interpolation = _norm_interp(interpolation)
         self._lut_func: LutCallable | None = None
         if lut_func is not None:
             self._lut_func = lut_func
@@ -949,10 +955,8 @@ def _parse_colorstops(  # noqa: C901
     if isinstance(val, str):
         rev = val.endswith("_r")
         data = catalog[val[:-2] if rev else val]
-
-        obj = _parse_colorstops(
-            data, interpolation=data.get("interpolation", True), cls=cls
-        )
+        interpolation = interpolation or data.get("interpolation", True)
+        obj = _parse_colorstops(data["data"], interpolation=interpolation, cls=cls)
         return obj.reversed() if rev else obj
 
     if _is_mpl_segmentdata(val):

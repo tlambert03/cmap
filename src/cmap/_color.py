@@ -643,4 +643,13 @@ ALL_COLORS: dict[str, tuple[int, ...]] = {
     "none": (0, 0, 0, 0),
 }
 NAME_TO_RGB = {name: RGBA8(*values) for name, values in ALL_COLORS.items()}
-RGB_TO_NAME = {values: name for name, values in NAME_TO_RGB.items()}
+RGB_TO_NAME = {v: name for name, v in NAME_TO_RGB.items()}
+# for a few names with aliases... make sure the canonical name is used
+RGB_TO_NAME[RGBA8(255, 0, 0)] = "red"
+RGB_TO_NAME[RGBA8(0, 255, 0)] = "lime"  # unfortunate, but true
+RGB_TO_NAME[RGBA8(0, 0, 255)] = "blue"
+RGB_TO_NAME[RGBA8(255, 255, 0)] = "yellow"
+RGB_TO_NAME[RGBA8(0, 255, 255)] = "cyan"
+RGB_TO_NAME[RGBA8(255, 0, 255)] = "magenta"
+RGB_TO_NAME[RGBA8(128, 128, 128)] = "gray"
+RGB_TO_NAME[RGBA8(0, 0, 0)] = "black"

@@ -2,6 +2,7 @@
 
 Yorik is an evolution of the GIST package, both by David H. Munro.
 
+https://github.com/LLNL/yorick
 https://yorick.sourceforge.net/index.php
 
 Copyright:
@@ -53,6 +54,9 @@ the X11R4 release, copyright M.I.T. -- the complete copyright notice
 may be found in the (unused) file Gist/host.c.
 """
 import numpy as np
+
+__license__ = "BSD-3-Clause"
+__author__ = "David H. Munro"
 
 # https://github.com/LLNL/yorick/blob/fda4a1ed1e2441e30de88e01b251b822f3604b1f/g/earth.gp
 earth = [

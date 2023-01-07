@@ -1,5 +1,7 @@
 import numpy as np
 
+__license__ = "UNKNOWN"
+
 gray = [(0, 0, 0), (1.0, 1.0, 1.0)]
 autumn = [(1.0, 0, 0), (1.0, 1.0, 0)]
 [

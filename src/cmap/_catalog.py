@@ -96,12 +96,16 @@ the distances of the values they represent.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ItemsView, Iterator, Literal, cast
+from typing import TYPE_CHECKING, Iterator, Literal, cast
 
 if TYPE_CHECKING:
     from typing_extensions import NotRequired, TypeAlias, TypedDict
 
     from ._colormap import ColorStopsLike
+
+    Category: TypeAlias = Literal[
+        "Sequential", "Diverging", "Cyclic", "Qualitative", "Miscellaneous"
+    ]
 
     class CatalogItem(TypedDict):
         data: str
@@ -116,11 +120,9 @@ if TYPE_CHECKING:
         tags: list[str]
         category: Category
         interpolation: NotRequired[bool]
+        license: str
 
     CatalogDict: TypeAlias = dict[str, CatalogItem]
-    Category: TypeAlias = Literal[
-        "Sequential", "Diverging", "Cyclic", "Qualitative", "Miscellaneous"
-    ]
 
 CATALOG: CatalogDict = {
     "Accent": {
@@ -2080,7 +2082,7 @@ CATALOG: CatalogDict = {
     "hot": {"data": "cmap.data._matlab:hot", "tags": ["2"], "category": "Sequential"},
     "hsv": {"data": "cmap.data._matlab:hsv", "tags": [], "category": "Cyclic"},
     "inferno": {
-        "data": "cmap.data._matplotlib:Inferno",
+        "data": "cmap.data._matplotlib_new:Inferno",
         "tags": ["uniform"],
         "category": "Sequential",
     },
@@ -2091,7 +2093,7 @@ CATALOG: CatalogDict = {
         "category": "Sequential",
     },
     "magma": {
-        "data": "cmap.data._matplotlib:Magma",
+        "data": "cmap.data._matplotlib_new:Magma",
         "tags": ["uniform"],
         "category": "Sequential",
     },
@@ -2107,7 +2109,7 @@ CATALOG: CatalogDict = {
     },
     "pink": {"data": "cmap.data._matlab:pink", "tags": ["2"], "category": "Sequential"},
     "plasma": {
-        "data": "cmap.data._matplotlib:Plasma",
+        "data": "cmap.data._matplotlib_new:Plasma",
         "tags": ["uniform"],
         "category": "Sequential",
     },
@@ -2210,7 +2212,7 @@ CATALOG: CatalogDict = {
         "category": "Cyclic",
     },
     "viridis": {
-        "data": "cmap.data._matplotlib:Viridis",
+        "data": "cmap.data._matplotlib_new:Viridis",
         "tags": ["uniform"],
         "category": "Sequential",
     },
@@ -2241,8 +2243,9 @@ class Catalog:
     def __iter__(self) -> Iterator[str]:
         return iter(CATALOG)
 
-    def items(self) -> ItemsView[str, dict[str, CatalogItem]]:
-        return CATALOG.items()  # type: ignore
+    def items(self) -> Iterator[tuple[str, LoadedCatalogItem]]:
+        for name in CATALOG:
+            yield name, self[name]
 
     def __getitem__(self, name: str) -> LoadedCatalogItem:
         if name not in self._loaded:
@@ -2266,7 +2269,9 @@ class Catalog:
         # well tested on internal data though
         mod = __import__(module, fromlist=[attr])
         item["data"] = getattr(mod, attr)
-        return cast("LoadedCatalogItem", item)
+        _item = cast("LoadedCatalogItem", item)
+        _item["license"] = mod.__license__  # tests ensure this exists
+        return _item
 
 
 catalog = Catalog()

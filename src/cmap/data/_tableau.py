@@ -5,6 +5,8 @@ https://public.tableau.com/views/TableauColors/ColorPaletteswithRGBValues
 """
 # fmt: off
 
+__license__ = "UNKNOWN"
+
 # this is the same as Vega's "category10"
 Tableau10 = [
     ( 31, 119, 180),    # 1F77B4

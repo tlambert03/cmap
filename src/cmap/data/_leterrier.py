@@ -27,9 +27,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
+__license__ = "MIT"
 
 # Note: ChrisLUTs supplies these as a full 256x3 matrix,
 # but they're all linear ramps, so we let the colormap do the interpolation
+
 
 BOP_Blue = [[0, 0, 0], [32, 173, 248]]
 BOP_Orange = [[0, 0, 0], [237, 165, 30]]

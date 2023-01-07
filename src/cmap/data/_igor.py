@@ -1,6 +1,8 @@
 # appears to have been added to matplotlib from igor in 2009:
 # https://sourceforge.net/p/matplotlib/mailman/message/23330302/
 
+__license__ = "UNKNOWN"
+
 terrain = (
     (0.00, (0.2, 0.2, 0.6)),
     (0.15, (0.0, 0.6, 1.0)),

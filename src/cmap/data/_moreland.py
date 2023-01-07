@@ -6,6 +6,9 @@ December 2009. DOI 10.1007/978-3-642-10520-3_9.
 """
 # https://www.kennethmoreland.com/color-maps/CoolWarmUChar257.csv
 # results in 2% error compared to mpl values ... but this is the original
+
+__license__ = "UNKNOWN"
+
 CoolWarm = [
     [59, 76, 192],
     [60, 78, 194],

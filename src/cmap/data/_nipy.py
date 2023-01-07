@@ -12,6 +12,8 @@ like to include it upstream as part of matplotlib...
 see also: https://github.com/matplotlib/matplotlib/issues/879
 """
 
+__license__ = "BSD-3-Clause"
+
 nipy_spectral = [
     (0.0, 0.0, 0.0),
     (0.4667, 0.0, 0.5333),

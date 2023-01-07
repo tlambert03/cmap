@@ -1,10 +1,16 @@
 from pathlib import Path
 
 import mkdocs_gen_files
-from cmap._catalog import CATALOG
+from cmap._catalog import catalog
 
 DOCS = Path(__file__).parent
 TEMPLATE = """# {name}
+
+- Category: `{category}`
+
+- License: `{license}`
+
+- Source: ...
 
 ```python
 from cmap import Colormap
@@ -14,8 +20,6 @@ cm = Colormap({name!r})  # case insensitive
 
 {{{{ cmap: {name} 40 }}}}
 {{{{ cmap_gray: {name} 40 }}}}
-
-Source: ...
 
 ### Perceptual Uniformity
 
@@ -33,9 +37,9 @@ L* measured in
 {{{{ cmap_rgb: {name} }}}}
 """
 
-for name, info in CATALOG.items():
+for name, info in catalog.items():
     category = info["category"]
     output = f"catalog/{category}/{name}.md"
     with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
-        f.write(TEMPLATE.format(name=name))
+        f.write(TEMPLATE.format(name=name, category=category, license=info["license"]))
     # mkdocs_gen_files.set_edit_path(filename, "gen_pages.py")

@@ -993,7 +993,7 @@ def _parse_colorstops(  # noqa: C901
         else:
             _position = None
         _positions.append(_position)
-        _colors.append(Color(item))  # this will raise if invalid
+        _colors.append(Color(item))  # type: ignore  # this will raise if invalid
 
     if (np.diff([x for x in _positions if x is not None]) < 0).any():
         raise ValueError("Color stops must be in ascending position order")

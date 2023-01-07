@@ -377,6 +377,10 @@ class Color:
             _COLOR_CACHE[rgba] = obj
         return _COLOR_CACHE[rgba]
 
+    # for mkdocstrings
+    def __init__(self, value: ColorLike) -> None:
+        pass
+
     # required because of the __new__ implementation, which requires an argument
     # https://docs.python.org/3/library/pickle.html#module-pickle
     # also works for copy and deepcopy

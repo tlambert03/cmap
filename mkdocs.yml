@@ -13,8 +13,8 @@ watch:
 
 nav:
   - Home: index.md
-  - Colors: color.md
-  - Colormap: colormap.md
+  - Colors: colors.md
+  - Colormaps: colormaps.md
   - Catalog: catalog/
   - API: api/
 

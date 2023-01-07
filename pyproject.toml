@@ -29,7 +29,7 @@ globs = ["LICENSE/*"]
 # extras
 # https://peps.python.org/pep-0621/#dependencies-optional-dependencies
 [project.optional-dependencies]
-docs = ['mkdocs', 'mkdocs-material', 'mkdocstrings-python', 'mkdocs-literate-nav', 'mkdocs-gen-files']
+docs = ['mkdocs', 'mkdocs-material', 'mkdocstrings-python', 'mkdocs-literate-nav', 'mkdocs-gen-files', 'colorspacious']
 test = ["pytest>=6.0", "pytest-cov"]
 thirdparty = [
     "bokeh",

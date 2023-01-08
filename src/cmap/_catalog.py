@@ -2292,6 +2292,31 @@ CATALOG: CatalogDict = {
         "tags": [],
         "category": "Diverging",
     },
+    "glasbey": {
+        "data": "cmap.data._glasbey:glasbey",
+        "tags": [],
+        "category": "Qualitative",
+    },
+    "imagej_fire": {
+        "data": "cmap.data._imagej:Fire",
+        "tags": [],
+        "category": "Miscellaneous",
+    },
+    "imagej_ice": {
+        "data": "cmap.data._imagej:Ice",
+        "tags": [],
+        "category": "Miscellaneous",
+    },
+    "Green_Fire_Blue": {
+        "data": "cmap.data._imagej:Green_Fire_Blue",
+        "tags": [],
+        "category": "Miscellaneous",
+    },
+    "HiLo": {
+        "data": "cmap.data._imagej:HiLo",
+        "tags": [],
+        "category": "Miscellaneous",
+    },
 }
 
 

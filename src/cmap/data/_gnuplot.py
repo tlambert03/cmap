@@ -54,7 +54,7 @@ https://gnuplot.sourceforge.net
 __license__ = "gnuplot"
 
 from functools import partial
-from typing import TYPE_CHECKING, Sequence, cast
+from typing import TYPE_CHECKING, Sequence
 
 import numpy as np
 
@@ -68,36 +68,37 @@ if TYPE_CHECKING:
 
 
 # fmt: off
-def _g0(x): return np.zeros_like(x)
-def _g1(x): return 0.5 * np.ones_like(x)
+# commented out ones just aren't used at the moment.
+# def _g0(x): return np.zeros_like(x)
+# def _g1(x): return 0.5 * np.ones_like(x)
 def _g2(x): return np.ones_like(x)
 def _g3(x): return x
-def _g4(x): return x ** 2
+# def _g4(x): return x ** 2
 def _g5(x): return x ** 3
 def _g6(x): return x ** 4
 def _g7(x): return np.sqrt(x)
-def _g8(x): return np.sqrt(np.sqrt(x))
-def _g9(x): return np.sin(x * np.pi / 2)
+# def _g8(x): return np.sqrt(np.sqrt(x))
+# def _g9(x): return np.sin(x * np.pi / 2)
 def _g10(x): return np.cos(x * np.pi / 2)
 def _g11(x): return np.abs(x - 0.5)
-def _g12(x): return (2 * x - 1) ** 2
+# def _g12(x): return (2 * x - 1) ** 2
 def _g13(x): return np.sin(x * np.pi)
-def _g14(x): return np.abs(np.cos(x * np.pi))
+# def _g14(x): return np.abs(np.cos(x * np.pi))
 def _g15(x): return np.sin(x * 2 * np.pi)
-def _g16(x): return np.cos(x * 2 * np.pi)
-def _g17(x): return np.abs(np.sin(x * 2 * np.pi))
-def _g18(x): return np.abs(np.cos(x * 2 * np.pi))
-def _g19(x): return np.abs(np.sin(x * 4 * np.pi))
-def _g20(x): return np.abs(np.cos(x * 4 * np.pi))
+# def _g16(x): return np.cos(x * 2 * np.pi)
+# def _g17(x): return np.abs(np.sin(x * 2 * np.pi))
+# def _g18(x): return np.abs(np.cos(x * 2 * np.pi))
+# def _g19(x): return np.abs(np.sin(x * 4 * np.pi))
+# def _g20(x): return np.abs(np.cos(x * 4 * np.pi))
 def _g21(x): return 3 * x
 def _g22(x): return 3 * x - 1
 def _g23(x): return 3 * x - 2
-def _g24(x): return np.abs(3 * x - 1)
-def _g25(x): return np.abs(3 * x - 2)
-def _g26(x): return (3 * x - 1) / 2
-def _g27(x): return (3 * x - 2) / 2
+# def _g24(x): return np.abs(3 * x - 1)
+# def _g25(x): return np.abs(3 * x - 2)
+# def _g26(x): return (3 * x - 1) / 2
+# def _g27(x): return (3 * x - 2) / 2
 def _g28(x): return np.abs((3 * x - 1) / 2)
-def _g29(x): return np.abs((3 * x - 2) / 2)
+# def _g29(x): return np.abs((3 * x - 2) / 2)
 def _g30(x): return x / 0.32 - 0.78125
 def _g31(x): return 2 * x - 0.84
 def _g32(x):
@@ -123,82 +124,9 @@ def _combine_gnufunc(mappers: Sequence["ArrayMapper"], ary: "NDArray") -> "NDArr
 
 def _combine_gnufunc_hsv(mappers: Sequence["ArrayMapper"], ary: "NDArray") -> "NDArray":
     """Helper function for combining multiple gnuplot formulae in hsv space."""
+    from cmap._util import hsv_to_rgb
+
     return hsv_to_rgb(_combine_gnufunc(mappers, ary))
-
-
-def hsv_to_rgb(hsv: "NDArray") -> "NDArray":
-    """Convert hsv values to rgb.
-
-    Parameters
-    ----------
-    hsv : (N, 3) ndarray
-       All values assumed to be in range [0, 1]
-
-    Returns
-    -------
-    (N, 3) ndarray
-       Colors converted to RGB values in range [0, 1]
-    """
-    in_shape = hsv.shape
-    hsv = np.array(
-        hsv,
-        copy=False,
-        dtype=np.promote_types(hsv.dtype, np.float32),  # Don't work on ints.
-        ndmin=2,  # In case input was 1D.
-    )
-
-    h = hsv[..., 0]
-    s = hsv[..., 1]
-    v = hsv[..., 2]
-
-    r = np.empty_like(h)
-    g = np.empty_like(h)
-    b = np.empty_like(h)
-
-    i = (h * 6.0).astype(int)
-    f = (h * 6.0) - i
-    p = v * (1.0 - s)
-    q = v * (1.0 - s * f)
-    t = v * (1.0 - s * (1.0 - f))
-
-    idx = i % 6 == 0
-    r[idx] = v[idx]
-    g[idx] = t[idx]
-    b[idx] = p[idx]
-
-    idx = i == 1
-    r[idx] = q[idx]
-    g[idx] = v[idx]
-    b[idx] = p[idx]
-
-    idx = i == 2
-    r[idx] = p[idx]
-    g[idx] = v[idx]
-    b[idx] = t[idx]
-
-    idx = i == 3
-    r[idx] = p[idx]
-    g[idx] = q[idx]
-    b[idx] = v[idx]
-
-    idx = i == 4
-    r[idx] = t[idx]
-    g[idx] = p[idx]
-    b[idx] = v[idx]
-
-    idx = i == 5
-    r[idx] = v[idx]
-    g[idx] = p[idx]
-    b[idx] = q[idx]
-
-    idx = s == 0
-    r[idx] = v[idx]
-    g[idx] = v[idx]
-    b[idx] = v[idx]
-
-    rgb = np.stack([r, g, b], axis=-1)
-
-    return cast("NDArray", rgb.reshape(in_shape))
 
 
 # https://web.mit.edu/gnuplot_v4.2/doc/htmldocs/node216.html

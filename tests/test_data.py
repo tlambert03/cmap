@@ -36,7 +36,6 @@ def test_matplotlib_name_parity() -> None:
         raise AssertionError(f"missing cmap keys from matplotlib: {missing}")
 
 
-@pytest.mark.xfail(reason="not finished", strict=True)
 def test_napari_name_parity() -> None:
     # might need to importorskip later
     import napari.utils.colormaps.colormap_utils as ncm
@@ -51,7 +50,17 @@ def test_napari_name_parity() -> None:
         for n in napari_cmaps
         if not n.endswith(("_r", " r"))
     }
-    if missing := (napari_cmaps - set(_catalog._CATALOG_LOWER)):
+
+    catalog = set(_catalog._CATALOG_LOWER)
+    if missing := (napari_cmaps - catalog):
+        # NOTE: there are a number of colormap names in vispy that are too specific
+        # to be included in the main catalog.
+        # They are added under the `vispy_` prefix.  none of these are "publicly" used
+        # by napari, but we make sure they're available as vispy+name here.
+        for m in list(missing):
+            if f"vispy_{m}" in catalog:
+                missing.remove(m)
+    if missing:
         raise AssertionError(f"missing cmap keys from napari: {missing}")
 
 

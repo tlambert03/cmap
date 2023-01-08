@@ -1989,7 +1989,7 @@ CATALOG: CatalogDict = {
         "category": "Sequential",
     },
     "blue": {
-        "data": "cmap.data._primary_colors:blue",
+        "data": "cmap.data._basic_colors:blue",
         "tags": [],
         "category": "Sequential",
     },
@@ -2022,7 +2022,7 @@ CATALOG: CatalogDict = {
         "category": "Miscellaneous",
     },
     "cyan": {
-        "data": "cmap.data._primary_colors:cyan",
+        "data": "cmap.data._basic_colors:cyan",
         "tags": [],
         "category": "Sequential",
     },
@@ -2075,7 +2075,7 @@ CATALOG: CatalogDict = {
     "gray": {"data": "cmap.data._matlab:gray", "tags": ["2"], "category": "Sequential"},
     "grays": {"data": "cmap.data._matlab:gray", "tags": [], "category": "Sequential"},
     "green": {
-        "data": "cmap.data._primary_colors:green",
+        "data": "cmap.data._basic_colors:green",
         "tags": [],
         "category": "Sequential",
     },
@@ -2088,7 +2088,7 @@ CATALOG: CatalogDict = {
     },
     "jet": {"data": "cmap.data._matlab:jet", "tags": [], "category": "Miscellaneous"},
     "magenta": {
-        "data": "cmap.data._primary_colors:magenta",
+        "data": "cmap.data._basic_colors:magenta",
         "tags": [],
         "category": "Sequential",
     },
@@ -2124,7 +2124,7 @@ CATALOG: CatalogDict = {
         "category": "Miscellaneous",
     },
     "red": {
-        "data": "cmap.data._primary_colors:red",
+        "data": "cmap.data._basic_colors:red",
         "tags": [],
         "category": "Sequential",
     },
@@ -2222,9 +2222,75 @@ CATALOG: CatalogDict = {
         "category": "Sequential",
     },
     "yellow": {
-        "data": "cmap.data._primary_colors:yellow",
+        "data": "cmap.data._basic_colors:yellow",
         "tags": [],
         "category": "Sequential",
+    },
+    # vispy
+    "vispy_light_blues": {
+        "data": "cmap.data._vispy:light_blues",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_single_hue": {
+        "data": "cmap.data._vispy:single_hue",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_orange": {  # problematic name
+        "data": "cmap.data._vispy:orange",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_GrBu": {  # name looks too much like colorbrewer
+        "data": "cmap.data._vispy:GrBu",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "vispy_GrBu_d": {  # name looks too much like colorbrewer
+        "data": "cmap.data._vispy:GrBu_d",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "vispy_PuGr": {  # name looks too much like colorbrewer
+        "data": "cmap.data._vispy:PuGr",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "vispy_RdBu": {
+        "data": "cmap.data._vispy:RdBu",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "vispy_diverging": {
+        "data": "cmap.data._vispy:diverging",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "vispy_husl": {
+        "data": "cmap.data._vispy:husl",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_hsl": {
+        "data": "cmap.data._vispy:hsl",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_fire": {
+        "data": "cmap.data._vispy:fire",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_ice": {
+        "data": "cmap.data._vispy:ice",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "vispy_RdYeBuCy": {
+        "data": "cmap.data._vispy:RdYeBuCy",
+        "tags": [],
+        "category": "Diverging",
     },
 }
 

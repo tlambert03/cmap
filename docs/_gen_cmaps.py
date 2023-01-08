@@ -20,8 +20,9 @@ cm = Colormap({name!r})  # case insensitive
 
 {{{{ cmap: {name} 40 }}}}
 {{{{ cmap_gray: {name} 40 }}}}
+{{{{ cmap_sineramp: {name} }}}}
 
-### Perceptual Uniformity
+### Perceptual Lightness
 
 <p style="text-align: center;">
 <em style="font-size: small; color: gray;">
@@ -37,7 +38,8 @@ L* measured in
 {{{{ cmap_rgb: {name} }}}}
 """
 
-for name, info in catalog.items():
+for name in catalog:
+    info = catalog[name]
     category = info["category"]
     output = f"catalog/{category}/{name}.md"
     with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:

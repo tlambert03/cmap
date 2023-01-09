@@ -2317,6 +2317,141 @@ CATALOG: CatalogDict = {
         "tags": [],
         "category": "Miscellaneous",
     },
+    "algae": {
+        "data": "cmap.data._cmocean.algae:algae",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "amp": {
+        "data": "cmap.data._cmocean.amp:amp",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "balance": {
+        "data": "cmap.data._cmocean.balance:balance",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "balance_blue": {
+        "data": "cmap.data._cmocean.balance:balance_blue",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "balance_red": {
+        "data": "cmap.data._cmocean.balance:balance_red",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "delta": {
+        "data": "cmap.data._cmocean.delta:delta",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "delta_blue": {
+        "data": "cmap.data._cmocean.delta:delta_blue",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "delta_green": {
+        "data": "cmap.data._cmocean.delta:delta_green",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "curl": {
+        "data": "cmap.data._cmocean.curl:curl",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "curl_pink": {
+        "data": "cmap.data._cmocean.curl:curl_pink",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "curl_turquoise": {
+        "data": "cmap.data._cmocean.curl:curl_turquoise",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "diff": {
+        "data": "cmap.data._cmocean.diff:diff",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "tarn": {
+        "data": "cmap.data._cmocean.tarn:tarn",
+        "tags": [],
+        "category": "Diverging",
+    },
+    "dense": {
+        "data": "cmap.data._cmocean.dense:dense",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "haline": {
+        "data": "cmap.data._cmocean.haline:haline",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "ice": {
+        "data": "cmap.data._cmocean.ice:ice",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "oxy": {
+        "data": "cmap.data._cmocean.oxy:oxy",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "phase": {
+        "data": "cmap.data._cmocean.phase:phase",
+        "tags": [],
+        "category": "Cyclic",
+    },
+    "solar": {
+        "data": "cmap.data._cmocean.solar:solar",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "turbid": {
+        "data": "cmap.data._cmocean.turbid:turbid",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "thermal": {
+        "data": "cmap.data._cmocean.thermal:thermal",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "speed": {
+        "data": "cmap.data._cmocean.speed:speed",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "deep": {
+        "data": "cmap.data._cmocean.deep:deep",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "matter": {
+        "data": "cmap.data._cmocean.matter:matter",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "tempo": {
+        "data": "cmap.data._cmocean.tempo:tempo",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "rain": {
+        "data": "cmap.data._cmocean.rain:rain",
+        "tags": [],
+        "category": "Sequential",
+    },
+    "topo": {
+        "data": "cmap.data._cmocean.topo:topo",
+        "tags": [],
+        "category": "Miscellaneous",
+    },
 }
 
 

@@ -162,4 +162,6 @@ ignore = [
     ".ruff_cache/**/*",
     "tests/**/*",
     "setup.py",
+    "docs/**/*",
+    "mkdocs.yml",
 ]

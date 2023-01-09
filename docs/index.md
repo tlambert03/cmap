@@ -30,7 +30,6 @@ Specifically there are three goals:
    third party libraries (currently including, matplotlib, napari, vispy, pygfx,
    bokeh, plotly, altair, and more)
 
-
 ## Colormaps
 
 For a complete list of available colormaps, see the [Colormaps

@@ -89,12 +89,6 @@ Each `Colormap` has a `color_stops` attribute that is an instance of `cmap.Color
 This represents the parsed colors and their positions along the colormap.  It can
 be cast to an (N, 5) numpy array (position, r, g, b, a), and provides a number of object-oriented api conveniences (`.colors`, `.stops`, `__getitem__`, `to_lut`).
 
-## Inspiration and Alternatives
-
-Other libraries providing colormaps:
-
-> TODO: list other colormap libraries, their dependencies, and their primary features.
-
 ## Current Third Party Support
 
 The `cmap.Colormap` object has convenience methods that allow it to be used with a number of third-party colormap objects.  If you would like to see support added for a particular library, please open an issue or PR.
@@ -112,125 +106,33 @@ The `cmap.Colormap` object has convenience methods that allow it to be used with
 
 ... details to come ...
 
-## Colormap References
+## Alternatives
 
-Origins of colormaps in `cmap` are listed here (where i was able to
-track them down). If you know the origin of a colormap not listed here,
-please open an issue or PR.
+Other libraries providing colormaps:
 
-Colormaps based on color specifications developed by Cynthia Brewer (<http://colorbrewer2.org/>), included under the terms of the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+> TODO: list other colormap libraries, their dependencies, and their primary features.
 
-<!-- ColorBrewer Sequential maps -->
-Blues
-BrBG
-BuGn
-BuPu
-GnBu
-Greens
-Greys
-Oranges
-OrRd
-PiYG
-PRGn
-PuBu
-PuBuGn
-PuOr
-PuRd
-Purples
-RdBu
-RdGy
-RdPu
-RdYlBu
-RdYlGn
-Reds
-Spectral
-YlGn
-YlGnBu
-YlOrBr
-YlOrRd
-<!-- ColorBrewer qualitative maps -->
-Accent
-Dark2
-Paired
-Pastel1
-Pastel2
-Set1
-Set2
-Set3
+- [matplotlib](https://matplotlib.org/stable/tutorials/colors/colormaps.html)
+- [seaborn](https://seaborn.pydata.org/tutorial/color_palettes.html)  (subclasses matplotlib)
+- [proplot](https://proplot.readthedocs.io/en/latest/colormaps.html)  (subclasses matplotlib)
+- [palettable](https://jiffyclub.github.io/palettable/) (mostly data, import doesn't depend on matplotlib, but usage largely does)
+- [cmocean](https://matplotlib.org/cmocean/) (mostly data, outputs matplotlib colormaps)
+- [colorcet](https://colorcet.holoviz.org/) (mostly data, usage requires either matplotlib or bokeh)
+- [cmasher](https://cmasher.readthedocs.io/) (requires matplotlib)
+- [cmyt](https://github.com/yt-project/cmyt) (requires matplotlib)
+- [cmcrameri](https://github.com/callumrollo/cmcrameri) (requires matplotlib, wraps <https://www.fabiocrameri.ch/colourmaps/>)
+- [distinctipy](https://github.com/alan-turing-institute/distinctipy)  (generates distinct color sets, only requires numpy)
+- [Farrow & Ball Matplotlib](https://github.com/vork/farrowandball) (requires matplotlib)
+- [mplcyberpunk](https://github.com/dhaitz/mplcyberpunk) (requires matplotlib)
 
-<!-- Implementation of Carey Rappaport's CMRmap. -->
-<!-- See `A Color Map for Effective Black-and-White Rendering of Color-Scale -->
-<!-- Images' by Carey Rappaport -->
-<!-- https://www.mathworks.com/matlabcentral/fileexchange/2662-cmrmap-m -->
-CMRmap
-
-<!-- An MIT licensed, colorblind-friendly heatmap from Wistia: -->
-<!-- https://github.com/wistia/heatmap-palette -->
-Wistia
-
-<!-- Gnuplot palettes -->
-gnuplot
-gnuplot2
-ocean
-afmhot
-rainbow
-seismic
-
-<!-- Vega categorical patlettes -->
-<!-- https://github.com/vega/vega/wiki/Scales -->
-tab10
-tab20
-tab20b
-tab20c
-
-<!-- This bipolar colormap was generated from CoolWarmFloat33.csv of -->
-<!-- "Diverging Color Maps for Scientific Visualization" by Kenneth Moreland. -->
-<!-- <http://www.kennethmoreland.com/color-maps/> -->
-coolwarm
-
-cubehelix
-
----------
-
-autumn
-binary
-bone
-brg
-bwr
-cool
-copper
-flag
-gist_earth
-gist_gray
-gist_heat
-gist_ncar
-gist_rainbow
-gist_stern
-gist_yarg
-gray
-hot
-hsv
-jet
-nipy_spectral
-pink
-prism
-spring
-summer
-terrain
-winter
-
-magma
-inferno
-plasma
-viridis
-cividis
-twilight
-twilight_shifted
-turbo
-
-## Further reading
+## References and Further reading
 
 - [Choosing Colormaps in Matplotlib](https://matplotlib.org/stable/tutorials/colors/colormaps.html)
 - [A Better Default Colormap for Matplotlib | SciPy 2015 | Nathaniel Smith and Stéfan van der Walt](https://www.youtube.com/watch?v=xAoljeRJ3lU)
+- blog post for above video: <https://bids.github.io/colormap/>
 - [Origins of Colormaps, Cleve Moler, February 2, 2015](https://blogs.mathworks.com/cleve/2015/02/02/origins-of-colormaps/)
 - [Documenting the matplotlib colormaps, @endolith](https://gist.github.com/endolith/2719900)
+- [Color Map Advice for Scientific Visualization](https://www.kennethmoreland.com/color-advice/)
+- <https://colorcet.com/>, Peter Kovesi
+- [Kovesi: Good Colour Maps: How to Design Them.](https://arxiv.org/abs/1509.03700)
+- https://www.fabiocrameri.ch/colourmaps/

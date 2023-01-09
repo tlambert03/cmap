@@ -1,7 +1,7 @@
 # Overview
 
 `cmap` is a work-in-progress colormap library for python, providing all of the
-colormaps in matplotlib, napari, vispy (and more), with no dependencies beyond
+colormaps in matplotlib, vispy, cmocean, (and more), with no dependencies beyond
 numpy.
 
 ## Why does this exist?

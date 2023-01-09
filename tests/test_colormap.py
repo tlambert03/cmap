@@ -108,7 +108,7 @@ def test_colormap_errors() -> None:
     with pytest.raises(ValueError, match="Colormap 'bad_string' not found"):
         Colormap("bad_string")
     with pytest.raises(AttributeError, match="Colormap is immutable"):
-        Colormap("red")._luts = {}
+        Colormap("red")._lut_cache = {}
     with pytest.raises(ValueError, match="If colors is a dict"):
         Colormap({"invalid": "dict"})
     with pytest.raises(ValueError, match="Color stops must be in ascending position"):

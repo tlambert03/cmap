@@ -114,8 +114,9 @@ class Colormap:
         "identifier",
         "category",
         "source",
-        "_luts",
+        "_lut_cache",
         "interpolation",
+        "_initialized",
         "__weakref__",
     )
 
@@ -125,11 +126,6 @@ class Colormap:
     category: str | None
     source: str | None
     interpolation: Interpolation
-
-    _luts: dict[tuple[int, float], np.ndarray]
-
-    def _json_encode(self) -> ColormapDict:
-        return self.as_dict()
 
     def __init__(
         self,
@@ -141,6 +137,7 @@ class Colormap:
         source: str | None = None,
         interpolation: Interpolation | bool | None = None,
     ) -> None:
+
         name = name or identifier
         if not name:
             name = color_stops if isinstance(color_stops, str) else "custom colormap"
@@ -157,29 +154,99 @@ class Colormap:
             stops = _parse_colorstops(color_stops)
 
         # because we're using __setattr__ to make the object immutable
-        object.__setattr__(self, "color_stops", stops)
-        object.__setattr__(self, "name", name)
-        object.__setattr__(self, "identifier", _make_identifier(identifier or name))
-        object.__setattr__(self, "category", category)
-        object.__setattr__(self, "source", source)
+        self.color_stops = stops
+        self.name = name
+        self.identifier = _make_identifier(identifier or name)
+        self.category = category
+        self.source = source
         # TODO: this just clobbers the interpolation from the user...
         # need to unify with the catalog
-        object.__setattr__(self, "interpolation", _norm_interp(interpolation))
-        object.__setattr__(self, "_luts", {})
+        self.interpolation = _norm_interp(interpolation)
 
-    def __setattr__(self, _name: str, _value: Any) -> None:
-        raise AttributeError("Colormap is immutable")
+        self._lut_cache: dict[tuple[int, float], np.ndarray] = {}
+        self._initialized = True
 
-    def __reduce__(self) -> str | tuple[Any, ...]:
-        return self.__class__, (self.color_stops,)
+    @overload
+    def __call__(
+        # would prefer to make this Arraylike, but that overlaps with float
+        self,
+        x: NDArray | Sequence[float],
+        *,
+        N: int = 256,
+        gamma: float = 1,
+    ) -> NDArray[np.float64]:
+        ...
 
-    def __eq__(self, other: object) -> bool:
-        if not isinstance(other, Colormap):
-            try:
-                other = Colormap(other)  # type: ignore
-            except Exception:
-                return NotImplemented
-        return self.color_stops == other.color_stops
+    @overload
+    def __call__(self, x: float, *, N: int = 256, gamma: float = 1) -> Color:
+        ...
+
+    def __call__(
+        self, x: float | NDArray | Sequence[float], *, N: int = 256, gamma: float = 1
+    ) -> Color | NDArray[np.float64]:
+        """Map scalar values in X to an RGBA array.
+
+        This is the primary API for "using" a `cmap.Colormap` to map scalar values to
+        colors.
+
+        The dtype of x matters.  If x is an integer dtype, then it is interpreted as
+        (fancy) indexing directly into the LUT.  If x is a float, then it is assumed to
+        be a normalized value in [0, 1] and will be mapped linearly to the nearest color
+        in the LUT (use a higher N for finer sampling).
+
+        Parameters
+        ----------
+        x : float | array-like
+            The scalar values to map to colors. If `x` is a float, a single color object
+            will be returned. If x is an array-like, an array of RGBA colors will be
+            returned with shape `x.shape + (4,)`.  See note above about the dtype of x.
+        N : int
+            Number of samples in the LUT. This is used to determine the resolution of
+            the mapping (by default, 256).  Note that depending on the data being
+            mapped, N can cause slight rounding errors in some cases.
+            N of 256 is the default in matplotlib, so it is here as well, but note that
+            N=255 (odd numbered) will result in an exact color match being returned for
+            a value of 0.5 in a colormap with an odd number of colors.
+        gamma : float
+            The gamma value to use when creating the LUT.
+
+        Returns
+        -------
+        color : Color | NDArray
+            If X is a float, a single RGBA color will be returned. If x is an
+            array-like, an array of RGBA colors will be returned with shape
+            `x.shape + (4,)`
+
+
+        Examples
+        --------
+        >>> from cmap import Colormap
+        >>> from tifffile import imread
+        >>> cmap = Colormap("viridis")
+        >>> data = imread('some_path.tif')
+        >>> data = data - data.min()  # normalize to 0-1
+        >>> data = data / data.max()  # normalize to 0-1
+        >>> colored_img = cmap(data)
+        """
+        lut = self.lut(N=N, gamma=gamma)
+        xa = np.array(x, copy=True)
+        if not xa.dtype.isnative:
+            xa = xa.byteswap().newbyteorder()  # Native byteorder is faster.
+        if xa.dtype.kind == "f":
+            N = len(lut)
+            with np.errstate(invalid="ignore"):
+                xa *= N
+                # Negative values are out of range, but astype(int) would
+                # truncate them towards zero.
+                xa[xa < 0] = -1
+                # xa == 1 (== N after multiplication) is not out of range.
+                xa[xa == N] = N - 1
+                # Avoid converting large positive values to negative integers.
+                np.clip(xa, -1, N, out=xa)
+                xa = xa.astype(int)
+
+        result = lut.take(xa, axis=0, mode="clip")
+        return result if np.iterable(x) else Color(result)
 
     def as_dict(self) -> ColormapDict:
         """Return a dictionary representation of the colormap.
@@ -201,6 +268,11 @@ class Colormap:
         the number of requested colors in the LUT. The LUT can be used to map scalar
         values (that have been normalized to 0-1) to colors.
 
+        The output of this function is used by the `__call__` method, but may also
+        be used directly by users.
+
+        LUTs of a particular size and gamma value are cached.
+
         Parameters
         ----------
         N : int
@@ -208,58 +280,28 @@ class Colormap:
         gamma : float
             The gamma value to use for the LUT.
         """
-        if (N, gamma) not in self._luts:
-            self._luts[(N, gamma)] = self.color_stops.to_lut(N, gamma)
-        return self._luts[(N, gamma)]
+        if (N, gamma) not in self._lut_cache:
+            self._lut_cache[(N, gamma)] = self.color_stops.to_lut(N, gamma)
+        return self._lut_cache[(N, gamma)]
 
-    # would prefer to make this Arraylike, but that overlaps with float
-    @overload
-    def __call__(
-        self, X: NDArray | Sequence[float], *, N: int = 256, gamma: float = 1
-    ) -> NDArray[np.float64]:
-        ...
-
-    @overload
-    def __call__(self, X: float, *, N: int = 256, gamma: float = 1) -> Color:
-        ...
-
-    def __call__(
-        self, X: float | NDArray | Sequence[float], *, N: int = 256, gamma: float = 1
-    ) -> Color | NDArray[np.float64]:
-        """Map scalar values in X to an RGBA array.
-
-        NOTE: the N value here (which determines how finely we sample the LUT)
-        can cause slight rounding errors in some cases.
-        N of 256 is the default in matplotlib, so it is here as well, but note that
-        N=255 (odd numbered) will result in an exact "halfway" value in, for example,
-        a colormap with 3 colors.
-        """
-        lut = self.lut(N=N, gamma=gamma)
-        xa = np.array(X, copy=True)
-        if not xa.dtype.isnative:
-            xa = xa.byteswap().newbyteorder()  # Native byteorder is faster.
-        if xa.dtype.kind == "f":
-            N = len(lut)
-            with np.errstate(invalid="ignore"):
-                xa *= N
-                # Negative values are out of range, but astype(int) would
-                # truncate them towards zero.
-                xa[xa < 0] = -1
-                # xa == 1 (== N after multiplication) is not out of range.
-                xa[xa == N] = N - 1
-                # Avoid converting large positive values to negative integers.
-                np.clip(xa, -1, N, out=xa)
-                xa = xa.astype(int)
-
-        result = lut.take(xa, axis=0, mode="clip")
-        return result if np.iterable(X) else Color(result)
-
-    def iter_colors(self, N: Iterable[int] | int | None = None) -> Iterator[Color]:
+    def iter_colors(self, N: Iterable[float] | int | None = None) -> Iterator[Color]:
         """Return a list of N color objects sampled evenly over the range of the LUT.
 
         If N is an integer, it will return a list of N colors spanning the full range
         of the colormap. If N is an iterable, it will return a list of colors at the
         positions specified by the iterable.
+
+        Parameters
+        ----------
+        N : int | Iterable[float] | None
+            The number of colors to return, or an iterable of positions to sample. If
+            not provided (the default), N will be set to the number of colors in the
+            colormap.
+
+        Yields
+        ------
+        color: Color
+            Color objects.
         """
         if N is None:
             N = len(self.color_stops)
@@ -270,10 +312,13 @@ class Colormap:
     def reversed(self, name: str | None = None) -> Colormap:
         """Return a new Colormap, with reversed colors.
 
-        By default, the name of the new colormap will be the name of the original
-        colormap with "_r" appended. If the original colormap name ends in "_r", the
-        new colormap name will be the original name with "_r" removed. If the name
-        argument is provided, it will be used as the name of the new colormap.
+        Parameters
+        ----------
+        name: str | None
+            By default, the name of the new colormap will be the name of the original
+            colormap with "_r" appended. If the original colormap name ends in "_r", the
+            new colormap name will be the original name with "_r" removed. If the name
+            argument is provided, it will be used as the name of the new colormap.
         """
         if name is None:
             name = self.name[:-2] if self.name.endswith("_r") else f"{self.name}_r"
@@ -285,11 +330,58 @@ class Colormap:
             category=self.category,
         )
 
+    def to_css(
+        self,
+        max_stops: int | None = None,
+        angle: int = 90,
+        radial: bool = False,
+        as_hex: bool = False,
+    ) -> str:
+        """Return a CSS representation of the colormap as a linear or radial gradient.
+
+        Parameters
+        ----------
+        max_stops : int, optional
+            May be used to limit the number of color stops in the css.
+        angle : int, optional
+            Angle of the gradient in degrees. by default 90. (ignored for radial)
+        radial : bool, optional
+            If `True`, return a radial gradient, by default False.
+        as_hex : bool, optional
+            If `True`, return colors as hex strings, by default use `rgba()` strings.
+
+        Examples
+        --------
+        >>> from cmap import Colormap
+        >>> print(Colormap("brg").to_css())
+        background: rgb(0, 0, 255);
+        background: linear-gradient(
+            90deg, rgb(0, 0, 255) 0%, rgb(255, 0, 0) 50%, rgb(0, 255, 0) 100%
+        );
+        """
+        return self.color_stops.to_css(
+            max_stops=max_stops, angle=angle, radial=radial, as_hex=as_hex
+        )
+
+    def __setattr__(self, _name: str, _value: Any) -> None:
+        if getattr(self, "_initialized", False):
+            raise AttributeError("Colormap is immutable")
+        object.__setattr__(self, _name, _value)
+
+    def __reduce__(self) -> str | tuple[Any, ...]:
+        # for pickle
+        return self.__class__, (self.color_stops,)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Colormap):
+            try:
+                other = Colormap(other)  # type: ignore
+            except Exception:
+                return NotImplemented
+        return self.color_stops == other.color_stops
+
     def __repr__(self) -> str:
-        # in case we're in init
-        name = getattr(self, "name", None)
-        n_stops = len(self.color_stops) if hasattr(self, "color_stops") else 0
-        return f"Colormap(name={name!r}, {n_stops} colors)"
+        return f"Colormap(name={self.name!r}, <{len(self.color_stops)} colors>)"
 
     # -------------------------- RICH REPR SUPPORT ----------------------------------
 
@@ -308,19 +400,11 @@ class Colormap:
             return v  # pragma: no cover
         return cls(**v) if isinstance(v, dict) else cls(v)
 
-    # ------------------------- THIRD PARTY SUPPORT ---------------------------------
+    # pysgnal.EventedModel support
+    def _json_encode(self) -> ColormapDict:
+        return self.as_dict()
 
-    def to_css(
-        self,
-        max_stops: int | None = None,
-        angle: int = 90,
-        radial: bool = False,
-        as_hex: bool = False,
-    ) -> str:
-        """Return a CSS representation of the colormap."""
-        return self.color_stops.to_css(
-            max_stops=max_stops, angle=angle, radial=radial, as_hex=as_hex
-        )
+    # ------------------------- THIRD PARTY SUPPORT ---------------------------------
 
     def to_matplotlib(
         self, N: int = 256, gamma: float = 1.0
@@ -385,10 +469,10 @@ class Colormap:
         """
         return _external.to_altair(self, N=N)
 
-    def visualize(self, dpi: int = 100, dest: str | None = None) -> MplFigure:
+    def viscm(self, dpi: int = 100, dest: str | None = None) -> MplFigure:
         """Plot colormap using viscm.  (Requires viscm to be installed.).
 
-        https://github.com/matplotlib/viscm
+        See <https://github.com/matplotlib/viscm> for details
 
         Parameters
         ----------
@@ -396,6 +480,11 @@ class Colormap:
             dpi for saved image. Defaults to 100.
         dest : str, optional
             If provided, the image will be saved to this path. Defaults to None.
+
+        Returns
+        -------
+        fig : matplotlib.figure.Figure
+            The figure object containing the plot.
         """
         return _external.viscm_plot(self, dpi, dest)
 
@@ -617,9 +706,9 @@ class ColorStops(Sequence[ColorStop]):
         angle : int, optional
             Angle of the gradient in degrees. by default 90. (ignored for radial)
         radial : bool, optional
-            If True, return a radial gradient, by default False.
+            If `True`, return a radial gradient, by default False.
         as_hex : bool, optional
-            If True, return colors as hex strings, by default use `rgba()` strings.
+            If `True`, return colors as hex strings, by default use `rgba()` strings.
         """
         if max_stops and len(self._stops) > max_stops:
             stops = tuple(np.linspace(0, 1, max_stops))

@@ -120,8 +120,7 @@ def viscm_plot(
         from viscm import viscm
     except ModuleNotFoundError as e:  # pragma: no cover
         raise type(e)(
-            "viscm and matplotlib is required to use this method. "
-            "Please `pip install viscm`."
+            "viscm is required to use this method. Please `pip install viscm`."
         ) from e
 
     if hasattr(cmap, "to_mpl"):

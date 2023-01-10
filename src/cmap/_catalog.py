@@ -109,8 +109,8 @@ if TYPE_CHECKING:
 
     class CatalogItem(TypedDict):
         data: str
-        tags: list[str]
         category: Category
+        tags: NotRequired[list[str]]
         interpolation: NotRequired[bool]
 
     # would be nice to subclass CatalogItem... but can't
@@ -127,43 +127,36 @@ if TYPE_CHECKING:
 CATALOG: CatalogDict = {
     "Accent": {
         "data": "cmap.data._colorbrewer:Accent_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Accent_3": {
         "data": "cmap.data._colorbrewer:Accent_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Accent_4": {
         "data": "cmap.data._colorbrewer:Accent_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Accent_5": {
         "data": "cmap.data._colorbrewer:Accent_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Accent_6": {
         "data": "cmap.data._colorbrewer:Accent_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Accent_7": {
         "data": "cmap.data._colorbrewer:Accent_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Accent_8": {
         "data": "cmap.data._colorbrewer:Accent_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
@@ -231,60 +224,50 @@ CATALOG: CatalogDict = {
     },
     "BrBG": {
         "data": "cmap.data._colorbrewer:BrBG_11",
-        "tags": [],
         "category": "Diverging",
     },
     "BrBG_10": {
         "data": "cmap.data._colorbrewer:BrBG_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_11": {
         "data": "cmap.data._colorbrewer:BrBG_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_3": {
         "data": "cmap.data._colorbrewer:BrBG_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_4": {
         "data": "cmap.data._colorbrewer:BrBG_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_5": {
         "data": "cmap.data._colorbrewer:BrBG_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_6": {
         "data": "cmap.data._colorbrewer:BrBG_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_7": {
         "data": "cmap.data._colorbrewer:BrBG_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_8": {
         "data": "cmap.data._colorbrewer:BrBG_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "BrBG_9": {
         "data": "cmap.data._colorbrewer:BrBG_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
@@ -384,48 +367,40 @@ CATALOG: CatalogDict = {
     },
     "CMRmap": {
         "data": "cmap.data._CMRmap:CMRmap",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "Dark2": {
         "data": "cmap.data._colorbrewer:Dark2_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Dark2_3": {
         "data": "cmap.data._colorbrewer:Dark2_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Dark2_4": {
         "data": "cmap.data._colorbrewer:Dark2_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Dark2_5": {
         "data": "cmap.data._colorbrewer:Dark2_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Dark2_6": {
         "data": "cmap.data._colorbrewer:Dark2_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Dark2_7": {
         "data": "cmap.data._colorbrewer:Dark2_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Dark2_8": {
         "data": "cmap.data._colorbrewer:Dark2_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
@@ -716,275 +691,229 @@ CATALOG: CatalogDict = {
     },
     "PRGn": {
         "data": "cmap.data._colorbrewer:PRGn_11",
-        "tags": [],
         "category": "Diverging",
     },
     "PRGn_10": {
         "data": "cmap.data._colorbrewer:PRGn_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_11": {
         "data": "cmap.data._colorbrewer:PRGn_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_3": {
         "data": "cmap.data._colorbrewer:PRGn_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_4": {
         "data": "cmap.data._colorbrewer:PRGn_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_5": {
         "data": "cmap.data._colorbrewer:PRGn_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_6": {
         "data": "cmap.data._colorbrewer:PRGn_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_7": {
         "data": "cmap.data._colorbrewer:PRGn_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_8": {
         "data": "cmap.data._colorbrewer:PRGn_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PRGn_9": {
         "data": "cmap.data._colorbrewer:PRGn_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Paired": {
         "data": "cmap.data._colorbrewer:Paired_12",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_10": {
         "data": "cmap.data._colorbrewer:Paired_10",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_11": {
         "data": "cmap.data._colorbrewer:Paired_11",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_12": {
         "data": "cmap.data._colorbrewer:Paired_12",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_3": {
         "data": "cmap.data._colorbrewer:Paired_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_4": {
         "data": "cmap.data._colorbrewer:Paired_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_5": {
         "data": "cmap.data._colorbrewer:Paired_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_6": {
         "data": "cmap.data._colorbrewer:Paired_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_7": {
         "data": "cmap.data._colorbrewer:Paired_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_8": {
         "data": "cmap.data._colorbrewer:Paired_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Paired_9": {
         "data": "cmap.data._colorbrewer:Paired_9",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1": {
         "data": "cmap.data._colorbrewer:Pastel1_9",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_3": {
         "data": "cmap.data._colorbrewer:Pastel1_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_4": {
         "data": "cmap.data._colorbrewer:Pastel1_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_5": {
         "data": "cmap.data._colorbrewer:Pastel1_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_6": {
         "data": "cmap.data._colorbrewer:Pastel1_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_7": {
         "data": "cmap.data._colorbrewer:Pastel1_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_8": {
         "data": "cmap.data._colorbrewer:Pastel1_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel1_9": {
         "data": "cmap.data._colorbrewer:Pastel1_9",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2": {
         "data": "cmap.data._colorbrewer:Pastel2_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2_3": {
         "data": "cmap.data._colorbrewer:Pastel2_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2_4": {
         "data": "cmap.data._colorbrewer:Pastel2_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2_5": {
         "data": "cmap.data._colorbrewer:Pastel2_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2_6": {
         "data": "cmap.data._colorbrewer:Pastel2_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2_7": {
         "data": "cmap.data._colorbrewer:Pastel2_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Pastel2_8": {
         "data": "cmap.data._colorbrewer:Pastel2_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "PiYG": {
         "data": "cmap.data._colorbrewer:PiYG_11",
-        "tags": [],
         "category": "Diverging",
     },
     "PiYG_10": {
         "data": "cmap.data._colorbrewer:PiYG_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_11": {
         "data": "cmap.data._colorbrewer:PiYG_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_3": {
         "data": "cmap.data._colorbrewer:PiYG_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_4": {
         "data": "cmap.data._colorbrewer:PiYG_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_5": {
         "data": "cmap.data._colorbrewer:PiYG_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_6": {
         "data": "cmap.data._colorbrewer:PiYG_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_7": {
         "data": "cmap.data._colorbrewer:PiYG_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_8": {
         "data": "cmap.data._colorbrewer:PiYG_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PiYG_9": {
         "data": "cmap.data._colorbrewer:PiYG_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
@@ -1084,60 +1013,50 @@ CATALOG: CatalogDict = {
     },
     "PuOr": {
         "data": "cmap.data._colorbrewer:PuOr_11",
-        "tags": [],
         "category": "Diverging",
     },
     "PuOr_10": {
         "data": "cmap.data._colorbrewer:PuOr_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_11": {
         "data": "cmap.data._colorbrewer:PuOr_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_3": {
         "data": "cmap.data._colorbrewer:PuOr_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_4": {
         "data": "cmap.data._colorbrewer:PuOr_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_5": {
         "data": "cmap.data._colorbrewer:PuOr_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_6": {
         "data": "cmap.data._colorbrewer:PuOr_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_7": {
         "data": "cmap.data._colorbrewer:PuOr_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_8": {
         "data": "cmap.data._colorbrewer:PuOr_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "PuOr_9": {
         "data": "cmap.data._colorbrewer:PuOr_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
@@ -1237,119 +1156,99 @@ CATALOG: CatalogDict = {
     },
     "RdBu": {
         "data": "cmap.data._colorbrewer:RdBu_11",
-        "tags": [],
         "category": "Diverging",
     },
     "RdBu_10": {
         "data": "cmap.data._colorbrewer:RdBu_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_11": {
         "data": "cmap.data._colorbrewer:RdBu_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_3": {
         "data": "cmap.data._colorbrewer:RdBu_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_4": {
         "data": "cmap.data._colorbrewer:RdBu_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_5": {
         "data": "cmap.data._colorbrewer:RdBu_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_6": {
         "data": "cmap.data._colorbrewer:RdBu_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_7": {
         "data": "cmap.data._colorbrewer:RdBu_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_8": {
         "data": "cmap.data._colorbrewer:RdBu_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdBu_9": {
         "data": "cmap.data._colorbrewer:RdBu_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy": {
         "data": "cmap.data._colorbrewer:RdGy_11",
-        "tags": [],
         "category": "Diverging",
     },
     "RdGy_10": {
         "data": "cmap.data._colorbrewer:RdGy_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_11": {
         "data": "cmap.data._colorbrewer:RdGy_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_3": {
         "data": "cmap.data._colorbrewer:RdGy_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_4": {
         "data": "cmap.data._colorbrewer:RdGy_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_5": {
         "data": "cmap.data._colorbrewer:RdGy_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_6": {
         "data": "cmap.data._colorbrewer:RdGy_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_7": {
         "data": "cmap.data._colorbrewer:RdGy_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_8": {
         "data": "cmap.data._colorbrewer:RdGy_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdGy_9": {
         "data": "cmap.data._colorbrewer:RdGy_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
@@ -1402,119 +1301,99 @@ CATALOG: CatalogDict = {
     },
     "RdYlBu": {
         "data": "cmap.data._colorbrewer:RdYlBu_11",
-        "tags": [],
         "category": "Diverging",
     },
     "RdYlBu_10": {
         "data": "cmap.data._colorbrewer:RdYlBu_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_11": {
         "data": "cmap.data._colorbrewer:RdYlBu_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_3": {
         "data": "cmap.data._colorbrewer:RdYlBu_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_4": {
         "data": "cmap.data._colorbrewer:RdYlBu_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_5": {
         "data": "cmap.data._colorbrewer:RdYlBu_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_6": {
         "data": "cmap.data._colorbrewer:RdYlBu_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_7": {
         "data": "cmap.data._colorbrewer:RdYlBu_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_8": {
         "data": "cmap.data._colorbrewer:RdYlBu_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlBu_9": {
         "data": "cmap.data._colorbrewer:RdYlBu_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn": {
         "data": "cmap.data._colorbrewer:RdYlGn_11",
-        "tags": [],
         "category": "Diverging",
     },
     "RdYlGn_10": {
         "data": "cmap.data._colorbrewer:RdYlGn_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_11": {
         "data": "cmap.data._colorbrewer:RdYlGn_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_3": {
         "data": "cmap.data._colorbrewer:RdYlGn_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_4": {
         "data": "cmap.data._colorbrewer:RdYlGn_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_5": {
         "data": "cmap.data._colorbrewer:RdYlGn_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_6": {
         "data": "cmap.data._colorbrewer:RdYlGn_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_7": {
         "data": "cmap.data._colorbrewer:RdYlGn_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_8": {
         "data": "cmap.data._colorbrewer:RdYlGn_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "RdYlGn_9": {
         "data": "cmap.data._colorbrewer:RdYlGn_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
@@ -1567,216 +1446,180 @@ CATALOG: CatalogDict = {
     },
     "Set1": {
         "data": "cmap.data._colorbrewer:Set1_9",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_3": {
         "data": "cmap.data._colorbrewer:Set1_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_4": {
         "data": "cmap.data._colorbrewer:Set1_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_5": {
         "data": "cmap.data._colorbrewer:Set1_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_6": {
         "data": "cmap.data._colorbrewer:Set1_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_7": {
         "data": "cmap.data._colorbrewer:Set1_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_8": {
         "data": "cmap.data._colorbrewer:Set1_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set1_9": {
         "data": "cmap.data._colorbrewer:Set1_9",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2": {
         "data": "cmap.data._colorbrewer:Set2_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2_3": {
         "data": "cmap.data._colorbrewer:Set2_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2_4": {
         "data": "cmap.data._colorbrewer:Set2_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2_5": {
         "data": "cmap.data._colorbrewer:Set2_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2_6": {
         "data": "cmap.data._colorbrewer:Set2_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2_7": {
         "data": "cmap.data._colorbrewer:Set2_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set2_8": {
         "data": "cmap.data._colorbrewer:Set2_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3": {
         "data": "cmap.data._colorbrewer:Set3_12",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_10": {
         "data": "cmap.data._colorbrewer:Set3_10",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_11": {
         "data": "cmap.data._colorbrewer:Set3_11",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_12": {
         "data": "cmap.data._colorbrewer:Set3_12",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_3": {
         "data": "cmap.data._colorbrewer:Set3_3",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_4": {
         "data": "cmap.data._colorbrewer:Set3_4",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_5": {
         "data": "cmap.data._colorbrewer:Set3_5",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_6": {
         "data": "cmap.data._colorbrewer:Set3_6",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_7": {
         "data": "cmap.data._colorbrewer:Set3_7",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_8": {
         "data": "cmap.data._colorbrewer:Set3_8",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Set3_9": {
         "data": "cmap.data._colorbrewer:Set3_9",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "Spectral": {
         "data": "cmap.data._colorbrewer:Spectral_11",
-        "tags": [],
         "category": "Diverging",
     },
     "Spectral_10": {
         "data": "cmap.data._colorbrewer:Spectral_10",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_11": {
         "data": "cmap.data._colorbrewer:Spectral_11",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_3": {
         "data": "cmap.data._colorbrewer:Spectral_3",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_4": {
         "data": "cmap.data._colorbrewer:Spectral_4",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_5": {
         "data": "cmap.data._colorbrewer:Spectral_5",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_6": {
         "data": "cmap.data._colorbrewer:Spectral_6",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_7": {
         "data": "cmap.data._colorbrewer:Spectral_7",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_8": {
         "data": "cmap.data._colorbrewer:Spectral_8",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
     "Spectral_9": {
         "data": "cmap.data._colorbrewer:Spectral_9",
-        "tags": [],
         "category": "Diverging",
         "interpolation": False,
     },
@@ -1990,16 +1833,14 @@ CATALOG: CatalogDict = {
     },
     "blue": {
         "data": "cmap.data._basic_colors:blue",
-        "tags": [],
         "category": "Sequential",
     },
     "bone": {"data": "cmap.data._matlab:bone", "tags": ["2"], "category": "Sequential"},
     "brg": {
         "data": "cmap.data._matplotlib:brg",
-        "tags": [],
         "category": "Miscellaneous",
     },
-    "bwr": {"data": "cmap.data._matplotlib:bwr", "tags": [], "category": "Diverging"},
+    "bwr": {"data": "cmap.data._matplotlib:bwr", "category": "Diverging"},
     "cividis": {
         "data": "cmap.data._matplotlib:Cividis",
         "tags": ["uniform"],
@@ -2008,7 +1849,6 @@ CATALOG: CatalogDict = {
     "cool": {"data": "cmap.data._matlab:cool", "tags": ["2"], "category": "Sequential"},
     "coolwarm": {
         "data": "cmap.data._moreland:CoolWarm",
-        "tags": [],
         "category": "Diverging",
     },
     "copper": {
@@ -2018,18 +1858,15 @@ CATALOG: CatalogDict = {
     },
     "cubehelix": {
         "data": "cmap.data._cubehelix:cubehelix",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "cyan": {
         "data": "cmap.data._basic_colors:cyan",
-        "tags": [],
         "category": "Sequential",
     },
-    "flag": {"data": "cmap.data._matlab:flag", "tags": [], "category": "Miscellaneous"},
+    "flag": {"data": "cmap.data._matlab:flag", "category": "Miscellaneous"},
     "gist_earth": {
         "data": "cmap.data._yorik:earth",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "gist_gray": {
@@ -2044,17 +1881,14 @@ CATALOG: CatalogDict = {
     },
     "gist_ncar": {
         "data": "cmap.data._yorik:ncar",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "gist_rainbow": {
         "data": "cmap.data._yorik:rainbow",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "gist_stern": {
         "data": "cmap.data._yorik:stern",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "gist_yarg": {
@@ -2064,32 +1898,28 @@ CATALOG: CatalogDict = {
     },
     "gnuplot": {
         "data": "cmap.data._gnuplot:gnuplot",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "gnuplot2": {
         "data": "cmap.data._gnuplot:gnuplot2",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "gray": {"data": "cmap.data._matlab:gray", "tags": ["2"], "category": "Sequential"},
-    "grays": {"data": "cmap.data._matlab:gray", "tags": [], "category": "Sequential"},
+    "grays": {"data": "cmap.data._matlab:gray", "category": "Sequential"},
     "green": {
         "data": "cmap.data._basic_colors:green",
-        "tags": [],
         "category": "Sequential",
     },
     "hot": {"data": "cmap.data._matlab:hot", "tags": ["2"], "category": "Sequential"},
-    "hsv": {"data": "cmap.data._matlab:hsv", "tags": [], "category": "Cyclic"},
+    "hsv": {"data": "cmap.data._matlab:hsv", "category": "Cyclic"},
     "inferno": {
         "data": "cmap.data._matplotlib_new:Inferno",
         "tags": ["uniform"],
         "category": "Sequential",
     },
-    "jet": {"data": "cmap.data._matlab:jet", "tags": [], "category": "Miscellaneous"},
+    "jet": {"data": "cmap.data._matlab:jet", "category": "Miscellaneous"},
     "magenta": {
         "data": "cmap.data._basic_colors:magenta",
-        "tags": [],
         "category": "Sequential",
     },
     "magma": {
@@ -2099,12 +1929,10 @@ CATALOG: CatalogDict = {
     },
     "nipy_spectral": {
         "data": "cmap.data._nipy:nipy_spectral",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "ocean": {
         "data": "cmap.data._gnuplot:ocean",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "pink": {"data": "cmap.data._matlab:pink", "tags": ["2"], "category": "Sequential"},
@@ -2115,22 +1943,18 @@ CATALOG: CatalogDict = {
     },
     "prism": {
         "data": "cmap.data._matlab:prism",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "rainbow": {
         "data": "cmap.data._gnuplot:rainbow",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "red": {
         "data": "cmap.data._basic_colors:red",
-        "tags": [],
         "category": "Sequential",
     },
     "seismic": {
         "data": "cmap.data._matplotlib:seismic",
-        "tags": [],
         "category": "Diverging",
     },
     "spring": {
@@ -2145,70 +1969,58 @@ CATALOG: CatalogDict = {
     },
     "tab10": {
         "data": "cmap.data._tableau:Tableau10",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab10_colorblind": {
         "data": "cmap.data._tableau:ColorBlind10",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab10_light": {
         "data": "cmap.data._tableau:Tableau10_Light",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab10_medium": {
         "data": "cmap.data._tableau:Tableau10_Medium",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab20": {
         "data": "cmap.data._tableau:Tableau20",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab20b": {
         "data": "cmap.data._tableau:Tableau20b",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab20c": {
         "data": "cmap.data._tableau:Tableau20c",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "tab_traffic_light": {
         "data": "cmap.data._tableau:Traffic_Light",
-        "tags": [],
         "category": "Qualitative",
         "interpolation": False,
     },
     "terrain": {
         "data": "cmap.data._igor:terrain",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "turbo": {
         "data": "cmap.data._turbo:Turbo",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "twilight": {
         "data": "cmap.data._matplotlib:Twilight",
-        "tags": [],
         "category": "Cyclic",
     },
     "twilight_shifted": {
         "data": "cmap.data._matplotlib:Twilight_shifted",
-        "tags": [],
         "category": "Cyclic",
     },
     "viridis": {
@@ -2223,234 +2035,212 @@ CATALOG: CatalogDict = {
     },
     "yellow": {
         "data": "cmap.data._basic_colors:yellow",
-        "tags": [],
         "category": "Sequential",
     },
     # vispy
     "vispy_light_blues": {
         "data": "cmap.data._vispy:light_blues",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_single_hue": {
         "data": "cmap.data._vispy:single_hue",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_orange": {  # problematic name
         "data": "cmap.data._vispy:orange",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_GrBu": {  # name looks too much like colorbrewer
         "data": "cmap.data._vispy:GrBu",
-        "tags": [],
         "category": "Diverging",
     },
     "vispy_GrBu_d": {  # name looks too much like colorbrewer
         "data": "cmap.data._vispy:GrBu_d",
-        "tags": [],
         "category": "Diverging",
     },
     "vispy_PuGr": {  # name looks too much like colorbrewer
         "data": "cmap.data._vispy:PuGr",
-        "tags": [],
         "category": "Diverging",
     },
     "vispy_RdBu": {
         "data": "cmap.data._vispy:RdBu",
-        "tags": [],
         "category": "Diverging",
     },
     "vispy_diverging": {
         "data": "cmap.data._vispy:diverging",
-        "tags": [],
         "category": "Diverging",
     },
     "vispy_husl": {
         "data": "cmap.data._vispy:husl",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_hsl": {
         "data": "cmap.data._vispy:hsl",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_fire": {
         "data": "cmap.data._vispy:fire",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_ice": {
         "data": "cmap.data._vispy:ice",
-        "tags": [],
         "category": "Sequential",
     },
     "vispy_RdYeBuCy": {
         "data": "cmap.data._vispy:RdYeBuCy",
-        "tags": [],
         "category": "Diverging",
     },
     "glasbey": {
         "data": "cmap.data._glasbey:glasbey",
-        "tags": [],
         "category": "Qualitative",
     },
     "imagej_fire": {
         "data": "cmap.data._imagej:Fire",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "imagej_ice": {
         "data": "cmap.data._imagej:Ice",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "Green_Fire_Blue": {
         "data": "cmap.data._imagej:Green_Fire_Blue",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "HiLo": {
         "data": "cmap.data._imagej:HiLo",
-        "tags": [],
         "category": "Miscellaneous",
     },
     "algae": {
         "data": "cmap.data._cmocean.algae:algae",
-        "tags": [],
         "category": "Sequential",
     },
     "amp": {
         "data": "cmap.data._cmocean.amp:amp",
-        "tags": [],
         "category": "Sequential",
     },
     "balance": {
         "data": "cmap.data._cmocean.balance:balance",
-        "tags": [],
         "category": "Diverging",
     },
     "balance_blue": {
         "data": "cmap.data._cmocean.balance:balance_blue",
-        "tags": [],
         "category": "Sequential",
     },
     "balance_red": {
         "data": "cmap.data._cmocean.balance:balance_red",
-        "tags": [],
         "category": "Sequential",
     },
     "delta": {
         "data": "cmap.data._cmocean.delta:delta",
-        "tags": [],
         "category": "Diverging",
     },
     "delta_blue": {
         "data": "cmap.data._cmocean.delta:delta_blue",
-        "tags": [],
         "category": "Sequential",
     },
     "delta_green": {
         "data": "cmap.data._cmocean.delta:delta_green",
-        "tags": [],
         "category": "Sequential",
     },
     "curl": {
         "data": "cmap.data._cmocean.curl:curl",
-        "tags": [],
         "category": "Diverging",
     },
     "curl_pink": {
         "data": "cmap.data._cmocean.curl:curl_pink",
-        "tags": [],
         "category": "Sequential",
     },
     "curl_turquoise": {
         "data": "cmap.data._cmocean.curl:curl_turquoise",
-        "tags": [],
         "category": "Sequential",
     },
     "diff": {
         "data": "cmap.data._cmocean.diff:diff",
-        "tags": [],
         "category": "Diverging",
     },
     "tarn": {
         "data": "cmap.data._cmocean.tarn:tarn",
-        "tags": [],
         "category": "Diverging",
     },
     "dense": {
         "data": "cmap.data._cmocean.dense:dense",
-        "tags": [],
         "category": "Sequential",
     },
     "haline": {
         "data": "cmap.data._cmocean.haline:haline",
-        "tags": [],
         "category": "Sequential",
     },
     "ice": {
         "data": "cmap.data._cmocean.ice:ice",
-        "tags": [],
         "category": "Sequential",
     },
     "oxy": {
         "data": "cmap.data._cmocean.oxy:oxy",
-        "tags": [],
         "category": "Sequential",
     },
     "phase": {
         "data": "cmap.data._cmocean.phase:phase",
-        "tags": [],
         "category": "Cyclic",
     },
     "solar": {
         "data": "cmap.data._cmocean.solar:solar",
-        "tags": [],
         "category": "Sequential",
     },
     "turbid": {
         "data": "cmap.data._cmocean.turbid:turbid",
-        "tags": [],
         "category": "Sequential",
     },
     "thermal": {
         "data": "cmap.data._cmocean.thermal:thermal",
-        "tags": [],
         "category": "Sequential",
     },
     "speed": {
         "data": "cmap.data._cmocean.speed:speed",
-        "tags": [],
         "category": "Sequential",
     },
     "deep": {
         "data": "cmap.data._cmocean.deep:deep",
-        "tags": [],
         "category": "Sequential",
     },
     "matter": {
         "data": "cmap.data._cmocean.matter:matter",
-        "tags": [],
         "category": "Sequential",
     },
     "tempo": {
         "data": "cmap.data._cmocean.tempo:tempo",
-        "tags": [],
         "category": "Sequential",
     },
     "rain": {
         "data": "cmap.data._cmocean.rain:rain",
-        "tags": [],
         "category": "Sequential",
     },
     "topo": {
         "data": "cmap.data._cmocean.topo:topo",
-        "tags": [],
         "category": "Miscellaneous",
+    },
+    "rocket": {
+        "data": "cmap.data._seaborn:rocket",
+        "category": "Sequential",
+    },
+    "mako": {
+        "data": "cmap.data._seaborn:mako",
+        "category": "Sequential",
+    },
+    "vlag": {
+        "data": "cmap.data._seaborn:vlag",
+        "category": "Diverging",
+    },
+    "icefire": {
+        "data": "cmap.data._seaborn:icefire",
+        "category": "Diverging",
+    },
+    "flare": {
+        "data": "cmap.data._seaborn:flare",
+        "category": "Sequential",
+    },
+    "crest": {
+        "data": "cmap.data._seaborn:crest",
+        "category": "Sequential",
     },
 }
 
@@ -2497,6 +2287,7 @@ class Catalog:
         item["data"] = getattr(mod, attr)
         _item = cast("LoadedCatalogItem", item)
         _item["license"] = mod.__license__  # tests ensure this exists
+        _item.setdefault("tags", [])
         return _item
 
 

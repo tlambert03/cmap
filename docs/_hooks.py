@@ -1,12 +1,11 @@
 import base64
 import io
-import json
 import re
 from functools import partial
 from typing import Any, Sequence
 
 import numpy as np
-from cmap import RGBA, Colormap, _util
+from cmap import Colormap, _util
 from cmap._color import NAME_TO_RGB
 
 # the template for a single colormap
@@ -17,70 +16,6 @@ CMAP_DIV = """
 </div>
 """
 CMAP_LINK = '<a href="{url}">' + CMAP_DIV + "</a>"
-
-
-CHARTJS = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.1.2/chart.umd.min.js"
-CHARTJS_SHA = "sha512-KTyzZ0W6S8dUq9WIt8fSflj2ArYRGcGNIU5QcB1skGGd1EPFMupHZSexEsFFX18tZK4eO0iGGSZGuyrNIqjV8g=="
-
-CMAP_LINEARITY_PLOT = """
-<canvas id="{name}-linearity-chart" width="800" height="350"></canvas>
-<script src="{CHARTJS}" integrity="{CHARTJS_SHA}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-new Chart(document.getElementById("{name}-linearity-chart"), {{
-    type: 'scatter',
-    data: {{
-        datasets: [
-            {{ backgroundColor: {colors}, data: {data}, pointRadius: {radius}, borderWidth: 0 }},
-            {{ data: {deltas}, showLine: true, pointRadius: 0, borderColor: "#00000033", yAxisID: 'y1'}}
-        ]
-    }},
-    options: {{
-        animation: {{ duration: 800 }},
-        scales: {{
-            y: {{ max: 100, min: 0, title: {{ text: "Lightness L*", display: true}} }},
-            y1: {{ max: 2.5, min: -2.5, position: 'right', title: {{ text: "Deltas", display: true}} }}
-        }},
-        plugins: {{legend: {{display: false}} }},
-    }}
-}});
-</script>
-"""
-
-# NOTE: we're not adding the chart.js src here, meaning this has to be used after the
-# linearity plot above...
-CMAP_RGB_PLOT = """
-<canvas id="{name}-rgb-chart" width="800" height="350"></canvas>
-<script>
-new Chart(document.getElementById("{name}-rgb-chart"), {{
-    type: 'line',
-    data: {{
-        labels: {labels},
-        datasets: [
-            {{label: "red", borderColor: "#FF0000BB", data: {rdata} }},
-            {{label: "green", borderColor: "#00AA00BB", data: {gdata} }},
-            {{label: "blue", borderColor: "#0000FFBB", data: {bdata} }}
-        ]
-    }},
-    options: {{
-        scales: {{
-            y: {{ max: 1, min: 0, title: {{ text: "Component Value", display: true}} }},
-            x: {{
-                ticks: {{
-                    callback: function(val, index) {{
-                        return index % 10 === 0 ? this.getLabelForValue(val) : '';
-                    }},
-                    maxTicksLimit: 11,
-                    autoSkip: false,
-                    maxRotation: 0,
-                }},
-            }}
-        }},
-        plugins: {{legend: {{display: false}} }},
-        elements: {{point: {{radius: 0}}, line: {{borderWidth: 4}} }},
-    }}
-}});
-</script>
-"""
 
 
 def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
@@ -128,47 +63,6 @@ def _cmap_sineramp(match: re.Match) -> str:
         data = base64.b64encode(f.getvalue()).decode("ascii")
     alt = f"sineramp with {map_name} colormap applied"
     return f'<img style="height: 128px" width="100%" src="data:image/png;base64, {data}" alt="{alt}" />'
-
-
-def _cmap_linearity_plot(match: re.Match, N: int = 201) -> str:
-    """Convert a `cmap_linearity` tag to a plot of the colormap linearity."""
-    cmap_name = match[1].strip()
-    cm = Colormap(cmap_name)
-
-    x = np.linspace(0.0, 1.0, N)
-    light = _util.calc_lightness(cm, x)
-    _d = np.diff(light)
-    deltas = [{"x": round(a, 3), "y": round(b, 3)} for a, b in zip(x, _d)]
-    light_pairs = [{"x": round(a, 3), "y": round(b, 3)} for a, b in zip(x, light)]
-    colors = [RGBA(*c).to_hex() for c in cm(x)]
-    return CMAP_LINEARITY_PLOT.format(
-        name=cmap_name,
-        data=json.dumps(light_pairs),
-        deltas=json.dumps(deltas),
-        colors=json.dumps(colors),
-        radius=10,
-        CHARTJS_SHA=CHARTJS_SHA,
-        CHARTJS=CHARTJS,
-    )
-
-
-def _cmap_rgb_plot(match: re.Match) -> str:
-    """Convert a `cmap_rgb` tag to a plot of the colormap RGB values."""
-    cmap_name = match[1].strip()
-    cm = Colormap(cmap_name)
-    N = 101
-    x = np.linspace(0.0, 1.0, N)
-    colors = cm(x, N=N)
-    rdata = json.dumps(colors[:, 0].tolist())
-    gdata = json.dumps(colors[:, 1].tolist())
-    bdata = json.dumps(colors[:, 2].tolist())
-    return CMAP_RGB_PLOT.format(
-        name=cmap_name,
-        labels=json.dumps([round(i, 2) for i in x]),
-        rdata=rdata,
-        gdata=gdata,
-        bdata=bdata,
-    )
 
 
 def _cmap_catalog() -> str:
@@ -232,9 +126,7 @@ def _color_list() -> str:
 # markdown tag for a single colormap: {{ cmap: name }}
 CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}^\s]+)\s?(\d+)?\s?}}")
 CSS_CMAP_GRAY = re.compile(r"{{\s?cmap_gray:\s?([^}^\s]+)\s?(\d+)?\s?}}")
-CMAP_LINEARITY = re.compile(r"{{\s?cmap_linearity:\s?([^}]+)\s?}}")
 CMAP_SINERAMP = re.compile(r"{{\s?cmap_sineramp:\s?([^}]+)\s?}}")
-CMAP_RGB = re.compile(r"{{\s?cmap_rgb:\s?([^}]+)\s?}}")
 CMAP_EXPR = re.compile(r"{{\s?cmap_expr:\s(.+)\s}}")
 CMAP_CATALOG = r"{{ CMAP_CATALOG }}"
 COLOR_LIST = r"{{ COLOR_LIST }}"
@@ -243,8 +135,6 @@ COLOR_LIST = r"{{ COLOR_LIST }}"
 def on_page_content(html: str, **kwargs: Any) -> str:
     html = CSS_CMAP.sub(_cmap_div, html)
     html = CSS_CMAP_GRAY.sub(partial(_cmap_div, class_list=["grayscale"]), html)
-    html = CMAP_LINEARITY.sub(_cmap_linearity_plot, html)
-    html = CMAP_RGB.sub(_cmap_rgb_plot, html)
     html = CMAP_EXPR.sub(_cmap_expr, html)
     html = CMAP_SINERAMP.sub(_cmap_sineramp, html)
     if CMAP_CATALOG in html:

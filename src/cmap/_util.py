@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Sequence, cast
 
 import numpy as np
 
-from cmap import Colormap
-
 gradient = np.linspace(0, 1, 256)
 gradient = np.vstack((gradient, gradient))
 
@@ -14,8 +12,12 @@ if TYPE_CHECKING:
     from matplotlib.figure import Figure as MplFigure
     from numpy.typing import ArrayLike, NDArray
 
+    from cmap import Colormap
+
 
 def _ensure_cmap(cmap: Colormap | str) -> Colormap:
+    from cmap import Colormap
+
     cm = Colormap(cmap) if isinstance(cmap, str) else cmap
     if not isinstance(cm, Colormap):
         raise TypeError(f"Expected Colormap or str, got {type(cm)}")
@@ -416,6 +418,64 @@ def circlesineramp(
         alpha[rad < 0] = 0
 
     return cast(np.ndarray, im * alpha)
+
+
+def report(cm: Colormap, n: int = 256, uniform_space="CAM02-UCS") -> dict:
+    """Generate a report of data describing a colormap.
+
+    This is primarily used for generating charts in the documentation
+    """
+    from colorspacious import cspace_convert
+
+    if len(cm.color_stops) >= 100:
+        RGBA = np.asarray(cm.color_stops.color_array)
+        n = RGBA.shape[0]
+        x = np.linspace(0, 1, n)
+    else:
+        x = np.linspace(0, 1, n)
+        RGBA = cm(x)
+    RGB = RGBA[:, :3]
+
+    Jab = cspace_convert(RGB, "sRGB1", uniform_space)
+
+    local_deltas = np.sqrt(np.sum((Jab[:-1, :] - Jab[1:, :]) ** 2, axis=-1))
+    local_deltas = np.insert(local_deltas, 0, float("nan"))  # keep length the same
+    local_derivs = n * local_deltas  # export
+
+    lightness_deltas = np.diff(Jab[:, 0])
+    lightness_deltas = np.insert(lightness_deltas, 0, float("nan"))  # keep length same
+    lightness_derivs = n * lightness_deltas  # export
+
+    JchMs = cspace_convert(RGB, "sRGB1", "JChMs")
+    color = [
+        f"#{r:02X}{g:02X}{b:02X}"
+        for r, g, b in np.clip(RGB * 255, 0, 255).astype("uint8")
+    ]
+
+    return {
+        "x": x,
+        "R": RGB[:, 0],
+        "G": RGB[:, 1],
+        "B": RGB[:, 2],
+        "J": Jab[:, 0],
+        "a": Jab[:, 1],
+        "b": Jab[:, 2],
+        "color": color,
+        "chroma": JchMs[:, 1],
+        "hue": JchMs[:, 2],
+        "colorfulness": JchMs[:, 3],
+        "saturation": JchMs[:, 4],
+        "perceptual_derivs": local_derivs,
+        "lightness_derivs": lightness_derivs,
+    }
+
+    # J -> lightness
+    # C -> chroma
+    # h -> hue angle
+    # Q -> brightness
+    # M -> colorfulness
+    # s -> saturation
+    # H -> hue composition
 
 
 if __name__ == "__main__":

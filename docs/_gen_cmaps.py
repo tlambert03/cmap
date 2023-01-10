@@ -38,7 +38,7 @@ L* measured in
 {{{{ cmap_rgb: {name} }}}}
 """
 
-for name in catalog:
+for name in ("jet",):
     info = catalog[name]
     category = info["category"]
     output = f"catalog/{category}/{name}.md"

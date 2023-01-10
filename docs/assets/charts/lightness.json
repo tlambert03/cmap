@@ -1,0 +1,11 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": { "url": "/cmap/assets/data/jet.csv" },
+  "mark": { "type": "circle", "tooltip": true },
+  "encoding": {
+    "x": { "field": "x", "type": "quantitative" },
+    "y": { "field": "J", "type": "quantitative" },
+    "color": { "field": "color", "type": "nominal", "scale": null },
+    "size": { "value": 400 }
+  }
+}

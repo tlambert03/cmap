@@ -106,3 +106,4 @@ ENV/
 
 cmap/_version.py
 src/cmap/_version.py
+docs/assets/_data/

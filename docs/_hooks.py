@@ -16,7 +16,7 @@ CMAP_DIV = """
     <div class="cmap-bar" style="{css}"></div>
 </div>
 """
-CMAP_LINK = '<a href="{url}">' + CMAP_DIV + "</a>"
+CMAP_LINK = '<a rel="canonical" href="{url}">' + CMAP_DIV + "</a>"
 DEV_MODE = "serve" in sys.argv
 
 

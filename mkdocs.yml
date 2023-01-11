@@ -12,10 +12,10 @@ watch:
   - src
 
 nav:
-  - Home: index.md
+  - Overview: index.md
   - Colors: colors.md
   - Colormaps: colormaps.md
-  - Catalog: catalog/
+  - Colormap Catalog: catalog/
   - API: api/
 
 theme:
@@ -25,7 +25,7 @@ theme:
     - content.code.annotate
     - navigation.indexes
   icon:
-    logo: fontawesome/solid/eye-dropper
+    logo: fontawesome/solid/swatchbook
     repo: fontawesome/brands/github
   favicon: images/favicon.ico
   palette:

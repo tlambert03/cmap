@@ -34,7 +34,7 @@ def test_pydantic_validate() -> None:
         '{"color": "red", '
         '"colormap": {"name": "custom colormap", "identifier": "custom_colormap", '
         '"category": null, '
-        '"color_stops": ['
+        '"value": ['
         "[0.0, [1.0, 0.0, 0.0, 1]], "
         "[0.7, [0.0, 0.0, 1.0, 1]], "
         "[1.0, [1.0, 1.0, 1.0, 1]]]}"

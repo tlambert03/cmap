@@ -59,7 +59,7 @@ if TYPE_CHECKING:
         name: str
         identifier: str
         category: str | None
-        color_stops: list[tuple[float, list[float]]]
+        value: list[tuple[float, list[float]]]
 
 
 class Colormap:
@@ -67,7 +67,7 @@ class Colormap:
 
     Parameters
     ----------
-    arg0 : Color | ColorStop | Iterable[Color | ColorStop] | dict[float, Color]
+    value : Color | ColorStop | Iterable[Color | ColorStop] | dict[float, Color]
         The color data to use for the colormap. Can be a single color, a single
         color stop, a sequence of colors and/or color stops, or a dictionary
         mapping scalar values to colors.
@@ -126,7 +126,7 @@ class Colormap:
 
     def __init__(
         self,
-        arg0: ColorStopsLike,
+        value: ColorStopsLike,
         *,
         name: str | None = None,
         identifier: str | None = None,
@@ -136,18 +136,18 @@ class Colormap:
 
         name = name or identifier
         if not name:
-            name = arg0 if isinstance(arg0, str) else "custom colormap"
+            name = value if isinstance(value, str) else "custom colormap"
 
-        if isinstance(arg0, str):
-            rev = arg0.endswith("_r")
-            info = catalog[arg0[:-2] if rev else arg0]
+        if isinstance(value, str):
+            rev = value.endswith("_r")
+            info = catalog[value[:-2] if rev else value]
             interpolation = interpolation or info.get("interpolation", "linear")
             stops = _parse_colorstops(info["data"], interpolation)  # type: ignore
             category = category or info["category"]
             if rev:
                 stops = stops.reversed()
         else:
-            stops = _parse_colorstops(arg0)
+            stops = _parse_colorstops(value)
 
         # because we're using __setattr__ to make the object immutable
         self.color_stops = stops
@@ -253,7 +253,7 @@ class Colormap:
             "name": self.name,
             "identifier": self.identifier,
             "category": self.category,
-            "color_stops": [(p, list(c)) for p, c in self.color_stops],
+            "value": [(p, list(c)) for p, c in self.color_stops],
         }
 
     def lut(self, N: int = 256, gamma: float = 1) -> np.ndarray:

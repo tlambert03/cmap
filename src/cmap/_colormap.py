@@ -463,7 +463,9 @@ class Colormap:
         """
         return _external.to_altair(self, N=N)
 
-    def to_viscm(self, dpi: int = 100, dest: str | None = None) -> matplotlib.figure.Figure:
+    def to_viscm(
+        self, dpi: int = 100, dest: str | None = None
+    ) -> matplotlib.figure.Figure:
         """Plot colormap using viscm.  (Requires viscm to be installed.).
 
         See <https://github.com/matplotlib/viscm> for details

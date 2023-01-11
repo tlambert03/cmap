@@ -1,16 +1,10 @@
 from pathlib import Path
 
 import mkdocs_gen_files
+import pandas as pd
+from cmap import Colormap
 from cmap._catalog import catalog
 from cmap._util import report
-from cmap import Colormap
-import pandas as pd
-
-DOCS = Path(__file__).parent
-LICENSE_URL = {
-    "CC0": "https://creativecommons.org/publicdomain/zero/1.0/",
-    "Apache-2.0": "https://www.apache.org/licenses/LICENSE-2.0",
-}
 
 TEMPLATE = """# {name}
 
@@ -30,7 +24,7 @@ cm = Colormap('{name}')  # case insensitive
 
 ## Perceptual Lightness
 
-<canvas class="linearity-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
+<canvas class="linearity-chart cmap-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
 <p style="text-align: center;">
 <em style="font-size: small; color: gray;">
 L* measured in
@@ -40,14 +34,23 @@ L* measured in
 
 ## RGB components
 
-<canvas class="rgb-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
+<canvas class="rgb-chart cmap-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
 
 ## Hue & Saturation
 
-<canvas class="hsl-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
+<canvas class="hsl-chart cmap-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
 """
 
-for name in ('gist_stern',):
+DOCS = Path(__file__).parent
+LICENSE_URL = {
+    "CC0": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "Apache-2.0": "https://www.apache.org/licenses/LICENSE-2.0",
+    "MIT": "https://opensource.org/licenses/MIT",
+    "BSD-3-Clause": "https://opensource.org/licenses/BSD-3-Clause",
+    "BSD-2-Clause": "https://opensource.org/licenses/BSD-2-Clause",
+}
+
+for name in catalog:
     info = catalog[name]
     category = info["category"]
     output = f"catalog/{category}/{name}.md"

@@ -1,6 +1,7 @@
 import base64
 import io
 import re
+import sys
 from functools import partial
 from typing import Any, Sequence
 
@@ -16,6 +17,7 @@ CMAP_DIV = """
 </div>
 """
 CMAP_LINK = '<a href="{url}">' + CMAP_DIV + "</a>"
+DEV_MODE = "serve" in sys.argv
 
 
 def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
@@ -53,6 +55,9 @@ def _cmap_sineramp(match: re.Match) -> str:
 
     {{ cmap_sineramp: viridis }} -> <img class="cmap">...
     """
+    if DEV_MODE:
+        return "[sineramp slow -- disabled in `mkdocs serve`]"
+
     import imageio
 
     map_name = match[1].strip()
@@ -123,6 +128,7 @@ def _color_list() -> str:
 # -----------------------------------------------------------------------------
 # mkdocs hooks
 # -----------------------------------------------------------------------------
+
 # markdown tag for a single colormap: {{ cmap: name }}
 CSS_CMAP = re.compile(r"{{\s?cmap:\s?([^}^\s]+)\s?(\d+)?\s?}}")
 CSS_CMAP_GRAY = re.compile(r"{{\s?cmap_gray:\s?([^}^\s]+)\s?(\d+)?\s?}}")

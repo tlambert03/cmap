@@ -1,19 +1,37 @@
-var chart_canvases = document.getElementsByClassName("linearity-chart");
-for (var i = 0; i < chart_canvases.length; i++) {
-  makeLinearityChart(chart_canvases[i]);
-}
+initCharts();
 
-var chart_canvases = document.getElementsByClassName("rgb-chart");
-for (var i = 0; i < chart_canvases.length; i++) {
-  makeRGBChart(chart_canvases[i]);
-}
+async function initCharts() {
+  var charts = document.getElementsByClassName("cmap-chart");
+  if (charts.length == 0) {
+    return;
+  }
 
-var chart_canvases = document.getElementsByClassName("hsl-chart");
-for (var i = 0; i < chart_canvases.length; i++) {
-  makeHSLChart(chart_canvases[i]);
+  var chartElems = {};
+  // Make object mapping chart name to document element
+  for (var i = 0; i < charts.length; i++) {
+    var cmap_name = charts[i].getAttribute("data-cmap-name");
+    if (cmap_name in chartElems) {
+      chartElems[cmap_name].push(charts[i]);
+    } else {
+      chartElems[cmap_name] = [charts[i]];
+    }
+  }
+  // Make all charts for each cmap name
+  for (var cmap_name in chartElems) {
+    const response = await fetch(`/cmap/data/${cmap_name}.json`);
+    const cmap_data = await response.json();
+    for (var i = 0; i < chartElems[cmap_name].length; i++) {
+      var canv = chartElems[cmap_name][i];
+      if (canv.classList.contains("rgb-chart")) {
+        makeRGBChart(canv, cmap_data);
+      } else if (canv.classList.contains("hsl-chart")) {
+        makeHSLChart(canv, cmap_data);
+      } else if (canv.classList.contains("linearity-chart")) {
+        makeLinearityChart(canv, cmap_data);
+      }
+    }
+  }
 }
-
-// FIXME: we're fetching data three times here.
 
 //////////
 
@@ -22,11 +40,7 @@ GLOBAL_OPTIONS = {
   plugins: { legend: { display: false } },
 };
 
-async function makeLinearityChart(canvas) {
-  var cmap_name = canvas.getAttribute("data-cmap-name");
-  const response = await fetch(`/cmap/data/${cmap_name}.json`);
-  const cmap_data = await response.json();
-
+async function makeLinearityChart(canvas, cmap_data) {
   var lightness_data = [];
   var deltas = [];
   var colors = [];
@@ -73,11 +87,7 @@ async function makeLinearityChart(canvas) {
   });
 }
 
-async function makeRGBChart(canvas) {
-  var cmap_name = canvas.getAttribute("data-cmap-name");
-  const response = await fetch(`/cmap/data/${cmap_name}.json`);
-  const cmap_data = await response.json();
-
+async function makeRGBChart(canvas, cmap_data) {
   var rdata = [];
   var gdata = [];
   var bdata = [];
@@ -123,11 +133,7 @@ async function makeRGBChart(canvas) {
   });
 }
 
-async function makeHSLChart(canvas) {
-  var cmap_name = canvas.getAttribute("data-cmap-name");
-  const response = await fetch(`/cmap/data/${cmap_name}.json`);
-  const cmap_data = await response.json();
-
+async function makeHSLChart(canvas, cmap_data) {
   var hue = [];
   var saturation = [];
   var chroma = [];

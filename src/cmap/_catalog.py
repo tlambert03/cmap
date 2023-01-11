@@ -121,6 +121,7 @@ if TYPE_CHECKING:
         category: Category
         interpolation: NotRequired[bool]
         license: str
+        source: str
 
     CatalogDict: TypeAlias = dict[str, CatalogItem]
 
@@ -2260,7 +2261,7 @@ class Catalog:
         return iter(CATALOG)
 
     def items(self) -> Iterator[tuple[str, LoadedCatalogItem]]:
-        for name in CATALOG:
+        for name in CATALOG:  # noqa: UP
             yield name, self[name]
 
     def __getitem__(self, name: str) -> LoadedCatalogItem:
@@ -2284,6 +2285,7 @@ class Catalog:
         # not encouraged... but significantly faster than importlib
         # well tested on internal data though
         mod = __import__(module, fromlist=[attr])
+        item['source'] = item["data"]
         item["data"] = getattr(mod, attr)
         _item = cast("LoadedCatalogItem", item)
         _item["license"] = mod.__license__  # tests ensure this exists

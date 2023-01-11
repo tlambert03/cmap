@@ -1,7 +1,7 @@
+import json
 from pathlib import Path
 
 import mkdocs_gen_files
-import pandas as pd
 from cmap import Colormap
 from cmap._catalog import catalog
 from cmap._util import report
@@ -10,7 +10,7 @@ TEMPLATE = """# {name}
 
 | category | license | source |
 | --- | --- | --- |
-| {category} | {license} | {source} |
+| {category} | {license} | `{source}` |
 
 ```python
 from cmap import Colormap
@@ -50,6 +50,16 @@ LICENSE_URL = {
     "BSD-2-Clause": "https://opensource.org/licenses/BSD-2-Clause",
 }
 
+
+def _to_json(columns: dict[str, list]) -> str:
+    n_rows = len(next(iter(columns.values())))
+    headers = list(columns)
+    out = [
+        {header: columns[header][row] for header in headers} for row in range(n_rows)
+    ]
+    return json.dumps(out)
+
+
 for name in catalog:
     info = catalog[name]
     category = info["category"]
@@ -60,7 +70,7 @@ for name in catalog:
         license_ = f"[{license_}]({LICENSE_URL[license_]})"
     with mkdocs_gen_files.open(f"data/{name}.json", "w") as f:
         cm = Colormap(name)
-        pd.DataFrame(report(cm)).to_json(f, orient="records")
+        f.write(_to_json(report(cm)))
     with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
         f.write(
             TEMPLATE.format(

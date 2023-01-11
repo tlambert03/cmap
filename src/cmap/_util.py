@@ -420,7 +420,7 @@ def circlesineramp(
     return cast(np.ndarray, im * alpha)
 
 
-def report(cm: Colormap, n: int = 256, uniform_space="CAM02-UCS") -> dict:
+def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> dict:
     """Generate a report of data describing a colormap.
 
     This is primarily used for generating charts in the documentation
@@ -439,11 +439,11 @@ def report(cm: Colormap, n: int = 256, uniform_space="CAM02-UCS") -> dict:
     Jab = cspace_convert(RGB, "sRGB1", uniform_space)
 
     local_deltas = np.sqrt(np.sum((Jab[:-1, :] - Jab[1:, :]) ** 2, axis=-1))
-    local_deltas = np.insert(local_deltas, 0, float("nan"))  # keep length the same
+    local_deltas = np.insert(local_deltas, 0, 0)  # keep length the same
     local_derivs = n * local_deltas  # export
 
     lightness_deltas = np.diff(Jab[:, 0])
-    lightness_deltas = np.insert(lightness_deltas, 0, float("nan"))  # keep length same
+    lightness_deltas = np.insert(lightness_deltas, 0, 0)  # keep length same
     lightness_derivs = n * lightness_deltas  # export
 
     JchMs = cspace_convert(RGB, "sRGB1", "JChMs")

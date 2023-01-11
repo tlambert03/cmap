@@ -57,7 +57,7 @@ def test_colormap() -> None:
     assert cmap(1.0) == (0, 0, 1.0, 1.0)
     assert cmap(1.0) is Color("b")
     assert cmap(1.5) == (0, 0, 1.0, 1.0)
-    assert repr(cmap) == "Colormap(name='mymap', 3 colors)"
+    assert repr(cmap) == "Colormap(name='mymap', <3 colors>)"
 
     # also test with a sequence
     npt.assert_array_equal(

@@ -29,6 +29,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 __license__ = "BSD-2-Clause"
+__source__ = "https://www.mathworks.com/matlabcentral/fileexchange/2662-cmrmap-m"
 
 CMRmap = [
     (0, 0, 0),

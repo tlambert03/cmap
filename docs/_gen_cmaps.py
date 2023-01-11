@@ -56,6 +56,7 @@ LICENSE_URL = {
     "MIT": "https://opensource.org/licenses/MIT",
     "BSD-3-Clause": "https://opensource.org/licenses/BSD-3-Clause",
     "BSD-2-Clause": "https://opensource.org/licenses/BSD-2-Clause",
+    "PSF": "https://opensource.org/licenses/Python-2.0",
 }
 
 

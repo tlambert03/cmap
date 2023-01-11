@@ -6,6 +6,7 @@ https://public.tableau.com/views/TableauColors/ColorPaletteswithRGBValues
 # fmt: off
 
 __license__ = "UNKNOWN"
+__source__ = "https://public.tableau.com/views/TableauColors/ColorPaletteswithRGBValues"
 
 # this is the same as Vega's "category10"
 Tableau10 = [

@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 """
 
 __license__ = "BSD-2-Clause"
+__source__ = "https://github.com/imagej/imagej-common"
 
 # https://github.com/imagej/ImageJ/blob/1c6ff022cdc1b2ea6a8c5a5afdc14b0bc06583be/ij/plugin/LutLoader.java#L185-L187
 Fire = [

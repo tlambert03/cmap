@@ -32,6 +32,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 __license__ = "BSD-3-Clause"
+__source__ = "https://github.com/mwaskom/seaborn"
 
 rocket = [
     [0.01060815, 0.01808215, 0.10018654],

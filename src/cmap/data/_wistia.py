@@ -26,6 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 __license__ = "MIT"
+__source__ = "https://github.com/wistia/heatmap-palette"
 
 # Wistia = [
 #     (228, 255, 122),  # #e4ff7a

@@ -28,6 +28,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 __license__ = "MIT"
+__source__ = "https://github.com/cleterrier/ChrisLUTs"
 
 # Note: ChrisLUTs supplies these as a full 256x3 matrix,
 # but they're all linear ramps, so we let the colormap do the interpolation

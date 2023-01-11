@@ -36,6 +36,8 @@ from typing import cast
 import numpy as np
 
 __license__ = "BSD-2-Clause"
+__source__ = "https://github.com/jradavenport/cubehelix"
+
 
 CUBE_ROT = np.array([[-0.14861, 1.78277], [-0.29227, -0.90649], [1.97294, 0.0]])
 

@@ -40,6 +40,7 @@
 # Cynthia Brewer.
 
 __license__ = "Apache"
+__source__ = "https://github.com/axismaps/colorbrewer"
 
 Blues_3 = [
     [222, 235, 247],

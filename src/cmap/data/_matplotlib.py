@@ -1,4 +1,5 @@
-__license__ = "UNKNOWN"
+__license__ = "PSF"
+__source__ = "https://github.com/matplotlib/matplotlib"
 
 Cividis = [
     [0.000000, 0.135112, 0.304751],

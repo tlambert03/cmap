@@ -24,14 +24,14 @@ from ._catalog import catalog
 from ._color import Color
 
 if TYPE_CHECKING:
+    import bokeh.models
+    import matplotlib.colors
+    import matplotlib.figure
+    import napari.utils.colormaps
     import pygfx
-    from bokeh.models import LinearColorMapper as BokehLinearColorMapper
-    from matplotlib.colors import LinearSegmentedColormap as MplLinearSegmentedColormap
-    from matplotlib.figure import Figure as MplFigure
-    from napari.utils.colormaps import Colormap as NapariColormap
+    import vispy.color
     from numpy.typing import ArrayLike, NDArray
     from typing_extensions import Literal, TypeAlias, TypedDict, TypeGuard
-    from vispy.color import Colormap as VispyColormap
 
     from ._color import ColorLike
 
@@ -67,44 +67,41 @@ class Colormap:
 
     Parameters
     ----------
-    color_stops : Color | ColorStop | Iterable[Color | ColorStop] | dict[float, Color]
+    arg0 : Color | ColorStop | Iterable[Color | ColorStop] | dict[float, Color]
         The color data to use for the colormap. Can be a single color, a single
         color stop, a sequence of colors and/or color stops, or a dictionary
         mapping scalar values to colors.
 
         Any of the following are valid:
 
-        - a single string color-like value (e.g. "red", "rgb(255, 0, 0)", "#ff0000"),
-          in which case the colormap will go from transparent to that color.
-        - a recognized string color or colormap name, optionally suffixed with "_r" to
-          reverse the colormap (e.g. "viridis", "magma_r").
-        - a sequence of color-like values (any object that can be cast to a Color), or
-          color-stop-like tuples (a tuple of a scalar value and a color-like value).
-          When using color stops, the scalar values should be in the range [0, 1].
-          If no scalar stop positions are given, they will be linearly interpolated
-          between any neighboring stops (or 0-1 if there are no stops).  See the
-          ColorStops class for more details. (Note that a ColorStops instance
-          may also be used here)
-        - a dictionary mapping scalar values to color-like values: e.g.
-          {0.0: "red", 0.5: (0, 1, 0), 1.0: "#0000FF"}.
-        - a matplotlib-style segmentdata dictionary, with keys "red", "green", and
-          "blue", each of which maps to a list of tuples of the form (x, y0, y1), or
-          a callable that takes an array of values in the range [0, 1] and returns an
-          array of values in the range [0, 1].  See the matplotlib docs for more.
-        - a callable that takes an array of N values in the range [0, 1] and returns an
-          (N, 4) array of RGBA values in the range [0, 1].
-
+        - a `str` containing a recognized string colormap name (e.g. `"viridis"`,
+          `"magma"`), optionally suffixed with `"_r"` to reverse the colormap
+          (e.g. `"viridis"`, `"magma_r"`).
+        - An iterable of [ColorLike](/colors#colorlike-objects) values (any object that
+          can be cast to a [`Color`][cmap.Color]), or "color-stop-like" tuples (
+          `(float, ColorLike)` where the first element is a scalar value specifiying the
+          position of the color in the gradient. When using color stops, the stop
+          position values should be in the range [0, 1]. If no scalar stop positions are
+          given, they will be linearly interpolated between any neighboring stops (or
+          0-1 if there are no stops).
+        - a `dict` mapping scalar values to color-like values: e.g.
+          `{0.0: "red", 0.5: (0, 1, 0), 1.0: "#0000FF"}`.
+        - a matplotlib-style [segmentdata
+          `dict`](https://matplotlib.org/stable/tutorials/colors/colormap-manipulation.html),
+          with keys `"red"`, `"green"`, and `"blue"`, each of which maps to a list of
+          tuples of the form `(x, y0, y1)`, or a callable that takes an array of values
+          in the range [0, 1] and returns an array of values in the range [0, 1].  See
+          the matplotlib docs for more.
+        - a `Callable` that takes an array of N values in the range [0, 1] and returns
+          an (N, 4) array of RGBA values in the range [0, 1].
     name : str | None
         A name for the colormap. If None, will be set to the identifier or the string
-        "custom colormap".
+        `"custom colormap"`.
     identifier : str | None
         The identifier of the colormap. If None, will be set to the name, converted
         to lowercase and with spaces and dashes replaced by underscores.
     category : str | None
-        An optional category of the colormap (e.g. "diverging", "sequential").
-        Not used internally.
-    source : str | None
-        An optional source or reference for the colormap (e.g. "matplotlib", "napari").
+        An optional category of the colormap (e.g. `"diverging"`, `"sequential"`).
         Not used internally.
     """
 
@@ -113,52 +110,50 @@ class Colormap:
         "name",
         "identifier",
         "category",
-        "source",
         "_lut_cache",
         "interpolation",
         "_initialized",
         "__weakref__",
     )
 
+    #: ColorStops dett
     color_stops: ColorStops
+
     name: str
     identifier: str
     category: str | None
-    source: str | None
     interpolation: Interpolation
 
     def __init__(
         self,
-        color_stops: ColorStopsLike,
+        arg0: ColorStopsLike,
         *,
         name: str | None = None,
         identifier: str | None = None,
         category: str | None = None,
-        source: str | None = None,
         interpolation: Interpolation | bool | None = None,
     ) -> None:
 
         name = name or identifier
         if not name:
-            name = color_stops if isinstance(color_stops, str) else "custom colormap"
+            name = arg0 if isinstance(arg0, str) else "custom colormap"
 
-        if isinstance(color_stops, str):
-            rev = color_stops.endswith("_r")
-            info = catalog[color_stops[:-2] if rev else color_stops]
+        if isinstance(arg0, str):
+            rev = arg0.endswith("_r")
+            info = catalog[arg0[:-2] if rev else arg0]
             interpolation = interpolation or info.get("interpolation", "linear")
             stops = _parse_colorstops(info["data"], interpolation)  # type: ignore
             category = category or info["category"]
             if rev:
                 stops = stops.reversed()
         else:
-            stops = _parse_colorstops(color_stops)
+            stops = _parse_colorstops(arg0)
 
         # because we're using __setattr__ to make the object immutable
         self.color_stops = stops
         self.name = name
         self.identifier = _make_identifier(identifier or name)
         self.category = category
-        self.source = source
         # TODO: this just clobbers the interpolation from the user...
         # need to unify with the catalog
         self.interpolation = _norm_interp(interpolation)
@@ -326,7 +321,6 @@ class Colormap:
         return type(self)(
             self.color_stops.reversed(),
             name=name,
-            source=self.source,
             category=self.category,
         )
 
@@ -408,13 +402,13 @@ class Colormap:
 
     def to_matplotlib(
         self, N: int = 256, gamma: float = 1.0
-    ) -> MplLinearSegmentedColormap:
+    ) -> matplotlib.colors.Colormap:
         """Return a matplotlib colormap."""
         return _external.to_mpl(self, N=N, gamma=gamma)
 
     to_mpl = to_matplotlib  # alias
 
-    def to_vispy(self) -> VispyColormap:
+    def to_vispy(self) -> vispy.color.Colormap:
         """Return a vispy colormap."""
         return _external.to_vispy(self)
 
@@ -438,7 +432,7 @@ class Colormap:
         """
         return _external.to_pygfx(self, N=N, as_view=as_view)
 
-    def to_napari(self) -> NapariColormap:
+    def to_napari(self) -> napari.utils.colormaps.Colormap:
         """Return a napari colormap.
 
         https://napari.org/stable/api/napari.utils.Colormap.html
@@ -449,7 +443,7 @@ class Colormap:
         """Return a plotly colorscale."""
         return _external.to_plotly(self)
 
-    def to_bokeh(self, N: int = 256) -> BokehLinearColorMapper:
+    def to_bokeh(self, N: int = 256) -> bokeh.models.LinearColorMapper:
         """Return a bokeh colorscale, with N color samples from the colormap.
 
         https://docs.bokeh.org/en/latest/docs/reference/models/mappers.html
@@ -469,7 +463,7 @@ class Colormap:
         """
         return _external.to_altair(self, N=N)
 
-    def viscm(self, dpi: int = 100, dest: str | None = None) -> MplFigure:
+    def to_viscm(self, dpi: int = 100, dest: str | None = None) -> matplotlib.figure.Figure:
         """Plot colormap using viscm.  (Requires viscm to be installed.).
 
         See <https://github.com/matplotlib/viscm> for details

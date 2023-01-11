@@ -18,7 +18,7 @@ async function initCharts() {
   }
   // Make all charts for each cmap name
   for (var cmap_name in chartElems) {
-    const response = await fetch(`/cmap/data/${cmap_name}.json`);
+    const response = await fetch(`/data/${cmap_name}.json`);
     const cmap_data = await response.json();
     for (var i = 0; i < chartElems[cmap_name].length; i++) {
       var canv = chartElems[cmap_name][i];

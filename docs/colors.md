@@ -18,6 +18,7 @@ red9  = Color(0xFF0000)
 red10 = Color(16711680)
 ```
 
+
 ## `ColorLike` objects
 
 The following objects can be interpreted as a color, and used as the first argument

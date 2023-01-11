@@ -22,6 +22,8 @@ cm = Colormap('{name}')  # case insensitive
 {{{{ cmap_gray: {name} 40 }}}}
 {{{{ cmap_sineramp: {name} }}}}
 
+
+
 ## Perceptual Lightness
 
 <canvas class="linearity-chart cmap-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
@@ -39,6 +41,10 @@ L* measured in
 ## Hue & Saturation
 
 <canvas class="hsl-chart cmap-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
+
+
+[Download Data :octicons-download-16:](/data/{name}.json){{ .md-button .md-button--primary }}
+
 """
 
 DOCS = Path(__file__).parent

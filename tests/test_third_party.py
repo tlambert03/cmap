@@ -131,7 +131,7 @@ def test_viscm(tmp_path: Path) -> None:
     # in the current release
     cmap1 = Colormap(["red", "green", "blue"])
     out = tmp_path / "test.png"
-    cmap1.visualize(dest=str(out))  # use dest to avoid show
+    cmap1.to_viscm(dest=str(out))  # use dest to avoid show
     assert out.is_file()
 
 

@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import mkdocs_gen_files
+import numpy as np
 from cmap import Colormap
 from cmap._catalog import catalog
 from cmap._util import report
@@ -58,14 +59,18 @@ LICENSE_URL = {
 }
 
 
-def _to_json(columns: dict[str, list]) -> str:
-    n_rows = len(next(iter(columns.values())))
-    headers = list(columns)
-    out = [
-        {header: columns[header][row] for header in headers} for row in range(n_rows)
-    ]
-    return json.dumps(out)
-
+INCLUDE_DATA = (
+    "x",
+    "J",
+    "lightness_derivs",
+    "color",
+    "R",
+    "G",
+    "B",
+    "hue",
+    "saturation",
+    "chroma",
+)
 
 for name in catalog:
     info = catalog[name]
@@ -79,9 +84,14 @@ for name in catalog:
         source = f"`{source}`"
     if license_ in LICENSE_URL:
         license_ = f"[{license_}]({LICENSE_URL[license_]})"
+    cm = Colormap(name)
+    _report = {
+        k: np.around(v, 4).tolist() if isinstance(v, np.ndarray) else v
+        for k, v in report(cm).items()
+        if k in INCLUDE_DATA
+    }
     with mkdocs_gen_files.open(f"data/{name}.json", "w") as f:
-        cm = Colormap(name)
-        f.write(_to_json(report(cm)))
+        f.write(json.dumps(_report, separators=(",", ":")))
     with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
         f.write(
             TEMPLATE.format(

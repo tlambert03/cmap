@@ -48,11 +48,9 @@ GLOBAL_OPTIONS = {
 async function makeLinearityChart(canvas, cmap_data) {
   var lightness_data = [];
   var deltas = [];
-  var colors = [];
-  for (i = 0; i < cmap_data.length; i++) {
-    lightness_data.push({ x: cmap_data[i].x, y: cmap_data[i].J });
-    deltas.push({ x: cmap_data[i].x, y: cmap_data[i].lightness_derivs });
-    colors.push(cmap_data[i].color);
+  for (i = 0; i < cmap_data.x.length; i++) {
+    lightness_data.push({ x: cmap_data.x[i], y: cmap_data.J[i] });
+    deltas.push({ x: cmap_data.x[i], y: cmap_data.lightness_derivs[i] });
   }
 
   new Chart(canvas, {
@@ -61,7 +59,7 @@ async function makeLinearityChart(canvas, cmap_data) {
       datasets: [
         {
           label: "lightness",
-          backgroundColor: colors,
+          backgroundColor: cmap_data.color,
           data: lightness_data,
           pointRadius: 12,
           borderWidth: 0,
@@ -96,10 +94,10 @@ async function makeRGBChart(canvas, cmap_data) {
   var rdata = [];
   var gdata = [];
   var bdata = [];
-  for (i = 0; i < cmap_data.length; i++) {
-    rdata.push({ x: cmap_data[i].x, y: cmap_data[i].R });
-    gdata.push({ x: cmap_data[i].x, y: cmap_data[i].G });
-    bdata.push({ x: cmap_data[i].x, y: cmap_data[i].B });
+  for (i = 0; i < cmap_data.x.length; i++) {
+    rdata.push({ x: cmap_data.x[i], y: cmap_data.R[i] });
+    gdata.push({ x: cmap_data.x[i], y: cmap_data.G[i] });
+    bdata.push({ x: cmap_data.x[i], y: cmap_data.B[i] });
   }
 
   new Chart(canvas, {
@@ -142,10 +140,10 @@ async function makeHSLChart(canvas, cmap_data) {
   var hue = [];
   var saturation = [];
   var chroma = [];
-  for (i = 0; i < cmap_data.length; i++) {
-    hue.push({ x: cmap_data[i].x, y: (cmap_data[i].hue * 100) / 360 });
-    saturation.push({ x: cmap_data[i].x, y: cmap_data[i].saturation });
-    chroma.push({ x: cmap_data[i].x, y: cmap_data[i].chroma });
+  for (i = 0; i < cmap_data.x.length; i++) {
+    hue.push({ x: cmap_data.x[i], y: (cmap_data.hue[i] * 100) / 360 });
+    saturation.push({ x: cmap_data.x[i], y: cmap_data.saturation[i] });
+    chroma.push({ x: cmap_data.x[i], y: cmap_data.chroma[i] });
   }
 
   new Chart(canvas, {

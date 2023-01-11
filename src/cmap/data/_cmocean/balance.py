@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 
 # # Used to reconstruct the colormap in pycam02ucs.cm.viscm
@@ -271,6 +272,7 @@ balance_blue = [
 #        'yp': [5.3490351872872, 5.033423417915618, 18.1321526456771, 27.61149616576765, 10.893381230335233, 0.0],
 #        'min_Jp': 15,
 #        'max_Jp': 95}
+# NOTE: this is the same as the "amp" colormap
 balance_red = [
     [0.23605636, 0.03529748, 0.06943744],
     [0.24100216, 0.03645747, 0.07203246],

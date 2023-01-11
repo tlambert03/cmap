@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 speed = [
     [0.09053276383981979, 0.13733860758438335, 0.07325761429945674],

@@ -28,7 +28,7 @@ def _cmap_div(match: re.Match | str, class_list: Sequence[str] = ()) -> str:
     map_name = match if isinstance(match, str) else match[1].strip()
     cm = Colormap(map_name)
     css = cm.to_css().strip()
-    url = f'{cm.category}/{map_name.replace("_r", "")}/'
+    url = f'/catalog/{cm.category}/{map_name.replace("_r", "")}/'
     if isinstance(match, re.Match) and match[2] is not None:
         css += f" height: {match[2]}px;"
     return CMAP_LINK.format(

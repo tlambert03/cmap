@@ -38,6 +38,7 @@ async function initCharts() {
 GLOBAL_OPTIONS = {
   interaction: { mode: "index", intersect: false },
   plugins: { legend: { display: false } },
+  clip: false,
 };
 
 async function makeLinearityChart(canvas, cmap_data) {
@@ -66,7 +67,7 @@ async function makeLinearityChart(canvas, cmap_data) {
           data: deltas,
           showLine: true,
           radius: 0,
-          borderColor: "#00000044",
+          borderColor: "#AAAAAA66",
           borderWidth: 3,
           yAxisID: "y2",
         },
@@ -154,7 +155,7 @@ async function makeHSLChart(canvas, cmap_data) {
     },
     options: {
       ...GLOBAL_OPTIONS,
-      plugins: { legend: { display: true } },
+      plugins: { legend: { display: true, labels: {boxHeight: 1} } },
       scales: {},
       elements: {
         line: { borderWidth: 4 },

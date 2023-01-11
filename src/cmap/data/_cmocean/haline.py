@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 
 # # Used to reconstruct the colormap in pycam02ucs.cm.viscm

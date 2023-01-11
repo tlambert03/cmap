@@ -51,8 +51,6 @@ view_image(img, colormap=cmap.to_napari())
     {{ cmap: cubehelix }}
     {{ cmap: cubehelix_r }}
 
-
-
-## Colormaps by category
+## Colormaps by category { data-search-exclude }
 
 {{ CMAP_CATALOG }}

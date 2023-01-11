@@ -88,7 +88,7 @@ div.cmap.grayscale > .cmap-bar {
   filter: grayscale(100%);
 }
 
-a div.cmap-bar:hover{
+a div.cmap-bar:hover {
   cursor: pointer;
   filter: drop-shadow(0 0 0.4rem gray);
 }
@@ -104,10 +104,9 @@ div.cmap-name {
   color: white;
   mix-blend-mode: difference;
 }
-div.cmap:hover .cmap-name{
+div.cmap:hover .cmap-name {
   color: red;
 }
-
 
 .container {
   overflow: hidden;
@@ -131,17 +130,23 @@ div.cmap:hover .cmap-name{
   background-color: #f1f1f1;
   cursor: pointer;
 }
-body[data-md-color-scheme="slate"] .btn{
+body[data-md-color-scheme="slate"] .btn {
   background-color: #414352;
   color: white;
 }
 
+body[data-md-color-scheme="slate"] {
+  /* default is  hsla(var(--md-hue),75%,95%,1) */
+  --md-default-fg-color: hsla(var(--md-hue),40%,95%,.75);
+  /* default is  hsla(var(--md-hue), 15%, 21%, 1); */
+  --md-default-bg-color: hsla(var(--md-hue), 15%, 10%, 1);
+}
 
 /* Add a light grey background on mouse-over */
 .btn:hover {
   background-color: #ddd;
 }
-body[data-md-color-scheme="slate"] .btn:hover{
+body[data-md-color-scheme="slate"] .btn:hover {
   background-color: #a3a5b1;
 }
 
@@ -150,7 +155,7 @@ body[data-md-color-scheme="slate"] .btn:hover{
   background-color: #666;
   color: white;
 }
-body[data-md-color-scheme="slate"] .btn.active{
+body[data-md-color-scheme="slate"] .btn.active {
   background-color: #a0a3b7;
   color: black;
 }

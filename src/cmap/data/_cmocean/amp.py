@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 amp = [
     [0.23605636466461405, 0.03529747994604029, 0.06943744239412558],

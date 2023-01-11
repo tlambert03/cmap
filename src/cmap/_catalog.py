@@ -112,6 +112,7 @@ if TYPE_CHECKING:
         category: Category
         tags: NotRequired[list[str]]
         interpolation: NotRequired[bool]
+        info: NotRequired[str]
 
     # would be nice to subclass CatalogItem... but can't
     # https://github.com/python/mypy/issues/7435
@@ -122,6 +123,7 @@ if TYPE_CHECKING:
         interpolation: NotRequired[bool]
         license: str
         source: str
+        info: str
 
     CatalogDict: TypeAlias = dict[str, CatalogItem]
 
@@ -2094,6 +2096,7 @@ CATALOG: CatalogDict = {
     "glasbey": {
         "data": "cmap.data._glasbey:glasbey",
         "category": "Qualitative",
+        "interpolation": False,
     },
     "imagej_fire": {
         "data": "cmap.data._imagej:Fire",
@@ -2114,110 +2117,188 @@ CATALOG: CatalogDict = {
     "algae": {
         "data": "cmap.data._cmocean.algae:algae",
         "category": "Sequential",
+        "info": "The algae colormap is sequential with whitish-green for low values "
+        "and increasing in green with increasing value, which could be used to "
+        "represent an increase in chlorophyll in the water. This colormap is based on "
+        "[Greens](/catalog/sequential/greens), but was recreated from scratch using "
+        "the viscm tool.",
     },
     "amp": {
         "data": "cmap.data._cmocean.amp:amp",
         "category": "Sequential",
+        "info": "The amp colormap is sequential from whitish to dark red and could be "
+        "used to represent an increase in wave height values. This colormap is the "
+        "positive half of the [balance](/catalog/diverging/balance) colormap.",
     },
     "balance": {
         "data": "cmap.data._cmocean.balance:balance",
         "category": "Diverging",
+        "info": "The balance colormap is diverging with dark blue to off-white to dark "
+        "red representing negative to zero to positive values; this could be used to "
+        "represent sea surface elevation, with deviations in the surface elevations as "
+        "shades of color away from neutral off-white. In this case, shades of red have "
+        "been chosen to represent sea surface elevation above the reference value "
+        "(often mean sea level) to connect with warmer water typically being "
+        "associated with an increase in the free surface, such as with the Loop "
+        "Current in the Gulf of Mexico. This colormap is based on "
+        "[RdBu](/catalog/Diverging/RdBu), but was recreated from scratch using the "
+        "viscm tool.",
     },
     "balance_blue": {
         "data": "cmap.data._cmocean.balance:balance_blue",
         "category": "Sequential",
     },
-    "balance_red": {
-        "data": "cmap.data._cmocean.balance:balance_red",
-        "category": "Sequential",
-    },
     "delta": {
         "data": "cmap.data._cmocean.delta:delta",
         "category": "Diverging",
+        "info": "The delta colormap is diverging from darker blues to just off-white "
+        "through shades of yellow green and could be used to represent diverging "
+        "velocity values around a critical value (usually zero). This colormap was "
+        "inspired by [Francesca Samsel's](http://www.francescasamsel.com/) similar "
+        "colormap, but generated from scratch using the viscm tool.",
     },
     "delta_blue": {
         "data": "cmap.data._cmocean.delta:delta_blue",
         "category": "Sequential",
     },
-    "delta_green": {
-        "data": "cmap.data._cmocean.delta:delta_green",
-        "category": "Sequential",
-    },
     "curl": {
         "data": "cmap.data._cmocean.curl:curl",
         "category": "Diverging",
+        "info": "The curl colormap is diverging from darker teal to just off-white "
+        "through shades of magenta and could be used to represent diverging vorticity "
+        "values around a critical value (usually zero).",
     },
     "curl_pink": {
         "data": "cmap.data._cmocean.curl:curl_pink",
         "category": "Sequential",
     },
-    "curl_turquoise": {
-        "data": "cmap.data._cmocean.curl:curl_turquoise",
-        "category": "Sequential",
-    },
     "diff": {
         "data": "cmap.data._cmocean.diff:diff",
         "category": "Diverging",
+        "info": "The diff colormap is diverging, with one side shades of blues and one "
+        "side shades of browns.",
     },
     "tarn": {
         "data": "cmap.data._cmocean.tarn:tarn",
         "category": "Diverging",
+        "info": "The tarn colormap is diverging, with one side dry shades of browns "
+        "and the other a range of greens and blues. The positive end of the colormap "
+        "is meant to reflect the colors in rain and thus be a complementary colormap "
+        "to rain for rain anomaly (around 0 or some other critical value).",
     },
     "dense": {
         "data": "cmap.data._cmocean.dense:dense",
         "category": "Sequential",
+        "info": "The dense colormap is sequential with whitish-blue for low values and "
+        "increasing in purple with increasing value, which could be used to represent "
+        "an increase in water density. This colormap is based on "
+        "[Purples](/catalog/sequential/Purples), but was recreated from scratch using "
+        "the viscm tool.",
     },
     "haline": {
         "data": "cmap.data._cmocean.haline:haline",
         "category": "Sequential",
+        "info": "The haline colormap is sequential, and might be used with dark blue "
+        "representing lower salinity or fresher water, transitioning through greens to "
+        "light yellow representing increased salinity or saltier water. This colormap "
+        "is based on [YlGnBu](/catalog/sequential/YlGnBu/), but was recreated from "
+        "scratch using the viscm tool.",
     },
     "ice": {
         "data": "cmap.data._cmocean.ice:ice",
         "category": "Sequential",
+        "info": "The ice colormap is sequential from very dark blue (almost black) to "
+        "very light blue (almost white). A use for this could be representations of "
+        "sea ice.",
     },
     "oxy": {
         "data": "cmap.data._cmocean.oxy:oxy",
         "category": "Sequential",
+        "info": (
+            "The oxy colormap is sequential for most of the colormap, representing "
+            r"the normal range of oxygen saturation in ocean water, 2and diverging 80% "
+            "of the way into the colormap to represent a state of supersaturation. The "
+            r"bottom 20% of the colormap is colored reddish to highlight hypoxic or "
+            "low oxygen water, but to still print relatively seamlessly into grayscale "
+            r"in case the red hue is not important for an application. The top 20% of "
+            "the colormap, after the divergence, is colored yellow to highlight the "
+            "supersaturated water. The minimum and maximum values of this colormap are "
+            "meant to be controlled in order to properly place the low oxygen and "
+            "supersaturated oxygen states properly. This colormap was developed for "
+            "the Mississippi river plume area where both low and supersaturated "
+            "conditions are regularly seen and monitored."
+        ),
     },
     "phase": {
         "data": "cmap.data._cmocean.phase:phase",
         "category": "Cyclic",
+        "info": "The phase colormap is circular, spanning all hues at a set lightness "
+        "value. This map is intended to be used for properties such as wave phase and "
+        "tidal phase which wrap around from 0˚ to 360˚ to 0˚ and should be represented "
+        "without major perceptual jumps in the colormap.",
     },
     "solar": {
         "data": "cmap.data._cmocean.solar:solar",
         "category": "Sequential",
+        "info": "The solar colormap is sequential from dark brown for low values to "
+        "increasingly bright yellow to potentially represent an increase in radiation "
+        "in the water.",
     },
     "turbid": {
         "data": "cmap.data._cmocean.turbid:turbid",
         "category": "Sequential",
+        "info": "The turbid colormap is sequential from light to dark brown and could "
+        "be used to represent an increase in sediment in the water.",
     },
     "thermal": {
         "data": "cmap.data._cmocean.thermal:thermal",
         "category": "Sequential",
+        "info": "The thermal colormap is sequential with dark blue representing lower, "
+        "cooler values and transitioning through reds to yellow representing "
+        "increased warmer values.",
     },
     "speed": {
         "data": "cmap.data._cmocean.speed:speed",
         "category": "Sequential",
+        "info": "The speed colormap is sequential from light greenish yellow "
+        "representing low values to dark yellowish green representing large values. "
+        "This colormap is the positive half of the [delta](/catalog/diverging/delta) "
+        "colormap.",
     },
     "deep": {
         "data": "cmap.data._cmocean.deep:deep",
         "category": "Sequential",
+        "info": "The deep colormap is sequential from light yellow to potentially "
+        "represent shallower water through pale green to increasingly dark blue and "
+        "purple to represent increasing depth.",
     },
     "matter": {
         "data": "cmap.data._cmocean.matter:matter",
         "category": "Sequential",
+        "info": "The matter colormap is sequential with whitish-yellow for low values "
+        "and increasing in pink with increasing value, and could be used to represent "
+        "an increase in material in the water.",
     },
     "tempo": {
         "data": "cmap.data._cmocean.tempo:tempo",
         "category": "Sequential",
+        "info": "The tempo colormap is sequential from whitish to dark teal and could "
+        "be used to represent an increase in wave period values. This colormap is the "
+        "negative half of the [curl](/catalog/diverging/curl) colormap.",
     },
     "rain": {
         "data": "cmap.data._cmocean.rain:rain",
         "category": "Sequential",
+        "info": "The rain colormap is sequential from light, dry colors to blue, wet "
+        "colors, and could be used to plot amounts of rainfall.",
     },
     "topo": {
         "data": "cmap.data._cmocean.topo:topo",
         "category": "Miscellaneous",
+        "info": "The topo colormap has two distinct parts: one that is shades of blue "
+        "and yellow to represent water depths (this is the "
+        "[deep](/catalog/sequential/deep/) colormap) and one that "
+        "is shades of browns and greens to represent land elevation.",
     },
     "rocket": {
         "data": "cmap.data._seaborn:rocket",
@@ -2286,10 +2367,11 @@ class Catalog:
         # well tested on internal data though
         mod = __import__(module, fromlist=[attr])
         _item = cast("LoadedCatalogItem", item)
-        _item["source"] = item["data"]
+        _item.setdefault("source", getattr(mod, "__source__", item["data"]))
         _item["data"] = getattr(mod, attr)
         _item["license"] = mod.__license__  # tests ensure this exists
         _item.setdefault("tags", [])
+        _item.setdefault("info", "")
         return _item
 
 

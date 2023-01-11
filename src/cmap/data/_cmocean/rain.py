@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 rain = [
     [0.13157215619400367, 0.10400555906405462, 0.22133636693738928],

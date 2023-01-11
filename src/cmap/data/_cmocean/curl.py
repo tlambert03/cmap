@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 
 # # Used to reconstruct the colormap in pycam02ucs.cm.viscm
@@ -271,6 +272,7 @@ curl_pink = [
 #        'yp': [-17.597914005959979, -8.2854406130268217, 2.854330708661422, 16.30577427821521, 0.65453384418901805],
 #        'min_Jp': 15.067114094,
 #        'max_Jp': 97.9530201342}
+# NOTE: this is the same as the "tempo" colormap
 curl_turquoise = [
     [0.0822556, 0.11492441, 0.26479017],
     [0.08312617, 0.11903837, 0.26686289],

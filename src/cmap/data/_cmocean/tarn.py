@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 tarn = [
     [8.982325470083904473e-02, 1.386884202488073425e-01, 5.339634747542102572e-02],

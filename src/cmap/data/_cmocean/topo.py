@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 topo = [
     [0.15610197465072734, 0.10260825258757111, 0.1727215696232308],

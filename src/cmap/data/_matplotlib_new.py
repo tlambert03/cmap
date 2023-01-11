@@ -15,6 +15,7 @@
 # https://bids.github.io/colormap/
 
 __license__ = "CC0"
+__source__ = "https://github.com/BIDS/colormap"
 
 Magma = [
     [0.001462, 0.000466, 0.013866],

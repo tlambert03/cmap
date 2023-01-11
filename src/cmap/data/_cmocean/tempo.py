@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 tempo = [
     [0.08225559928700268, 0.11492440797272951, 0.26479016778008574],

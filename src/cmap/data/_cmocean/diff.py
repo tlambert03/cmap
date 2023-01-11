@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 diff = [
     [0.030801652251109098, 0.13684870400657909, 0.249846444559915],

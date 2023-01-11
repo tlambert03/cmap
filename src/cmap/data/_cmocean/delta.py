@@ -1,4 +1,5 @@
 __license__ = "MIT"
+__source__ = "https://github.com/matplotlib/cmocean"
 
 
 # Used to reconstruct the colormap in pycam02ucs.cm.viscm
@@ -272,7 +273,7 @@ delta_blue = [
 #        'yp': [6.410835628206474, 4.8294888484400857, 18.503487473478852, 30.131037324702294, 39.433077205681045, 22.596385021109501, 11.992059556793727],
 #        'min_Jp': 15.0,
 #        'max_Jp': 98.6544342508}
-
+# NOTE: this is the same as "speed"
 delta_green = [
     [0.09053276, 0.13733861, 0.07325761],
     [0.09149314, 0.14105046, 0.07638733],

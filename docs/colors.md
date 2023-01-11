@@ -257,7 +257,7 @@ pretty.install()
 
 ![rich repr](images/color_repr.png){ width=300 }
 
-## Recognized Color Names
+## Recognized Color Names { data-search-exclude }
 
 The following names may be used as string inputs to the `Color` constructor.
 

@@ -8,9 +8,11 @@ from cmap._util import report
 
 TEMPLATE = """# {name}
 
+{info}
+
 | category | license | source |
 | --- | --- | --- |
-| {category} | {license} | `{source}` |
+| {category} | {license} | {source} |
 
 ```python
 from cmap import Colormap
@@ -18,11 +20,10 @@ from cmap import Colormap
 cm = Colormap('{name}')  # case insensitive
 ```
 
+
 {{{{ cmap: {name} 40 }}}}
 {{{{ cmap_gray: {name} 40 }}}}
 {{{{ cmap_sineramp: {name} }}}}
-
-
 
 ## Perceptual Lightness
 
@@ -72,6 +73,10 @@ for name in catalog:
     output = f"catalog/{category}/{name}.md"
     license_: str = info["license"]
     source = info.get("source", "...")
+    if source.startswith("http"):
+        source = f"[{source}]({source})"
+    else:
+        source = f"`{source}`"
     if license_ in LICENSE_URL:
         license_ = f"[{license_}]({LICENSE_URL[license_]})"
     with mkdocs_gen_files.open(f"data/{name}.json", "w") as f:
@@ -80,6 +85,10 @@ for name in catalog:
     with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
         f.write(
             TEMPLATE.format(
-                name=name, category=category, license=license_, source=source
+                name=name,
+                category=category,
+                license=license_,
+                source=source,
+                info=info.get("info", ""),
             )
         )

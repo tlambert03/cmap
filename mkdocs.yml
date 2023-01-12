@@ -5,7 +5,6 @@ site_description: Colors and scientific colormaps for python, no dependencies
 repo_name: tlambert03/cmap
 repo_url: https://github.com/tlambert03/cmap
 edit_uri: edit/main/docs/
-# use_directory_urls: false
 
 watch:
   - src

@@ -99,7 +99,7 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
             f.write(
                 TEMPLATE.format(
                     name=name,
-                    category=category,
+                    category=category.title(),
                     license=license_,
                     source=source,
                     info=info.get("info", ""),

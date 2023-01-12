@@ -41,26 +41,26 @@ BOP_Purple = [[0, 0, 0], [148, 32, 148]]
 # each of these makes a triangle in an RGB component plot.
 # one component is always constant, the other two ramp up
 # or down from 0 to 0.5 or 0.5 to 1
-BMR_3C = [(0, 0, 1), (1, 0, 1), (1, 0, 0)]
-CGY_3C = [(0, 1, 1), (0, 1, 0), (1, 1, 0)]
-RMB_3C = [(1, 0, 0), (1, 0, 1), (0, 0, 1)]
-YGC_3C = [(1, 1, 0), (0, 1, 0), (0, 1, 1)]
+BMR_3C = [(0, 0, 1), (1.0, 0, 1), (1.0, 0, 0)]
+CGY_3C = [(0, 1.0, 1), (0, 1.0, 0), (1.0, 1.0, 0)]
+RMB_3C = [(1.0, 0, 0), (1.0, 0, 1), (0, 0, 1)]
+YGC_3C = [(1.0, 1.0, 0), (0, 1.0, 0), (0, 1.0, 1)]
 
 # TODO: this should be a string flag, like `_r` is for reversed
 # this is a general thing, and we probably don't need these here.
-I_Cyan = [(1, 1, 1), (0, 1, 1)]
-I_Green = [(1, 1, 1), (0, 1, 0)]
-I_Magenta = [(1, 1, 1), (1, 0, 1)]
-I_Red = [(1, 1, 1), (1, 0, 0)]
-I_Yellow = [(1, 1, 1), (1, 1, 0)]
+I_Cyan = [(1.0, 1.0, 1), (0, 1.0, 1)]
+I_Green = [(1.0, 1.0, 1), (0, 1.0, 0)]
+I_Magenta = [(1.0, 1.0, 1), (1.0, 0, 1)]
+I_Red = [(1.0, 1.0, 1), (1.0, 0, 0)]
+I_Yellow = [(1.0, 1.0, 1), (1.0, 1.0, 0)]
 I_Bordeaux = [(255, 255, 255), (204, 0, 51)]
 I_Forest = [(255, 255, 255), (0, 153, 0)]
 
-# I_Blue = [(1, 1, 1), (0, 0, 1)]  # Version in ChrisLuts
-I_Blue = [[1, 1, 1], [0, 51 / 255, 204 / 255]]  # Version in napari
+# I_Blue = [(1., 1., 1), (0, 0, 1)]  # Version in ChrisLuts
+I_Blue = [[1.0, 1.0, 1.0], [0, 51 / 255, 204 / 255]]  # Version in napari
 # these two are not in ChrisLuts... but they are in napari
-I_Orange = [[1, 1, 1], [1, 117 / 255, 0]]
-I_Purple = [[1, 1, 1], [117 / 255, 0, 1]]
+I_Orange = [[1.0, 1.0, 1.0], [1.0, 117 / 255, 0]]
+I_Purple = [[1.0, 1.0, 1.0], [117 / 255, 0, 1.0]]
 
 # OPF LUTs are a set of 3 complementary LUTs (their overlay is white)
 # that have orange (O), purple (P) and "fresh" green (F) as base colors.

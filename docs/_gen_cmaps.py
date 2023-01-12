@@ -61,12 +61,12 @@ LICENSE_URL = {
 
 INCLUDE_DATA = (
     "x",
-    "J",
-    "lightness_derivs",
     "color",
     "R",
     "G",
     "B",
+    "J",
+    "lightness_derivs",
     "hue",
     "saturation",
     "chroma",

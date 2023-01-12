@@ -48,9 +48,13 @@ GLOBAL_OPTIONS = {
 async function makeLinearityChart(canvas, cmap_data) {
   var lightness_data = [];
   var deltas = [];
+  var a = [];
+  var b = [];
   for (i = 0; i < cmap_data.x.length; i++) {
     lightness_data.push({ x: cmap_data.x[i], y: cmap_data.J[i] });
     deltas.push({ x: cmap_data.x[i], y: cmap_data.lightness_derivs[i] });
+    // a.push({ x: cmap_data.x[i], y: cmap_data.a[i] })
+    // b.push({ x: cmap_data.x[i], y: cmap_data.b[i] })
   }
 
   new Chart(canvas, {
@@ -58,14 +62,14 @@ async function makeLinearityChart(canvas, cmap_data) {
     data: {
       datasets: [
         {
-          label: "lightness",
+          label: "J",
           backgroundColor: cmap_data.color,
           data: lightness_data,
           pointRadius: 12,
           borderWidth: 0,
         },
         {
-          label: "perceptual lightness derivatives",
+          label: "deltas",
           data: deltas,
           showLine: true,
           radius: 0,
@@ -73,6 +77,24 @@ async function makeLinearityChart(canvas, cmap_data) {
           borderWidth: 3,
           yAxisID: "y2",
         },
+        // {
+        //   label: "a",
+        //   data: a,
+        //   showLine: true,
+        //   radius: 0,
+        //   borderColor: "#AA222266",
+        //   borderWidth: 2,
+        //   yAxisID: "y3",
+        // },
+        // {
+        //   label: "b",
+        //   data: b,
+        //   showLine: true,
+        //   radius: 0,
+        //   borderColor: "#2222AA66",
+        //   borderWidth: 2,
+        //   yAxisID: "y3",
+        // },
       ],
     },
     options: {
@@ -85,6 +107,7 @@ async function makeLinearityChart(canvas, cmap_data) {
           title: { text: "Perceptual Lightness Deltas", display: true },
           position: "right",
         },
+        // y3: { max: 120, min: -120, display: false },
       },
     },
   });
@@ -137,27 +160,28 @@ async function makeRGBChart(canvas, cmap_data) {
 }
 
 async function makeHSLChart(canvas, cmap_data) {
-  var hue = [];
-  var saturation = [];
-  var chroma = [];
-  for (i = 0; i < cmap_data.x.length; i++) {
-    hue.push({ x: cmap_data.x[i], y: (cmap_data.hue[i] * 100) / 360 });
-    saturation.push({ x: cmap_data.x[i], y: cmap_data.saturation[i] });
-    chroma.push({ x: cmap_data.x[i], y: cmap_data.chroma[i] });
-  }
+  var datasets = [];
+  var label_data, data, val;
+
+  ["hue", "saturation", "chroma"].forEach((label) => {
+    label_data = cmap_data[label];
+    data = [];
+    for (i = 0; i < cmap_data.x.length; i++) {
+      val = label_data[i];
+      data.push({
+        x: cmap_data.x[i],
+        y: label == "hue" ? (val * 10) / 36 : val,
+      });
+    }
+    datasets.push({ label: label, showLine: true, data: data });
+  });
 
   new Chart(canvas, {
     type: "scatter",
-    data: {
-      datasets: [
-        { label: "hue", showLine: true, data: hue },
-        { label: "saturation", showLine: true, data: saturation },
-        { label: "chroma", showLine: true, data: chroma },
-      ],
-    },
+    data: { datasets: datasets },
     options: {
       ...GLOBAL_OPTIONS,
-      plugins: { legend: { display: true, labels: {boxHeight: 1} } },
+      plugins: { legend: { display: true, labels: { boxHeight: 1 } } },
       scales: {},
       elements: {
         line: { borderWidth: 4 },

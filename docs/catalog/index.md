@@ -10,12 +10,11 @@ cmap = Colormap('viridis')
 ```
 
 !!!note  "Coming from matplotlib?"
-
     We test against all of the named colormaps in matplotlib, so any `'name'`
     that you can use with `matplotlib.colormaps['name']` can also be passed to
     `cmap.Colormap`. To convert a `cmap.Colormap` to a native
     `matplotlib.colors.Colormap` instance, you may call
-    [`.to_mpl()`][cmap.Colormap.to_mpl].
+    [`.to_mpl()`][cmap.Colormap.to_matplotlib].
 
 See the [Colormap API docs](../api/colormap.md) for details.
 

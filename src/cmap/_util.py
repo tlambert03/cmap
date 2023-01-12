@@ -440,7 +440,7 @@ def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> dict
 
     local_deltas = np.sqrt(np.sum((Jab[:-1, :] - Jab[1:, :]) ** 2, axis=-1))
     local_deltas = np.insert(local_deltas, 0, 0)  # keep length the same
-    local_derivs = n * local_deltas  # export
+    percep_derivs = n * local_deltas  # export
 
     lightness_deltas = np.diff(Jab[:, 0])
     lightness_deltas = np.insert(lightness_deltas, 0, 0)  # keep length same
@@ -465,7 +465,7 @@ def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> dict
         "hue": JchMs[:, 2],
         "colorfulness": JchMs[:, 3],
         "saturation": JchMs[:, 4],
-        "perceptual_derivs": local_derivs,
+        "perceptual_derivs": percep_derivs,
         "lightness_derivs": lightness_derivs,
     }
 

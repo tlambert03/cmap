@@ -5,6 +5,7 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/cmap.svg?color=green)](https://python.org)
 [![CI](https://github.com/tlambert03/cmap/actions/workflows/ci.yml/badge.svg)](https://github.com/tlambert03/cmap/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/tlambert03/cmap/branch/main/graph/badge.svg)](https://codecov.io/gh/tlambert03/cmap)
+[![Documentation Status](https://readthedocs.org/projects/cmap-docs/badge/?version=latest)](https://cmap-docs.readthedocs.io/en/latest/?badge=latest)
 
 Scientific colormaps for python, with no dependencies beyond numpy.
 

@@ -1,5 +1,4 @@
 site_name: cmap
-site_url: https://cmap-docs.rtfd.io/
 site_description: Colors and scientific colormaps for python, no dependencies
 # strict: true
 

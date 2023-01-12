@@ -96,7 +96,7 @@ the distances of the values they represent.
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator, Literal, cast
+from typing import TYPE_CHECKING, Iterator, Literal, Mapping, cast
 
 if TYPE_CHECKING:
     from typing_extensions import NotRequired, TypeAlias, TypedDict
@@ -2334,16 +2334,15 @@ def _norm_name(name: str) -> str:
 _CATALOG_LOWER = {_norm_name(k): v for k, v in CATALOG.items()}
 
 
-class Catalog:
+class Catalog(Mapping[str, "LoadedCatalogItem"]):
 
     _loaded: dict[str, LoadedCatalogItem] = {}
 
     def __iter__(self) -> Iterator[str]:
         return iter(CATALOG)
 
-    def items(self) -> Iterator[tuple[str, LoadedCatalogItem]]:
-        for name in CATALOG:
-            yield name, self[name]
+    def __len__(self) -> int:
+        return len(CATALOG)
 
     def __getitem__(self, name: str) -> LoadedCatalogItem:
         if name not in self._loaded:
@@ -2355,6 +2354,7 @@ class Catalog:
 
             self._loaded[name] = self._load(key)
             if key != name:
+                # cache the requested name as well so we don't need to renormalize
                 self._loaded[key] = self._loaded[name]
         return self._loaded[name]
 

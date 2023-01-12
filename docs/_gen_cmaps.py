@@ -3,8 +3,7 @@ from pathlib import Path
 
 import mkdocs_gen_files
 import numpy as np
-from cmap import Colormap
-from cmap._catalog import catalog
+from cmap import Colormap, _catalog
 from cmap._util import report
 
 TEMPLATE = """# {name}
@@ -73,33 +72,39 @@ INCLUDE_DATA = (
     "chroma",
 )
 
-for name in catalog:
-    info = catalog[name]
-    category = info["category"]
-    output = f"catalog/{category}/{name}.md"
-    license_: str = info["license"]
-    source = info.get("source", "...")
-    if source.startswith("http"):
-        source = f"[{source}]({source})"
-    else:
-        source = f"`{source}`"
-    if license_ in LICENSE_URL:
-        license_ = f"[{license_}]({LICENSE_URL[license_]})"
-    cm = Colormap(name)
-    _report = {
-        k: np.around(v, 4).tolist() if isinstance(v, np.ndarray) else v
-        for k, v in report(cm).items()
-        if k in INCLUDE_DATA
-    }
-    with mkdocs_gen_files.open(f"data/{name}.json", "w") as f:
-        f.write(json.dumps(_report, separators=(",", ":")))
-    with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
-        f.write(
-            TEMPLATE.format(
-                name=name,
-                category=category,
-                license=license_,
-                source=source,
-                info=info.get("info", ""),
+
+def build_catalog(catalog: _catalog.Catalog) -> None:
+    for name in catalog:
+        info = catalog[name]
+        category = info["category"]
+        license_: str = info["license"]
+        source = info.get("source", "...")
+        source = f"[{source}]({source})" if source.startswith("http") else f"`{source}`"
+
+        if license_ in LICENSE_URL:
+            license_ = f"[{license_}]({LICENSE_URL[license_]})"
+
+        # write data used for charts
+        cm = Colormap(name)
+        _report = {
+            k: np.around(v, 4).tolist() if isinstance(v, np.ndarray) else v
+            for k, v in report(cm).items()
+            if k in INCLUDE_DATA
+        }
+        with mkdocs_gen_files.open(f"data/{name}.json", "w") as f:
+            f.write(json.dumps(_report, separators=(",", ":")))
+
+        # write the actual markdown file
+        with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
+            f.write(
+                TEMPLATE.format(
+                    name=name,
+                    category=category,
+                    license=license_,
+                    source=source,
+                    info=info.get("info", ""),
+                )
             )
-        )
+
+
+build_catalog(_catalog.catalog)

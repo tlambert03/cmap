@@ -22,7 +22,7 @@ async function initCharts() {
     // figure out how to get the root including "/en/latest" (or whatever
     // version is being viewed) in read the docs.  This at least will fail
     // locally as well if the cmap pages are moved
-    const response = await fetch(`../../../data/${cmap_name}.json`);
+    const response = await fetch(`/data/${cmap_name}.json`);
     const cmap_data = await response.json();
     for (var i = 0; i < chartElems[cmap_name].length; i++) {
       var canv = chartElems[cmap_name][i];

@@ -20,7 +20,6 @@ from cmap import Colormap
 cm = Colormap('{name}')  # case insensitive
 ```
 
-
 {{{{ cmap: {name} 40 }}}}
 {{{{ cmap_gray: {name} 40 }}}}
 {{{{ cmap_sineramp: {name} }}}}
@@ -44,8 +43,11 @@ L* measured in
 <canvas class="hsl-chart cmap-chart" data-cmap-name="{name}" width="800" height="350"></canvas>
 
 
-[Download Data :octicons-download-16:](/data/{name}.json){{ .md-button .md-button--primary }}
-
+<script>
+window.cmap_data = {data};
+<!-- Note: this is here because of `navigation.instant` in the mkdocs settings -->
+typeof(initCharts) !== 'undefined' && initCharts();
+</script>
 """
 
 DOCS = Path(__file__).parent
@@ -80,19 +82,16 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
         license_: str = info["license"]
         source = info.get("source", "...")
         source = f"[{source}]({source})" if source.startswith("http") else f"`{source}`"
-
         if license_ in LICENSE_URL:
             license_ = f"[{license_}]({LICENSE_URL[license_]})"
 
         # write data used for charts
         cm = Colormap(name)
-        _report = {
+        cmap_data = {
             k: np.around(v, 4).tolist() if isinstance(v, np.ndarray) else v
             for k, v in report(cm).items()
             if k in INCLUDE_DATA
         }
-        with mkdocs_gen_files.open(f"data/{name}.json", "w") as f:
-            f.write(json.dumps(_report, separators=(",", ":")))
 
         # write the actual markdown file
         with mkdocs_gen_files.open(f"catalog/{category}/{name}.md", "w") as f:
@@ -103,6 +102,7 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
                     license=license_,
                     source=source,
                     info=info.get("info", ""),
+                    data=json.dumps({name: cmap_data}, separators=(",", ":")),
                 )
             )
 

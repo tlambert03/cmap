@@ -3,7 +3,6 @@
 // from the very basic https://www.w3schools.com/howto/howto_js_filter_elements.asp
 // :P
 
-
 function filterSelection(c) {
   var x, i;
   x = document.getElementsByClassName("filterDiv");
@@ -37,17 +36,21 @@ function w3RemoveClass(element, name) {
   element.className = arr1.join(" ");
 }
 
-// Add active class to the current button (highlight it)
-var btnContainer = document.getElementById("cmapFilterButtons");
-if (btnContainer) {
-  // if the element exists, initialize the event listeners
-  filterSelection("all");
-  var btns = btnContainer.getElementsByClassName("btn");
-  for (var i = 0; i < btns.length; i++) {
-    btns[i].addEventListener("click", function () {
-      var current = document.getElementsByClassName("active");
-      current[0].className = current[0].className.replace(" active", "");
-      this.className += " active";
-    });
+function initFilters() {
+  // Add active class to the current button (highlight it)
+  var btnContainer = document.getElementById("cmapFilterButtons");
+  if (btnContainer) {
+    // if the element exists, initialize the event listeners
+    filterSelection("all");
+    var btns = btnContainer.getElementsByClassName("btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener("click", function () {
+        var current = document.getElementsByClassName("active");
+        current[0].className = current[0].className.replace(" active", "");
+        this.className += " active";
+      });
+    }
   }
 }
+
+initFilters();

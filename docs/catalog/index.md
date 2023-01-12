@@ -53,3 +53,6 @@ view_image(img, colormap=cmap.to_napari())
 ## Colormaps by category { data-search-exclude }
 
 {{ CMAP_CATALOG }}
+
+<!-- Note: this is here because of `navigation.instant` in the mkdocs settings -->
+<script>typeof(initFilters) !== 'undefined' && initFilters();</script>

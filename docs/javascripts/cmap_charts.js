@@ -1,3 +1,9 @@
+GLOBAL_OPTIONS = {
+  interaction: { mode: "index", intersect: false },
+  plugins: { legend: { display: false } },
+  clip: false,
+};
+
 initCharts();
 
 async function initCharts() {
@@ -18,12 +24,10 @@ async function initCharts() {
   }
   // Make all charts for each cmap name
   for (var cmap_name in chartElems) {
-    // This is an ugly way to get the URL relative to root, but I couldn't
-    // figure out how to get the root including "/en/latest" (or whatever
-    // version is being viewed) in read the docs.  This at least will fail
-    // locally as well if the cmap pages are moved
-    const response = await fetch(`/data/${cmap_name}.json`);
-    const cmap_data = await response.json();
+    // NOTE: we're using a global window variable here that will be
+    // injected into the _gen_cmaps page... because it's much faster
+    // on readthedocs than making an additional fetch request
+    var cmap_data = window.cmap_data[cmap_name];
     for (var i = 0; i < chartElems[cmap_name].length; i++) {
       var canv = chartElems[cmap_name][i];
       if (canv.classList.contains("rgb-chart")) {
@@ -37,22 +41,14 @@ async function initCharts() {
   }
 }
 
-//////////
-
-GLOBAL_OPTIONS = {
-  interaction: { mode: "index", intersect: false },
-  plugins: { legend: { display: false } },
-  clip: false,
-};
-
-async function makeLinearityChart(canvas, cmap_data) {
+async function makeLinearityChart(canvas, data) {
   var lightness_data = [];
   var deltas = [];
   var a = [];
   var b = [];
-  for (i = 0; i < cmap_data.x.length; i++) {
-    lightness_data.push({ x: cmap_data.x[i], y: cmap_data.J[i] });
-    deltas.push({ x: cmap_data.x[i], y: cmap_data.lightness_derivs[i] });
+  for (i = 0; i < data.x.length; i++) {
+    lightness_data.push({ x: data.x[i], y: data.J[i] });
+    deltas.push({ x: data.x[i], y: data.lightness_derivs[i] });
     // a.push({ x: cmap_data.x[i], y: cmap_data.a[i] })
     // b.push({ x: cmap_data.x[i], y: cmap_data.b[i] })
   }
@@ -63,7 +59,7 @@ async function makeLinearityChart(canvas, cmap_data) {
       datasets: [
         {
           label: "J",
-          backgroundColor: cmap_data.color,
+          backgroundColor: data.color,
           data: lightness_data,
           pointRadius: 12,
           borderWidth: 0,
@@ -113,14 +109,14 @@ async function makeLinearityChart(canvas, cmap_data) {
   });
 }
 
-async function makeRGBChart(canvas, cmap_data) {
+async function makeRGBChart(canvas, data) {
   var rdata = [];
   var gdata = [];
   var bdata = [];
-  for (i = 0; i < cmap_data.x.length; i++) {
-    rdata.push({ x: cmap_data.x[i], y: cmap_data.R[i] });
-    gdata.push({ x: cmap_data.x[i], y: cmap_data.G[i] });
-    bdata.push({ x: cmap_data.x[i], y: cmap_data.B[i] });
+  for (i = 0; i < data.x.length; i++) {
+    rdata.push({ x: data.x[i], y: data.R[i] });
+    gdata.push({ x: data.x[i], y: data.G[i] });
+    bdata.push({ x: data.x[i], y: data.B[i] });
   }
 
   new Chart(canvas, {
@@ -159,21 +155,21 @@ async function makeRGBChart(canvas, cmap_data) {
   });
 }
 
-async function makeHSLChart(canvas, cmap_data) {
+async function makeHSLChart(canvas, data) {
   var datasets = [];
-  var label_data, data, val;
+  var label_data, _data, val;
 
   ["hue", "saturation", "chroma"].forEach((label) => {
-    label_data = cmap_data[label];
-    data = [];
-    for (i = 0; i < cmap_data.x.length; i++) {
+    label_data = data[label];
+    _data = [];
+    for (i = 0; i < data.x.length; i++) {
       val = label_data[i];
-      data.push({
-        x: cmap_data.x[i],
+      _data.push({
+        x: data.x[i],
         y: label == "hue" ? (val * 10) / 36 : val,
       });
     }
-    datasets.push({ label: label, showLine: true, data: data });
+    datasets.push({ label: label, showLine: true, data: _data });
   });
 
   new Chart(canvas, {

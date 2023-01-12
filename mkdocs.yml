@@ -15,6 +15,7 @@ nav:
   - Colormaps: colormaps.md
   - Colormap Catalog: catalog/
   - API: api/
+  - FAQ: faq.md
 
 theme:
   name: "material"
@@ -22,6 +23,7 @@ theme:
     - content.tabs.link
     - content.code.annotate
     - navigation.indexes
+    - navigation.instant
   icon:
     logo: fontawesome/solid/swatchbook
     repo: fontawesome/brands/github

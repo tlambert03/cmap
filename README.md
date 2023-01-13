@@ -137,3 +137,12 @@ Other libraries providing colormaps:
 - <https://colorcet.com/>, Peter Kovesi
 - [Kovesi: Good Colour Maps: How to Design Them.](https://arxiv.org/abs/1509.03700)
 - https://www.fabiocrameri.ch/colourmaps/
+
+
+# TODO:
+
+- work on namespacing and colormap string name parsing
+- possibly add parameter parsing to string names, like `cubehelix(1.5, 1.2, 1.0)`
+- consider plugin system... or interface for registration
+- refine catalog mechanism
+- continue to improve attributions and references

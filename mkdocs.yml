@@ -24,6 +24,7 @@ theme:
     - content.code.annotate
     - navigation.indexes
     - navigation.instant
+    - content.code.copy
   icon:
     logo: fontawesome/solid/swatchbook
     repo: fontawesome/brands/github
@@ -65,7 +66,8 @@ hooks:
   - docs/_hooks.py
 
 plugins:
-  - search
+  - search:
+      separator: '[\s\-\_,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - autorefs
   - literate-nav
   - gen-files:

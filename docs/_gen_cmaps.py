@@ -53,6 +53,7 @@ typeof(initCharts) !== 'undefined' && initCharts();
 DOCS = Path(__file__).parent
 LICENSE_URL = {
     "CC0": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "CC-BY-4.0": "https://creativecommons.org/licenses/by/4.0/",
     "Apache-2.0": "https://www.apache.org/licenses/LICENSE-2.0",
     "MIT": "https://opensource.org/licenses/MIT",
     "BSD-3-Clause": "https://opensource.org/licenses/BSD-3-Clause",

@@ -38,6 +38,7 @@ docs = [
     'mkdocs-gen-files',
     'colorspacious',
     'imageio',
+    'colorcet',
 ]
 test = ["pytest>=6.0", "pytest-cov"]
 thirdparty = [
@@ -165,5 +166,5 @@ ignore = [
     "setup.py",
     "docs/**/*",
     "mkdocs.yml",
-    ".readthedocs.yaml"
+    ".readthedocs.yaml",
 ]

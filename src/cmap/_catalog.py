@@ -94,8 +94,10 @@ the distances of the values they represent.
 
 (i.e. there are no "kinks" in the lightness plot as a function of the data.)
 """
+
 from __future__ import annotations
 
+import contextlib
 from typing import TYPE_CHECKING, Iterator, Literal, Mapping, cast
 
 if TYPE_CHECKING:
@@ -2360,6 +2362,28 @@ CATALOG: CatalogDict = {
     "bamO": {"data": "cmap.data._crameri.bamO:bamO", "category": "cyclic"},
     "acton": {"data": "cmap.data._crameri.acton:acton", "category": "sequential"},
 }
+
+with contextlib.suppress(ModuleNotFoundError):
+    from cmap.data import _colorcet
+
+    for name in dir(_colorcet):
+        cat = {
+            "circle": "cyclic",
+            "cyclic": "cyclic",
+            "diverging": "diverging",
+            "linear": "sequential",
+            "rainbow": "miscellaneous",
+            "isoluminant": "miscellaneous",
+            "glasbey": "qualitative",
+        }[name.split("_")[0]]
+
+        CATALOG[name] = {
+            "data": f"cmap.data._colorcet:{name}",
+            "category": cast("Category", cat),
+            "interpolation": name.startswith("glasbey_"),
+            "info": "!!!note\n\tThis colormap requires "
+            "[`colorcet`](https://pypi.org/project/colorcet/) to be installed.",
+        }
 
 
 def _norm_name(name: str) -> str:

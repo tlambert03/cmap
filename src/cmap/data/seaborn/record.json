@@ -1,0 +1,33 @@
+{
+  "authors": ["John Doe"],
+  "source": "https://github.com/mwaskom/seaborn",
+  "license": "BSD-3-Clause",
+  "info": "This is a test dataset",
+  "namespace": "seaborn",
+  "colormaps": {
+    "rocket": {
+      "data": "cmap.data.seaborn:rocket",
+      "category": "sequential"
+    },
+    "mako": {
+      "data": "cmap.data.seaborn:mako",
+      "category": "sequential"
+    },
+    "vlag": {
+      "data": "cmap.data.seaborn:vlag",
+      "category": "diverging"
+    },
+    "icefire": {
+      "data": "cmap.data.seaborn:icefire",
+      "category": "diverging"
+    },
+    "flare": {
+      "data": "cmap.data.seaborn:flare",
+      "category": "sequential"
+    },
+    "crest": {
+      "data": "cmap.data.seaborn:crest",
+      "category": "sequential"
+    }
+  }
+}

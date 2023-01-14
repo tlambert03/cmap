@@ -1,0 +1,12 @@
+{
+  "authors": ["Nathaniel J. Smith", "Stefan van der Walt"],
+  "source": "https://github.com/matplotlib/matplotlib",
+  "license": "CC0",
+  "namespace": "matplotlib",
+  "colormaps": {
+    "viridis": {
+      "data": "cmap.data.matplotlib:viridis",
+      "category": "sequential"
+    }
+  }
+}

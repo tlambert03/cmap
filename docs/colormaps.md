@@ -28,7 +28,7 @@ to the [`cmap.Colormap`][] constructor; `cmap` refers to these objects collectiv
 - A `string` containing a [recognized colormap name](catalog/index.md).
 
     - `Colormap('viridis')` {{ cmap_expr: 'viridis' }}
-    - `Colormap('turbo')` {{ cmap_expr: 'turbo' }}
+    - `Colormap('batlow')` {{ cmap_expr: 'batlow' }}
 
     !!!note "Matplotlib names ✅"
         Any valid matplotlib colormap key that could be used in `matplotlib.colormaps[...]`
@@ -38,7 +38,7 @@ to the [`cmap.Colormap`][] constructor; `cmap` refers to these objects collectiv
    to reverse the colormap:
 
     - `Colormap('viridis_r')` {{ cmap_expr: 'viridis_r' }}
-    - `Colormap('turbo_r')` {{ cmap_expr: 'turbo_r' }}
+    - `Colormap('batlow_r')` {{ cmap_expr: 'batlow_r' }}
 
 ### `Iterable[ColorLike | tuple]`
 

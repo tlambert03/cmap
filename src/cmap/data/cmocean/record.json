@@ -1,0 +1,108 @@
+{
+  "authors": [""],
+  "source": "https://github.com/matplotlib/cmocean",
+  "license": "MIT",
+  "info": "",
+  "namespace": "cmocean",
+  "colormaps": {
+    "algae": {
+      "data": "cmap.data.cmocean.algae:algae",
+      "category": "sequential",
+      "info": "The algae colormap is sequential with whitish-green for low values and increasing in green with increasing value, which could be used to represent an increase in chlorophyll in the water. This colormap is based on [Greens](/catalog/sequential/greens), but was recreated from scratch using the viscm tool."
+    },
+    "amp": {
+      "data": "cmap.data.cmocean.amp:amp",
+      "category": "sequential"
+    },
+    "balance": {
+      "data": "cmap.data.cmocean.balance:balance",
+      "category": "diverging"
+    },
+    "balance_blue": {
+      "data": "cmap.data.cmocean.balance:balance_blue",
+      "category": "sequential"
+    },
+    "delta": {
+      "data": "cmap.data.cmocean.delta:delta",
+      "category": "diverging"
+    },
+    "delta_blue": {
+      "data": "cmap.data.cmocean.delta:delta_blue",
+      "category": "sequential"
+    },
+    "curl": {
+      "data": "cmap.data.cmocean.curl:curl",
+      "category": "diverging"
+    },
+    "curl_pink": {
+      "data": "cmap.data.cmocean.curl:curl_pink",
+      "category": "sequential"
+    },
+    "diff": {
+      "data": "cmap.data.cmocean.diff:diff",
+      "category": "diverging",
+      "info": "The diff colormap is diverging, with one side shades of blues and one side shades of browns."
+    },
+    "tarn": {
+      "data": "cmap.data.cmocean.tarn:tarn",
+      "category": "diverging"
+    },
+    "dense": {
+      "data": "cmap.data.cmocean.dense:dense",
+      "category": "sequential"
+    },
+    "haline": {
+      "data": "cmap.data.cmocean.haline:haline",
+      "category": "sequential"
+    },
+    "ice": {
+      "data": "cmap.data.cmocean.ice:ice",
+      "category": "sequential",
+      "info": "The ice colormap is sequential from very dark blue (almost black) to very light blue (almost white). A use for this could be representations of sea ice."
+    },
+    "oxy": {
+      "data": "cmap.data.cmocean.oxy:oxy",
+      "category": "sequential"
+    },
+    "phase": {
+      "data": "cmap.data.cmocean.phase:phase",
+      "category": "cyclic"
+    },
+    "solar": {
+      "data": "cmap.data.cmocean.solar:solar",
+      "category": "sequential"
+    },
+    "turbid": {
+      "data": "cmap.data.cmocean.turbid:turbid",
+      "category": "sequential"
+    },
+    "thermal": {
+      "data": "cmap.data.cmocean.thermal:thermal",
+      "category": "sequential"
+    },
+    "speed": {
+      "data": "cmap.data.cmocean.speed:speed",
+      "category": "sequential"
+    },
+    "deep": {
+      "data": "cmap.data.cmocean.deep:deep",
+      "category": "sequential"
+    },
+    "matter": {
+      "data": "cmap.data.cmocean.matter:matter",
+      "category": "sequential"
+    },
+    "tempo": {
+      "data": "cmap.data.cmocean.tempo:tempo",
+      "category": "sequential"
+    },
+    "rain": {
+      "data": "cmap.data.cmocean.rain:rain",
+      "category": "sequential"
+    },
+    "topo": {
+      "data": "cmap.data.cmocean.topo:topo",
+      "category": "miscellaneous"
+    }
+  }
+}

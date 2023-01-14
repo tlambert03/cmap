@@ -1,23 +1,23 @@
-# New matplotlib colormaps by Nathaniel J. Smith, Stefan van der Walt,
-# and (in the case of viridis) Eric Firing.
+# new matplotlib colormaps by nathaniel j. smith, stefan van der walt,
+# and (in the case of viridis) eric firing.
 #
-# This file and the colormaps in it are released under the CC0 license /
-# public domain dedication. We would appreciate credit if you use or
+# this file and the colormaps in it are released under the cc0 license /
+# public domain dedication. we would appreciate credit if you use or
 # redistribute these colormaps, but do not impose any legal restrictions.
 #
-# To the extent possible under law, the persons who associated CC0 with
+# to the extent possible under law, the persons who associated cc0 with
 # mpl-colormaps have waived all copyright and related or neighboring rights
 # to mpl-colormaps.
 #
-# You should have received a copy of the CC0 legalcode along with this
-# work.  If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+# you should have received a copy of the cc0 legalcode along with this
+# work.  if not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 #
 # https://bids.github.io/colormap/
 
-__license__ = "CC0"
-__source__ = "https://github.com/BIDS/colormap"
+__license__ = "cc0"
+__source__ = "https://github.com/bids/colormap"
 
-Magma = [
+magma = [
     [0.001462, 0.000466, 0.013866],
     [0.002258, 0.001295, 0.018331],
     [0.003279, 0.002305, 0.023708],
@@ -276,7 +276,7 @@ Magma = [
     [0.987053, 0.991438, 0.749504],
 ]
 
-Inferno = [
+inferno = [
     [0.001462, 0.000466, 0.013866],
     [0.002267, 0.001270, 0.018570],
     [0.003299, 0.002249, 0.024239],
@@ -535,7 +535,7 @@ Inferno = [
     [0.988362, 0.998364, 0.644924],
 ]
 
-Plasma = [
+plasma = [
     [0.050383, 0.029803, 0.527975],
     [0.063536, 0.028426, 0.533124],
     [0.075353, 0.027206, 0.538007],
@@ -794,7 +794,7 @@ Plasma = [
     [0.940015, 0.975158, 0.131326],
 ]
 
-Viridis = [
+viridis = [
     [0.267004, 0.004874, 0.329415],
     [0.268510, 0.009605, 0.335427],
     [0.269944, 0.014625, 0.341379],
@@ -1053,7 +1053,7 @@ Viridis = [
     [0.993248, 0.906157, 0.143936],
 ]
 
-Cividis = [
+cividis = [
     [0.000000, 0.135112, 0.304751],
     [0.000000, 0.138068, 0.311105],
     [0.000000, 0.141013, 0.317579],
@@ -1312,7 +1312,7 @@ Cividis = [
     [0.995737, 0.909344, 0.217772],
 ]
 
-Twilight = [
+twilight = [
     [0.88575015840754434, 0.85000924943067835, 0.8879736506427196],
     [0.88378520195539056, 0.85072940540310626, 0.88723222096949894],
     [0.88172231059285788, 0.85127594077653468, 0.88638056925514819],
@@ -1825,10 +1825,10 @@ Twilight = [
     [0.88571155122845646, 0.85002186115856315, 0.88572538990087124],
 ]
 
-Twilight_shifted = Twilight[len(Twilight) // 2 :] + Twilight[: len(Twilight) // 2]
-Twilight_shifted.reverse()
+twilight_shifted = twilight[len(twilight) // 2 :] + twilight[: len(twilight) // 2]
+twilight_shifted.reverse()
 
-# Uknown provenance -----------------------
+# uknown provenance -----------------------
 binary = [(0.0, 0.0, 1.0), (1.0, 1.0, 1.0), (1.0, 0.0, 0.0)]
 
 # original matplotlib post:
@@ -1846,4 +1846,4 @@ seismic = [
     (0.5, 0.0, 0.0),
 ]
 
-# END: Uknown provenance -----------------------
+# end: uknown provenance -----------------------

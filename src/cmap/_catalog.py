@@ -18,10 +18,12 @@ if TYPE_CHECKING:
     class CatalogItem(TypedDict):
         data: str
         category: Category
-        alias: NotRequired[str]
         tags: NotRequired[list[str]]
         interpolation: NotRequired[bool]
         info: NotRequired[str]
+
+    class CatalogAlias(TypedDict):
+        alias: str
 
     # would be nice to subclass CatalogItem... but can't
     # https://github.com/python/mypy/issues/7435
@@ -41,12 +43,13 @@ def _norm_name(name: str) -> str:
     return name.lower().replace(" ", "_")
 
 
-CATALOG: dict[str, CatalogItem] = {}
+CATALOG: dict[str, CatalogItem | CatalogAlias] = {}
 
 for r in Path(cmap.data.__file__).parent.rglob("record.json"):
     with open(r) as f:
         data = json.load(f)
         for k, v in data["colormaps"].items():
+            v = cast("CatalogItem | CatalogAlias", v)
             namespaced = f"{data['namespace']}:{k}"
             if "alias" in v:
                 CATALOG[namespaced] = v
@@ -93,15 +96,11 @@ class Catalog(Mapping[str, "LoadedCatalogItem"]):
     def _load(self, key: str) -> LoadedCatalogItem:
         """Get the data for a named colormap."""
         item = _CATALOG_LOWER[key].copy()
-        if "data" not in item:
-            if "alias" in item:
-                # TODO: deal with namespace:name
-                namespace, alias = item["alias"].split(":", 1)
-                return self[alias]
-            raise ValueError(f"Colormap {key!r} has no data.")
+        if "alias" in item:
+            return self[cast("CatalogAlias", item)["alias"]]
         _item = cast("LoadedCatalogItem", item)
         if isinstance(_item["data"], str):
-            module, attr = item["data"].rsplit(":", 1)
+            module, attr = _item["data"].rsplit(":", 1)
             # not encouraged... but significantly faster than importlib
             # well tested on internal data though
             mod = __import__(module, fromlist=[attr])

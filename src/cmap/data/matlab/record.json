@@ -3,63 +3,63 @@
   "colormaps": {
     "autumn": {
       "category": "sequential",
-      "data": "cmap.data._matlab:autumn"
+      "data": "cmap.data.matlab:autumn"
     },
     "bone": {
       "category": "sequential",
-      "data": "cmap.data._matlab:bone"
+      "data": "cmap.data.matlab:bone"
     },
     "cool": {
       "category": "sequential",
-      "data": "cmap.data._matlab:cool"
+      "data": "cmap.data.matlab:cool"
     },
     "copper": {
       "category": "sequential",
-      "data": "cmap.data._matlab:copper"
+      "data": "cmap.data.matlab:copper"
     },
     "flag": {
       "category": "miscellaneous",
-      "data": "cmap.data._matlab:flag"
+      "data": "cmap.data.matlab:flag"
     },
     "gray": {
       "category": "sequential",
-      "data": "cmap.data._matlab:gray"
+      "data": "cmap.data.matlab:gray"
     },
     "grays": {
       "category": "sequential",
-      "data": "cmap.data._matlab:gray"
+      "data": "cmap.data.matlab:gray"
     },
     "hot": {
       "category": "sequential",
-      "data": "cmap.data._matlab:hot"
+      "data": "cmap.data.matlab:hot"
     },
     "hsv": {
       "category": "cyclic",
-      "data": "cmap.data._matlab:hsv"
+      "data": "cmap.data.matlab:hsv"
     },
     "jet": {
       "category": "miscellaneous",
-      "data": "cmap.data._matlab:jet"
+      "data": "cmap.data.matlab:jet"
     },
     "pink": {
       "category": "sequential",
-      "data": "cmap.data._matlab:pink"
+      "data": "cmap.data.matlab:pink"
     },
     "prism": {
       "category": "miscellaneous",
-      "data": "cmap.data._matlab:prism"
+      "data": "cmap.data.matlab:prism"
     },
     "spring": {
       "category": "sequential",
-      "data": "cmap.data._matlab:spring"
+      "data": "cmap.data.matlab:spring"
     },
     "summer": {
       "category": "sequential",
-      "data": "cmap.data._matlab:summer"
+      "data": "cmap.data.matlab:summer"
     },
     "winter": {
       "category": "sequential",
-      "data": "cmap.data._matlab:winter"
+      "data": "cmap.data.matlab:winter"
     }
   },
   "license": "UNKNOWN",

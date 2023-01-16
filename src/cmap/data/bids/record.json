@@ -4,6 +4,10 @@
     "Stefan van der Walt"
   ],
   "colormaps": {
+    "fake_parula": {
+      "category": "sequential",
+      "data": "cmap.data.bids:fake_parula"
+    },
     "inferno": {
       "category": "sequential",
       "data": "cmap.data.bids:inferno"

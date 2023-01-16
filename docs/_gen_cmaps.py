@@ -10,9 +10,9 @@ TEMPLATE = """# {name}
 
 {info}
 
-| category | license | source |
-| --- | --- | --- |
-| {category} | {license} | {source} |
+| category | license | authors | source |
+| --- | --- | --- | --- |
+| {category} | {license} | {authors} | {source} |
 
 ```python
 from cmap import Colormap
@@ -83,6 +83,7 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
         license_: str = info["license"]
         source = info.get("source", "...")
         source = f"[{source}]({source})" if source.startswith("http") else f"`{source}`"
+        authors = ", ".join(info["authors"]) if "authors" in info else ""
         if license_ in LICENSE_URL:
             license_ = f"[{license_}]({LICENSE_URL[license_]})"
 
@@ -101,6 +102,7 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
                     name=name,
                     category=category.title(),
                     license=license_,
+                    authors=authors,
                     source=source,
                     info=info.get("info", ""),
                     data=json.dumps({name: cmap_data}, separators=(",", ":")),

@@ -1,20 +1,19 @@
 {
-  "authors": [
-    "Nathaniel J. Smith",
-    "Stefan van der Walt"
-  ],
+  "authors": [],
   "colormaps": {
     "inferno": {
-      "category": "sequential",
-      "data": "cmap.data.matplotlib:inferno"
+      "alias": "bids:inferno"
     },
     "magma": {
-      "category": "sequential",
-      "data": "cmap.data.matplotlib:magma"
+      "alias": "bids:magma"
     },
     "plasma": {
+      "alias": "bids:plasma"
+    },
+    "terrain": {
       "category": "sequential",
-      "data": "cmap.data.matplotlib:plasma"
+      "data": "cmap.data.matplotlib:terrain",
+      "info": "Appears to have its origin in Igor, and was [added to matplotlib in 2009](https://sourceforge.net/p/matplotlib/mailman/message/23330302/)."
     },
     "twilight": {
       "authors": [
@@ -31,11 +30,10 @@
       "data": "cmap.data.matplotlib:twilight_shifted"
     },
     "viridis": {
-      "category": "sequential",
-      "data": "cmap.data.matplotlib:viridis"
+      "alias": "bids:viridis"
     }
   },
-  "license": "CC0",
+  "license": "PSF",
   "namespace": "matplotlib",
   "source": "https://github.com/matplotlib/matplotlib"
 }

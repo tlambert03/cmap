@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     class CatalogItem(TypedDict):
         data: str
         category: Category
+        alias: NotRequired[str]
         tags: NotRequired[list[str]]
         interpolation: NotRequired[bool]
         info: NotRequired[str]
@@ -46,13 +47,21 @@ for r in Path(cmap.data.__file__).parent.rglob("record.json"):
     with open(r) as f:
         data = json.load(f)
         for k, v in data["colormaps"].items():
+            namespaced = f"{data['namespace']}:{k}"
+            if "alias" in v:
+                CATALOG[namespaced] = v
+                continue
             v.setdefault("license", data["license"])
             v.setdefault("namespace", data["namespace"])
             v.setdefault("source", data["source"])
             v.setdefault("authors", data["authors"])
             if "category" in data:
                 v.setdefault("category", data["category"])
-            CATALOG[k] = v
+            CATALOG[namespaced] = v
+            if k not in CATALOG:
+                CATALOG[k] = v
+            else:
+                print(f"Warning: {k} already in catalog")
 
 _CATALOG_LOWER = {_norm_name(k): v for k, v in CATALOG.items()}
 
@@ -84,6 +93,12 @@ class Catalog(Mapping[str, "LoadedCatalogItem"]):
     def _load(self, key: str) -> LoadedCatalogItem:
         """Get the data for a named colormap."""
         item = _CATALOG_LOWER[key].copy()
+        if "data" not in item:
+            if "alias" in item:
+                # TODO: deal with namespace:name
+                namespace, alias = item["alias"].split(":", 1)
+                return self[alias]
+            raise ValueError(f"Colormap {key!r} has no data.")
         _item = cast("LoadedCatalogItem", item)
         if isinstance(_item["data"], str):
             module, attr = item["data"].rsplit(":", 1)

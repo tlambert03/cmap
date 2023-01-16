@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "Jamie Nunez"
+  ],
+  "colormaps": {
+    "cividis": {
+      "category": "sequential",
+      "data": "cmap.data.cividis:cividis",
+      "info": "Like [viridis](/catalog/sequential/viridis), cividis is perceptually uniform and colorblind friendly. However, cividis also goes a step further: not only is it usable by colorblind users, it should actually look effectively identical to colorblind and non-colorblind users. For more details, see [Nu\u00f1ez J, *et al* (2018)](https://doi.org/10.1371/journal.pone.0199239)."
+    }
+  },
+  "license": "BSD-3-Clause",
+  "namespace": "cividis",
+  "source": "https://github.com/pnnl/cmaputil"
+}

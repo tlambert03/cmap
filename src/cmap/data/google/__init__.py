@@ -11,10 +11,7 @@ https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f
 See also: https://ai.googleblog.com/2019/08/turbo-improved-rainbow-colormap-for.html
 """
 
-__license__ = "Apache-2.0"
-__source__ = "https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f"
-
-Turbo = [
+turbo = [
     [0.18995, 0.07176, 0.23217],
     [0.19483, 0.08339, 0.26149],
     [0.19956, 0.09498, 0.29024],

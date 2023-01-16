@@ -1,119 +1,151 @@
 {
-  "authors": [""],
-  "source": "https://zenodo.org/record/5501399",
-  "license": "MIT",
-  "info": "",
-  "namespace": "crameri",
+  "authors": [
+    ""
+  ],
   "colormaps": {
-    "bilbao": {
-      "data": "cmap.data.crameri.bilbao:bilbao",
-      "category": "sequential"
+    "acton": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.acton:acton"
     },
-    "imola": {
-      "data": "cmap.data.crameri.imola:imola",
-      "category": "sequential"
+    "bam": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.bam:bam"
     },
-    "vik": { "data": "cmap.data.crameri.vik:vik", "category": "diverging" },
-    "cork": { "data": "cmap.data.crameri.cork:cork", "category": "diverging" },
-    "batlow": {
-      "data": "cmap.data.crameri.batlow:batlow",
-      "category": "sequential"
-    },
-    "turku": {
-      "data": "cmap.data.crameri.turku:turku",
-      "category": "sequential"
-    },
-    "vikO": { "data": "cmap.data.crameri.vikO:vikO", "category": "cyclic" },
-    "broc": { "data": "cmap.data.crameri.broc:broc", "category": "diverging" },
-    "batlowK": {
-      "data": "cmap.data.crameri.batlowK:batlowK",
-      "category": "sequential"
-    },
-    "bam": { "data": "cmap.data.crameri.bam:bam", "category": "diverging" },
-    "tokyo": {
-      "data": "cmap.data.crameri.tokyo:tokyo",
-      "category": "sequential"
-    },
-    "roma": { "data": "cmap.data.crameri.roma:roma", "category": "diverging" },
-    "batlowW": {
-      "data": "cmap.data.crameri.batlowW:batlowW",
-      "category": "sequential"
-    },
-    "nuuk": {
-      "data": "cmap.data.crameri.nuuk:nuuk",
-      "category": "sequential"
-    },
-    "lisbon": {
-      "data": "cmap.data.crameri.lisbon:lisbon",
-      "category": "diverging"
-    },
-    "oleron": {
-      "data": "cmap.data.crameri.oleron:oleron",
-      "category": "miscellaneous"
-    },
-    "vanimo": {
-      "data": "cmap.data.crameri.vanimo:vanimo",
-      "category": "diverging"
-    },
-    "lajolla": {
-      "data": "cmap.data.crameri.lajolla:lajolla",
-      "category": "sequential"
-    },
-    "buda": {
-      "data": "cmap.data.crameri.buda:buda",
-      "category": "sequential"
-    },
-    "corkO": { "data": "cmap.data.crameri.corkO:corkO", "category": "cyclic" },
-    "devon": {
-      "data": "cmap.data.crameri.devon:devon",
-      "category": "sequential"
-    },
-    "davos": {
-      "data": "cmap.data.crameri.davos:davos",
-      "category": "sequential"
+    "bamO": {
+      "category": "cyclic",
+      "data": "cmap.data.crameri.bamO:bamO"
     },
     "bamako": {
-      "data": "cmap.data.crameri.bamako:bamako",
-      "category": "sequential"
+      "category": "sequential",
+      "data": "cmap.data.crameri.bamako:bamako"
     },
-    "fes": {
-      "data": "cmap.data.crameri.fes:fes",
-      "category": "miscellaneous"
+    "batlow": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.batlow:batlow"
     },
-    "oslo": {
-      "data": "cmap.data.crameri.oslo:oslo",
-      "category": "sequential"
+    "batlowK": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.batlowK:batlowK"
     },
-    "lapaz": {
-      "data": "cmap.data.crameri.lapaz:lapaz",
-      "category": "sequential"
-    },
-    "brocO": { "data": "cmap.data.crameri.brocO:brocO", "category": "cyclic" },
-    "hawaii": {
-      "data": "cmap.data.crameri.hawaii:hawaii",
-      "category": "sequential"
-    },
-    "tofino": {
-      "data": "cmap.data.crameri.tofino:tofino",
-      "category": "diverging"
+    "batlowW": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.batlowW:batlowW"
     },
     "berlin": {
-      "data": "cmap.data.crameri.berlin:berlin",
-      "category": "diverging"
+      "category": "diverging",
+      "data": "cmap.data.crameri.berlin:berlin"
     },
-    "romaO": { "data": "cmap.data.crameri.romaO:romaO", "category": "cyclic" },
+    "bilbao": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.bilbao:bilbao"
+    },
+    "broc": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.broc:broc"
+    },
+    "brocO": {
+      "category": "cyclic",
+      "data": "cmap.data.crameri.brocO:brocO"
+    },
+    "buda": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.buda:buda"
+    },
     "bukavu": {
-      "data": "cmap.data.crameri.bukavu:bukavu",
-      "category": "miscellaneous"
+      "category": "miscellaneous",
+      "data": "cmap.data.crameri.bukavu:bukavu"
+    },
+    "cork": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.cork:cork"
+    },
+    "corkO": {
+      "category": "cyclic",
+      "data": "cmap.data.crameri.corkO:corkO"
+    },
+    "davos": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.davos:davos"
+    },
+    "devon": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.devon:devon"
+    },
+    "fes": {
+      "category": "miscellaneous",
+      "data": "cmap.data.crameri.fes:fes"
     },
     "grayC": {
-      "data": "cmap.data.crameri.grayC:grayC",
-      "category": "sequential"
+      "category": "sequential",
+      "data": "cmap.data.crameri.grayC:grayC"
     },
-    "bamO": { "data": "cmap.data.crameri.bamO:bamO", "category": "cyclic" },
-    "acton": {
-      "data": "cmap.data.crameri.acton:acton",
-      "category": "sequential"
+    "hawaii": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.hawaii:hawaii"
+    },
+    "imola": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.imola:imola"
+    },
+    "lajolla": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.lajolla:lajolla"
+    },
+    "lapaz": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.lapaz:lapaz"
+    },
+    "lisbon": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.lisbon:lisbon"
+    },
+    "nuuk": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.nuuk:nuuk"
+    },
+    "oleron": {
+      "category": "miscellaneous",
+      "data": "cmap.data.crameri.oleron:oleron"
+    },
+    "oslo": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.oslo:oslo"
+    },
+    "roma": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.roma:roma"
+    },
+    "romaO": {
+      "category": "cyclic",
+      "data": "cmap.data.crameri.romaO:romaO"
+    },
+    "tofino": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.tofino:tofino"
+    },
+    "tokyo": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.tokyo:tokyo"
+    },
+    "turku": {
+      "category": "sequential",
+      "data": "cmap.data.crameri.turku:turku"
+    },
+    "vanimo": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.vanimo:vanimo"
+    },
+    "vik": {
+      "category": "diverging",
+      "data": "cmap.data.crameri.vik:vik"
+    },
+    "vikO": {
+      "category": "cyclic",
+      "data": "cmap.data.crameri.vikO:vikO"
     }
-  }
+  },
+  "info": "",
+  "license": "MIT",
+  "namespace": "crameri",
+  "source": "https://zenodo.org/record/5501399"
 }

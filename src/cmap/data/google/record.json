@@ -1,0 +1,15 @@
+{
+  "authors": [
+    "Anton Mikhailov"
+  ],
+  "colormaps": {
+    "turbo": {
+      "category": "miscellaneous",
+      "data": "cmap.data.google:turbo",
+      "info": "Turbo mimics the lightness profile of Jet, going from low to high back down to low, while also addressing some of its shortcomings, such as false detail, banding and color blindness ambiguity. Its lightness slope is generally double that of [Viridis](/catalog/sequential/viridis), allowing subtle changes to be more easily seen. This enhances detail perception when color can be used to disambiguate the low and high ends."
+    }
+  },
+  "license": "Apache-2.0",
+  "namespace": "google",
+  "source": "https://gist.github.com/mikhailov-work/ee72ba4191942acecc03fe6da94fc73f"
+}

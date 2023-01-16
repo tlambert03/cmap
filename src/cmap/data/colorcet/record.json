@@ -2,393 +2,78 @@
   "authors": [
     "Peter Kovesi"
   ],
-  "source": "https://colorcet.com",
-  "license": "CC-BY-4.0",
-  "namespace": "colorcet",
   "colormaps": {
-    "CET_L1": {
-      "info": "Grey scale",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L1:data",
-      "category": "sequential"
-    },
-    "CET_L2": {
-      "info": "Grey scale with slightly reduced contrast to avoid display saturation problems",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L2:data",
-      "category": "sequential"
-    },
-    "CET_L3": {
-      "info": "Black-Red-Yellow-White heat colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L3:data",
-      "category": "sequential"
-    },
-    "CET_L4": {
-      "info": "Black-Red-Yellow heat colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L4:data",
-      "category": "sequential"
-    },
-    "CET_L5": {
-      "info": "Colour Map along the green edge of CIELAB space",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L5:data",
-      "category": "sequential"
-    },
-    "CET_L6": {
-      "info": "Blue shades running vertically up the blue edge of CIELAB space",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L6:data",
-      "category": "sequential"
-    },
-    "CET_L7": {
-      "info": "Blue-Pink-Light Pink colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L7:data",
-      "category": "sequential"
-    },
-    "CET_L8": {
-      "info": "Blue-Magenta-Yellow highly saturated colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L8:data",
-      "category": "sequential"
-    },
-    "CET_L9": {
-      "info": "Blue-green-yellow colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L9:data",
-      "category": "sequential"
-    },
-    "CET_L10": {
-      "info": "A \"geographical\" colour map.  Best used with relief shading",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L10:data",
-      "category": "sequential"
-    },
-    "CET_L11": {
-      "info": "A lighter \"geographical\" colour map.  Best used with relief shading",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L11:data",
-      "category": "sequential"
-    },
-    "CET_L12": {
-      "info": "A \"water depth\" colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L12:data",
-      "category": "sequential"
-    },
-    "CET_L13": {
-      "info": "red colour map for ternary images",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L13:data",
-      "category": "sequential"
-    },
-    "CET_L14": {
-      "info": "green colour map for ternary images",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L14:data",
-      "category": "sequential"
-    },
-    "CET_L15": {
-      "info": "blue colour map for ternary images",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L15:data",
-      "category": "sequential"
-    },
-    "CET_L16": {
-      "info": "Black-Blue-Green-Yellow-White colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L16:data",
-      "category": "sequential"
-    },
-    "CET_L17": {
-      "info": "White-Orange-Red-Blue, decreasing lightness with increasing saturation",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L17:data",
-      "category": "sequential"
-    },
-    "CET_L18": {
-      "info": "White-Yellow-Orange-Red, decreasing lightness with increasing saturation",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L18:data",
-      "category": "sequential"
-    },
-    "CET_L19": {
-      "info": "White-Cyan-Magenta-Red, decreasing lightness with increasing saturation",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L19:data",
-      "category": "sequential"
-    },
-    "CET_L20": {
-      "info": "Black-Blue-Green-Orange-Yellow map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_L20:data",
-      "category": "sequential"
-    },
-    "CET_D1": {
-      "info": "Classic diverging blue - white - red colour map. End colours are matched in lightness and chroma",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D1:data",
-      "category": "diverging"
-    },
-    "CET_D1A": {
-      "info": "Diverging blue - white - red colour map. Similar to D1 but with darker end point colours",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D1A:data",
-      "category": "diverging"
-    },
-    "CET_D2": {
-      "info": "Diverging green - white - violet colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D2:data",
-      "category": "diverging"
-    },
-    "CET_D3": {
-      "info": "Diverging green - white - red colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D3:data",
-      "category": "diverging"
-    },
-    "CET_D4": {
-      "info": "Diverging blue - black - red colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D4:data",
-      "category": "diverging"
-    },
-    "CET_D5": {
-      "info": "Diverging green - black - red colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D5:data",
-      "category": "diverging"
-    },
-    "CET_D6": {
-      "info": "Diverging blue - black - yellow colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D6:data",
-      "category": "diverging"
-    },
-    "CET_D7": {
-      "info": "Linear-diverging blue - grey - yellow colour map. This kind of diverging map has no perceptual dead spot at the centre",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D7:data",
-      "category": "diverging"
-    },
-    "CET_D8": {
-      "info": "Linear-diverging blue - grey - red",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D8:data",
-      "category": "diverging"
-    },
-    "CET_D9": {
-      "info": "Diverging low contrast blue - white - red colour map.  Good in conjunction with relief shading",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D9:data",
-      "category": "diverging"
-    },
-    "CET_D10": {
-      "info": "Diverging low contrast cyan - white - magenta colour map.  Good in conjunction with relief shading",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D10:data",
-      "category": "diverging"
-    },
-    "CET_D11": {
-      "info": "Diverging isoluminant lightblue - lightgrey - orange colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D11:data",
-      "category": "diverging"
-    },
-    "CET_D12": {
-      "info": "Diverging isoluminant lightblue - lightgrey - pink colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D12:data",
-      "category": "diverging"
-    },
-    "CET_D13": {
-      "info": "Diverging blue - white - green colour map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_D13:data",
-      "category": "diverging"
-    },
     "CET_C1": {
-      "info": "Cyclic: magenta - red - yellow - blue. Alows four orientations/phase angles to be visulaised.",
       "aliases": [],
+      "category": "cyclic",
       "data": "cmap.data.colorcet.CET_C1:data",
-      "category": "cyclic"
-    },
-    "CET_C2": {
-      "info": "Cyclic: magenta - yellow - green - blue. Alows four orientations/phase angles to be visualised.",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C2:data",
-      "category": "cyclic"
-    },
-    "CET_C3": {
-      "info": "Cyclic: white - red - black - blue",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C3:data",
-      "category": "cyclic"
-    },
-    "CET_C4": {
-      "info": "Cyclic: white - red - white - blue. Good if you just want to visualise +ve and -ve phase",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C4:data",
-      "category": "cyclic"
-    },
-    "CET_C5": {
-      "info": "Cyclic: greyscale",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C5:data",
-      "category": "cyclic"
-    },
-    "CET_C6": {
-      "info": "Six colour cyclic with primaries and secondaries matched in lightness.",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C6:data",
-      "category": "cyclic"
-    },
-    "CET_C7": {
-      "info": "Cyclic Yellow - Magenta - Cyan - Green - Yellow ",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C7:data",
-      "category": "cyclic"
-    },
-    "CET_C8": {
-      "info": "Cyclic: low contrast colour ellipse",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C8:data",
-      "category": "cyclic"
-    },
-    "CET_C9": {
-      "info": "Cyclic: colour ellipse",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_C9:data",
-      "category": "cyclic"
+      "info": "Cyclic: magenta - red - yellow - blue. Alows four orientations/phase angles to be visulaised."
     },
     "CET_C10": {
-      "info": "Cyclic: isoluminant",
       "aliases": [],
+      "category": "cyclic",
       "data": "cmap.data.colorcet.CET_C10:data",
-      "category": "cyclic"
+      "info": "Cyclic: isoluminant"
     },
     "CET_C11": {
-      "info": "Cyclic: blue - green - red - magenta. Allows four orientations/phase angles to be visulaised.",
       "aliases": [],
+      "category": "cyclic",
       "data": "cmap.data.colorcet.CET_C11:data",
-      "category": "cyclic"
+      "info": "Cyclic: blue - green - red - magenta. Allows four orientations/phase angles to be visulaised."
     },
-    "CET_R1": {
-      "info": "The least worst rainbow colour map I can devise.  Note there are small perceptual blind spots at yellow and red",
+    "CET_C2": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_R1:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C2:data",
+      "info": "Cyclic: magenta - yellow - green - blue. Alows four orientations/phase angles to be visualised."
     },
-    "CET_R2": {
-      "info": "Reasonable rainbow colour map from blue to red.  Note there is a small perceptual blind spot at yellow",
+    "CET_C3": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_R2:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C3:data",
+      "info": "Cyclic: white - red - black - blue"
     },
-    "CET_R3": {
-      "info": "Diverging-rainbow colourmap. Yellow is the central reference colour. The blue and red end points are matched in lightness and chroma",
+    "CET_C4": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_R3:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C4:data",
+      "info": "Cyclic: white - red - white - blue. Good if you just want to visualise +ve and -ve phase"
     },
-    "CET_R4": {
-      "info": "Rainbow colour map from blue to red.  Note there is a small perceptual blind spot at yellow",
+    "CET_C5": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_R4:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C5:data",
+      "info": "Cyclic: greyscale"
     },
-    "CET_I1": {
-      "info": "Isoluminant blue to green to orange at lightness 70.  Poor on its own but works well with relief shading",
+    "CET_C6": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_I1:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C6:data",
+      "info": "Six colour cyclic with primaries and secondaries matched in lightness."
     },
-    "CET_I2": {
-      "info": "Isoluminant blue to green to orange at lightness 80.  Poor on its own but works well with relief shading",
+    "CET_C7": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_I2:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C7:data",
+      "info": "Cyclic Yellow - Magenta - Cyan - Green - Yellow "
     },
-    "CET_I3": {
-      "info": "Isoluminant blue to pink at lightness 70.  Poor on its own but works well with relief shading",
+    "CET_C8": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_I3:data",
-      "category": "miscellaneous"
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C8:data",
+      "info": "Cyclic: low contrast colour ellipse"
     },
-    "CET_CBL1": {
-      "info": "Linear map for Protanopic/Deuteranopic viewers",
+    "CET_C9": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBL1:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "protanopia",
-        "deuteranopia"
-      ]
-    },
-    "CET_CBL2": {
-      "info": "Linear map with maximal chroma for Protanopic/Deuteranopic viewers",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBL2:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "protanopia",
-        "deuteranopia"
-      ]
-    },
-    "CET_CBL3": {
-      "info": "Linear blue map for Protanopic/Deuteranopic viewers",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBL3:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "protanopia",
-        "deuteranopia"
-      ]
-    },
-    "CET_CBL4": {
-      "info": "Linear yellow map for Protanopic/Deuteranopic viewers",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBL4:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "protanopia",
-        "deuteranopia"
-      ]
-    },
-    "CET_CBD1": {
-      "info": "Diverging map blue-white-yellow",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBD1:data",
-      "category": "diverging",
-      "tags": [
-        "colorblind",
-        "protanopia",
-        "deuteranopia"
-      ]
-    },
-    "CET_CBD2": {
-      "info": "Diverging-linear map blue-grey-yellow",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBD2:data",
-      "category": "diverging",
-      "tags": [
-        "colorblind",
-        "protanopia",
-        "deuteranopia"
-      ]
+      "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_C9:data",
+      "info": "Cyclic: colour ellipse"
     },
     "CET_CBC1": {
-      "info": "4-phase cyclic map blue-white-yellow-black",
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBC1:data",
       "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_CBC1:data",
+      "info": "4-phase cyclic map blue-white-yellow-black",
       "tags": [
         "colorblind",
         "protanopia",
@@ -396,85 +81,400 @@
       ]
     },
     "CET_CBC2": {
-      "info": "2-phase cyclic map white-yellow-white-blue",
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBC2:data",
       "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_CBC2:data",
+      "info": "2-phase cyclic map white-yellow-white-blue",
       "tags": [
         "colorblind",
         "protanopia",
         "deuteranopia"
       ]
     },
-    "CET_CBTL1": {
-      "info": "Tritanopic linear map with maximal chroma",
+    "CET_CBD1": {
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTL1:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "tritanopia"
-      ]
-    },
-    "CET_CBTL2": {
-      "info": "Tritanopic linear map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTL2:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "tritanopia"
-      ]
-    },
-    "CET_CBTL3": {
-      "info": "Tritanopic linear blue map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTL3:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "tritanopia"
-      ]
-    },
-    "CET_CBTL4": {
-      "info": "Tritanopic linear red/heat map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTL4:data",
-      "category": "sequential",
-      "tags": [
-        "colorblind",
-        "tritanopia"
-      ]
-    },
-    "CET_CBTD1": {
-      "info": "Tritanopic diverging map",
-      "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTD1:data",
       "category": "diverging",
+      "data": "cmap.data.colorcet.CET_CBD1:data",
+      "info": "Diverging map blue-white-yellow",
       "tags": [
         "colorblind",
-        "tritanopia"
+        "protanopia",
+        "deuteranopia"
+      ]
+    },
+    "CET_CBD2": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_CBD2:data",
+      "info": "Diverging-linear map blue-grey-yellow",
+      "tags": [
+        "colorblind",
+        "protanopia",
+        "deuteranopia"
+      ]
+    },
+    "CET_CBL1": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBL1:data",
+      "info": "Linear map for Protanopic/Deuteranopic viewers",
+      "tags": [
+        "colorblind",
+        "protanopia",
+        "deuteranopia"
+      ]
+    },
+    "CET_CBL2": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBL2:data",
+      "info": "Linear map with maximal chroma for Protanopic/Deuteranopic viewers",
+      "tags": [
+        "colorblind",
+        "protanopia",
+        "deuteranopia"
+      ]
+    },
+    "CET_CBL3": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBL3:data",
+      "info": "Linear blue map for Protanopic/Deuteranopic viewers",
+      "tags": [
+        "colorblind",
+        "protanopia",
+        "deuteranopia"
+      ]
+    },
+    "CET_CBL4": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBL4:data",
+      "info": "Linear yellow map for Protanopic/Deuteranopic viewers",
+      "tags": [
+        "colorblind",
+        "protanopia",
+        "deuteranopia"
       ]
     },
     "CET_CBTC1": {
-      "info": "4-phase tritanopic cyclic map",
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTC1:data",
       "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_CBTC1:data",
+      "info": "4-phase tritanopic cyclic map",
       "tags": [
         "colorblind",
         "tritanopia"
       ]
     },
     "CET_CBTC2": {
-      "info": "2-phase tritanopic cyclic map",
       "aliases": [],
-      "data": "cmap.data.colorcet.CET_CBTC2:data",
       "category": "cyclic",
+      "data": "cmap.data.colorcet.CET_CBTC2:data",
+      "info": "2-phase tritanopic cyclic map",
       "tags": [
         "colorblind",
         "tritanopia"
       ]
+    },
+    "CET_CBTD1": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_CBTD1:data",
+      "info": "Tritanopic diverging map",
+      "tags": [
+        "colorblind",
+        "tritanopia"
+      ]
+    },
+    "CET_CBTL1": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBTL1:data",
+      "info": "Tritanopic linear map with maximal chroma",
+      "tags": [
+        "colorblind",
+        "tritanopia"
+      ]
+    },
+    "CET_CBTL2": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBTL2:data",
+      "info": "Tritanopic linear map",
+      "tags": [
+        "colorblind",
+        "tritanopia"
+      ]
+    },
+    "CET_CBTL3": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBTL3:data",
+      "info": "Tritanopic linear blue map",
+      "tags": [
+        "colorblind",
+        "tritanopia"
+      ]
+    },
+    "CET_CBTL4": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_CBTL4:data",
+      "info": "Tritanopic linear red/heat map",
+      "tags": [
+        "colorblind",
+        "tritanopia"
+      ]
+    },
+    "CET_D1": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D1:data",
+      "info": "Classic diverging blue - white - red colour map. End colours are matched in lightness and chroma"
+    },
+    "CET_D10": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D10:data",
+      "info": "Diverging low contrast cyan - white - magenta colour map.  Good in conjunction with relief shading"
+    },
+    "CET_D11": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D11:data",
+      "info": "Diverging isoluminant lightblue - lightgrey - orange colour map"
+    },
+    "CET_D12": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D12:data",
+      "info": "Diverging isoluminant lightblue - lightgrey - pink colour map"
+    },
+    "CET_D13": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D13:data",
+      "info": "Diverging blue - white - green colour map"
+    },
+    "CET_D1A": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D1A:data",
+      "info": "Diverging blue - white - red colour map. Similar to D1 but with darker end point colours"
+    },
+    "CET_D2": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D2:data",
+      "info": "Diverging green - white - violet colour map"
+    },
+    "CET_D3": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D3:data",
+      "info": "Diverging green - white - red colour map"
+    },
+    "CET_D4": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D4:data",
+      "info": "Diverging blue - black - red colour map"
+    },
+    "CET_D5": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D5:data",
+      "info": "Diverging green - black - red colour map"
+    },
+    "CET_D6": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D6:data",
+      "info": "Diverging blue - black - yellow colour map"
+    },
+    "CET_D7": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D7:data",
+      "info": "Linear-diverging blue - grey - yellow colour map. This kind of diverging map has no perceptual dead spot at the centre"
+    },
+    "CET_D8": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D8:data",
+      "info": "Linear-diverging blue - grey - red"
+    },
+    "CET_D9": {
+      "aliases": [],
+      "category": "diverging",
+      "data": "cmap.data.colorcet.CET_D9:data",
+      "info": "Diverging low contrast blue - white - red colour map.  Good in conjunction with relief shading"
+    },
+    "CET_I1": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_I1:data",
+      "info": "Isoluminant blue to green to orange at lightness 70.  Poor on its own but works well with relief shading"
+    },
+    "CET_I2": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_I2:data",
+      "info": "Isoluminant blue to green to orange at lightness 80.  Poor on its own but works well with relief shading"
+    },
+    "CET_I3": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_I3:data",
+      "info": "Isoluminant blue to pink at lightness 70.  Poor on its own but works well with relief shading"
+    },
+    "CET_L1": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L1:data",
+      "info": "Grey scale"
+    },
+    "CET_L10": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L10:data",
+      "info": "A \"geographical\" colour map.  Best used with relief shading"
+    },
+    "CET_L11": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L11:data",
+      "info": "A lighter \"geographical\" colour map.  Best used with relief shading"
+    },
+    "CET_L12": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L12:data",
+      "info": "A \"water depth\" colour map"
+    },
+    "CET_L13": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L13:data",
+      "info": "red colour map for ternary images"
+    },
+    "CET_L14": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L14:data",
+      "info": "green colour map for ternary images"
+    },
+    "CET_L15": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L15:data",
+      "info": "blue colour map for ternary images"
+    },
+    "CET_L16": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L16:data",
+      "info": "Black-Blue-Green-Yellow-White colour map"
+    },
+    "CET_L17": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L17:data",
+      "info": "White-Orange-Red-Blue, decreasing lightness with increasing saturation"
+    },
+    "CET_L18": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L18:data",
+      "info": "White-Yellow-Orange-Red, decreasing lightness with increasing saturation"
+    },
+    "CET_L19": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L19:data",
+      "info": "White-Cyan-Magenta-Red, decreasing lightness with increasing saturation"
+    },
+    "CET_L2": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L2:data",
+      "info": "Grey scale with slightly reduced contrast to avoid display saturation problems"
+    },
+    "CET_L20": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L20:data",
+      "info": "Black-Blue-Green-Orange-Yellow map"
+    },
+    "CET_L3": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L3:data",
+      "info": "Black-Red-Yellow-White heat colour map"
+    },
+    "CET_L4": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L4:data",
+      "info": "Black-Red-Yellow heat colour map"
+    },
+    "CET_L5": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L5:data",
+      "info": "Colour Map along the green edge of CIELAB space"
+    },
+    "CET_L6": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L6:data",
+      "info": "Blue shades running vertically up the blue edge of CIELAB space"
+    },
+    "CET_L7": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L7:data",
+      "info": "Blue-Pink-Light Pink colour map"
+    },
+    "CET_L8": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L8:data",
+      "info": "Blue-Magenta-Yellow highly saturated colour map"
+    },
+    "CET_L9": {
+      "aliases": [],
+      "category": "sequential",
+      "data": "cmap.data.colorcet.CET_L9:data",
+      "info": "Blue-green-yellow colour map"
+    },
+    "CET_R1": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_R1:data",
+      "info": "The least worst rainbow colour map I can devise.  Note there are small perceptual blind spots at yellow and red"
+    },
+    "CET_R2": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_R2:data",
+      "info": "Reasonable rainbow colour map from blue to red.  Note there is a small perceptual blind spot at yellow"
+    },
+    "CET_R3": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_R3:data",
+      "info": "Diverging-rainbow colourmap. Yellow is the central reference colour. The blue and red end points are matched in lightness and chroma"
+    },
+    "CET_R4": {
+      "aliases": [],
+      "category": "miscellaneous",
+      "data": "cmap.data.colorcet.CET_R4:data",
+      "info": "Rainbow colour map from blue to red.  Note there is a small perceptual blind spot at yellow"
     }
-  }
+  },
+  "license": "CC-BY-4.0",
+  "namespace": "colorcet",
+  "source": "https://colorcet.com"
 }

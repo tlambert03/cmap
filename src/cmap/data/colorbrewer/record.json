@@ -1,0 +1,1631 @@
+{
+  "authors": ["Cynthia Brewer", "Mark Harrower"],
+  "source": "https://github.com/axismaps/colorbrewer",
+  "license": "Apache-2.0",
+  "info": "",
+  "namespace": "colorbrewer",
+  "colormaps": {
+    "Accent": {
+      "data": "cmap.data.colorbrewer:Accent_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Accent_3": {
+      "data": "cmap.data.colorbrewer:Accent_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Accent_4": {
+      "data": "cmap.data.colorbrewer:Accent_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Accent_5": {
+      "data": "cmap.data.colorbrewer:Accent_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Accent_6": {
+      "data": "cmap.data.colorbrewer:Accent_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Accent_7": {
+      "data": "cmap.data.colorbrewer:Accent_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Accent_8": {
+      "data": "cmap.data.colorbrewer:Accent_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Blues": {
+      "data": "cmap.data.colorbrewer:Blues_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "Blues_3": {
+      "data": "cmap.data.colorbrewer:Blues_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Blues_4": {
+      "data": "cmap.data.colorbrewer:Blues_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Blues_5": {
+      "data": "cmap.data.colorbrewer:Blues_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Blues_6": {
+      "data": "cmap.data.colorbrewer:Blues_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Blues_7": {
+      "data": "cmap.data.colorbrewer:Blues_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Blues_8": {
+      "data": "cmap.data.colorbrewer:Blues_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Blues_9": {
+      "data": "cmap.data.colorbrewer:Blues_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BrBG": {
+      "data": "cmap.data.colorbrewer:BrBG_11",
+      "category": "diverging"
+    },
+    "BrBG_10": {
+      "data": "cmap.data.colorbrewer:BrBG_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_11": {
+      "data": "cmap.data.colorbrewer:BrBG_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_3": {
+      "data": "cmap.data.colorbrewer:BrBG_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_4": {
+      "data": "cmap.data.colorbrewer:BrBG_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_5": {
+      "data": "cmap.data.colorbrewer:BrBG_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_6": {
+      "data": "cmap.data.colorbrewer:BrBG_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_7": {
+      "data": "cmap.data.colorbrewer:BrBG_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_8": {
+      "data": "cmap.data.colorbrewer:BrBG_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BrBG_9": {
+      "data": "cmap.data.colorbrewer:BrBG_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "BuGn": {
+      "data": "cmap.data.colorbrewer:BuGn_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "BuGn_3": {
+      "data": "cmap.data.colorbrewer:BuGn_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuGn_4": {
+      "data": "cmap.data.colorbrewer:BuGn_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuGn_5": {
+      "data": "cmap.data.colorbrewer:BuGn_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuGn_6": {
+      "data": "cmap.data.colorbrewer:BuGn_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuGn_7": {
+      "data": "cmap.data.colorbrewer:BuGn_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuGn_8": {
+      "data": "cmap.data.colorbrewer:BuGn_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuGn_9": {
+      "data": "cmap.data.colorbrewer:BuGn_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu": {
+      "data": "cmap.data.colorbrewer:BuPu_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "BuPu_3": {
+      "data": "cmap.data.colorbrewer:BuPu_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu_4": {
+      "data": "cmap.data.colorbrewer:BuPu_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu_5": {
+      "data": "cmap.data.colorbrewer:BuPu_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu_6": {
+      "data": "cmap.data.colorbrewer:BuPu_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu_7": {
+      "data": "cmap.data.colorbrewer:BuPu_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu_8": {
+      "data": "cmap.data.colorbrewer:BuPu_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "BuPu_9": {
+      "data": "cmap.data.colorbrewer:BuPu_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Dark2": {
+      "data": "cmap.data.colorbrewer:Dark2_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Dark2_3": {
+      "data": "cmap.data.colorbrewer:Dark2_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Dark2_4": {
+      "data": "cmap.data.colorbrewer:Dark2_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Dark2_5": {
+      "data": "cmap.data.colorbrewer:Dark2_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Dark2_6": {
+      "data": "cmap.data.colorbrewer:Dark2_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Dark2_7": {
+      "data": "cmap.data.colorbrewer:Dark2_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Dark2_8": {
+      "data": "cmap.data.colorbrewer:Dark2_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "GnBu": {
+      "data": "cmap.data.colorbrewer:GnBu_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "GnBu_3": {
+      "data": "cmap.data.colorbrewer:GnBu_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "GnBu_4": {
+      "data": "cmap.data.colorbrewer:GnBu_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "GnBu_5": {
+      "data": "cmap.data.colorbrewer:GnBu_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "GnBu_6": {
+      "data": "cmap.data.colorbrewer:GnBu_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "GnBu_7": {
+      "data": "cmap.data.colorbrewer:GnBu_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "GnBu_8": {
+      "data": "cmap.data.colorbrewer:GnBu_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "GnBu_9": {
+      "data": "cmap.data.colorbrewer:GnBu_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens": {
+      "data": "cmap.data.colorbrewer:Greens_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "Greens_3": {
+      "data": "cmap.data.colorbrewer:Greens_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens_4": {
+      "data": "cmap.data.colorbrewer:Greens_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens_5": {
+      "data": "cmap.data.colorbrewer:Greens_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens_6": {
+      "data": "cmap.data.colorbrewer:Greens_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens_7": {
+      "data": "cmap.data.colorbrewer:Greens_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens_8": {
+      "data": "cmap.data.colorbrewer:Greens_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greens_9": {
+      "data": "cmap.data.colorbrewer:Greens_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys": {
+      "data": "cmap.data.colorbrewer:Greys_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "Greys_3": {
+      "data": "cmap.data.colorbrewer:Greys_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys_4": {
+      "data": "cmap.data.colorbrewer:Greys_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys_5": {
+      "data": "cmap.data.colorbrewer:Greys_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys_6": {
+      "data": "cmap.data.colorbrewer:Greys_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys_7": {
+      "data": "cmap.data.colorbrewer:Greys_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys_8": {
+      "data": "cmap.data.colorbrewer:Greys_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Greys_9": {
+      "data": "cmap.data.colorbrewer:Greys_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd": {
+      "data": "cmap.data.colorbrewer:OrRd_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "OrRd_3": {
+      "data": "cmap.data.colorbrewer:OrRd_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd_4": {
+      "data": "cmap.data.colorbrewer:OrRd_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd_5": {
+      "data": "cmap.data.colorbrewer:OrRd_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd_6": {
+      "data": "cmap.data.colorbrewer:OrRd_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd_7": {
+      "data": "cmap.data.colorbrewer:OrRd_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd_8": {
+      "data": "cmap.data.colorbrewer:OrRd_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "OrRd_9": {
+      "data": "cmap.data.colorbrewer:OrRd_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges": {
+      "data": "cmap.data.colorbrewer:Oranges_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "Oranges_3": {
+      "data": "cmap.data.colorbrewer:Oranges_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges_4": {
+      "data": "cmap.data.colorbrewer:Oranges_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges_5": {
+      "data": "cmap.data.colorbrewer:Oranges_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges_6": {
+      "data": "cmap.data.colorbrewer:Oranges_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges_7": {
+      "data": "cmap.data.colorbrewer:Oranges_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges_8": {
+      "data": "cmap.data.colorbrewer:Oranges_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Oranges_9": {
+      "data": "cmap.data.colorbrewer:Oranges_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PRGn": {
+      "data": "cmap.data.colorbrewer:PRGn_11",
+      "category": "diverging"
+    },
+    "PRGn_10": {
+      "data": "cmap.data.colorbrewer:PRGn_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_11": {
+      "data": "cmap.data.colorbrewer:PRGn_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_3": {
+      "data": "cmap.data.colorbrewer:PRGn_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_4": {
+      "data": "cmap.data.colorbrewer:PRGn_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_5": {
+      "data": "cmap.data.colorbrewer:PRGn_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_6": {
+      "data": "cmap.data.colorbrewer:PRGn_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_7": {
+      "data": "cmap.data.colorbrewer:PRGn_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_8": {
+      "data": "cmap.data.colorbrewer:PRGn_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PRGn_9": {
+      "data": "cmap.data.colorbrewer:PRGn_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Paired": {
+      "data": "cmap.data.colorbrewer:Paired_12",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_10": {
+      "data": "cmap.data.colorbrewer:Paired_10",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_11": {
+      "data": "cmap.data.colorbrewer:Paired_11",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_12": {
+      "data": "cmap.data.colorbrewer:Paired_12",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_3": {
+      "data": "cmap.data.colorbrewer:Paired_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_4": {
+      "data": "cmap.data.colorbrewer:Paired_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_5": {
+      "data": "cmap.data.colorbrewer:Paired_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_6": {
+      "data": "cmap.data.colorbrewer:Paired_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_7": {
+      "data": "cmap.data.colorbrewer:Paired_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_8": {
+      "data": "cmap.data.colorbrewer:Paired_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Paired_9": {
+      "data": "cmap.data.colorbrewer:Paired_9",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1": {
+      "data": "cmap.data.colorbrewer:Pastel1_9",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_3": {
+      "data": "cmap.data.colorbrewer:Pastel1_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_4": {
+      "data": "cmap.data.colorbrewer:Pastel1_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_5": {
+      "data": "cmap.data.colorbrewer:Pastel1_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_6": {
+      "data": "cmap.data.colorbrewer:Pastel1_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_7": {
+      "data": "cmap.data.colorbrewer:Pastel1_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_8": {
+      "data": "cmap.data.colorbrewer:Pastel1_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel1_9": {
+      "data": "cmap.data.colorbrewer:Pastel1_9",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2": {
+      "data": "cmap.data.colorbrewer:Pastel2_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2_3": {
+      "data": "cmap.data.colorbrewer:Pastel2_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2_4": {
+      "data": "cmap.data.colorbrewer:Pastel2_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2_5": {
+      "data": "cmap.data.colorbrewer:Pastel2_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2_6": {
+      "data": "cmap.data.colorbrewer:Pastel2_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2_7": {
+      "data": "cmap.data.colorbrewer:Pastel2_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Pastel2_8": {
+      "data": "cmap.data.colorbrewer:Pastel2_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "PiYG": {
+      "data": "cmap.data.colorbrewer:PiYG_11",
+      "category": "diverging"
+    },
+    "PiYG_10": {
+      "data": "cmap.data.colorbrewer:PiYG_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_11": {
+      "data": "cmap.data.colorbrewer:PiYG_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_3": {
+      "data": "cmap.data.colorbrewer:PiYG_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_4": {
+      "data": "cmap.data.colorbrewer:PiYG_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_5": {
+      "data": "cmap.data.colorbrewer:PiYG_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_6": {
+      "data": "cmap.data.colorbrewer:PiYG_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_7": {
+      "data": "cmap.data.colorbrewer:PiYG_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_8": {
+      "data": "cmap.data.colorbrewer:PiYG_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PiYG_9": {
+      "data": "cmap.data.colorbrewer:PiYG_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuBu": {
+      "data": "cmap.data.colorbrewer:PuBu_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "PuBuGn": {
+      "data": "cmap.data.colorbrewer:PuBuGn_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "PuBuGn_3": {
+      "data": "cmap.data.colorbrewer:PuBuGn_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBuGn_4": {
+      "data": "cmap.data.colorbrewer:PuBuGn_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBuGn_5": {
+      "data": "cmap.data.colorbrewer:PuBuGn_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBuGn_6": {
+      "data": "cmap.data.colorbrewer:PuBuGn_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBuGn_7": {
+      "data": "cmap.data.colorbrewer:PuBuGn_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBuGn_8": {
+      "data": "cmap.data.colorbrewer:PuBuGn_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBuGn_9": {
+      "data": "cmap.data.colorbrewer:PuBuGn_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_3": {
+      "data": "cmap.data.colorbrewer:PuBu_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_4": {
+      "data": "cmap.data.colorbrewer:PuBu_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_5": {
+      "data": "cmap.data.colorbrewer:PuBu_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_6": {
+      "data": "cmap.data.colorbrewer:PuBu_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_7": {
+      "data": "cmap.data.colorbrewer:PuBu_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_8": {
+      "data": "cmap.data.colorbrewer:PuBu_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuBu_9": {
+      "data": "cmap.data.colorbrewer:PuBu_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuOr": {
+      "data": "cmap.data.colorbrewer:PuOr_11",
+      "category": "diverging"
+    },
+    "PuOr_10": {
+      "data": "cmap.data.colorbrewer:PuOr_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_11": {
+      "data": "cmap.data.colorbrewer:PuOr_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_3": {
+      "data": "cmap.data.colorbrewer:PuOr_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_4": {
+      "data": "cmap.data.colorbrewer:PuOr_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_5": {
+      "data": "cmap.data.colorbrewer:PuOr_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_6": {
+      "data": "cmap.data.colorbrewer:PuOr_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_7": {
+      "data": "cmap.data.colorbrewer:PuOr_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_8": {
+      "data": "cmap.data.colorbrewer:PuOr_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuOr_9": {
+      "data": "cmap.data.colorbrewer:PuOr_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "PuRd": {
+      "data": "cmap.data.colorbrewer:PuRd_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "PuRd_3": {
+      "data": "cmap.data.colorbrewer:PuRd_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuRd_4": {
+      "data": "cmap.data.colorbrewer:PuRd_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuRd_5": {
+      "data": "cmap.data.colorbrewer:PuRd_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuRd_6": {
+      "data": "cmap.data.colorbrewer:PuRd_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuRd_7": {
+      "data": "cmap.data.colorbrewer:PuRd_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuRd_8": {
+      "data": "cmap.data.colorbrewer:PuRd_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "PuRd_9": {
+      "data": "cmap.data.colorbrewer:PuRd_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples": {
+      "data": "cmap.data.colorbrewer:Purples_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "Purples_3": {
+      "data": "cmap.data.colorbrewer:Purples_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples_4": {
+      "data": "cmap.data.colorbrewer:Purples_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples_5": {
+      "data": "cmap.data.colorbrewer:Purples_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples_6": {
+      "data": "cmap.data.colorbrewer:Purples_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples_7": {
+      "data": "cmap.data.colorbrewer:Purples_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples_8": {
+      "data": "cmap.data.colorbrewer:Purples_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Purples_9": {
+      "data": "cmap.data.colorbrewer:Purples_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdBu": {
+      "data": "cmap.data.colorbrewer:RdBu_11",
+      "category": "diverging"
+    },
+    "RdBu_10": {
+      "data": "cmap.data.colorbrewer:RdBu_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_11": {
+      "data": "cmap.data.colorbrewer:RdBu_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_3": {
+      "data": "cmap.data.colorbrewer:RdBu_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_4": {
+      "data": "cmap.data.colorbrewer:RdBu_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_5": {
+      "data": "cmap.data.colorbrewer:RdBu_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_6": {
+      "data": "cmap.data.colorbrewer:RdBu_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_7": {
+      "data": "cmap.data.colorbrewer:RdBu_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_8": {
+      "data": "cmap.data.colorbrewer:RdBu_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdBu_9": {
+      "data": "cmap.data.colorbrewer:RdBu_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy": {
+      "data": "cmap.data.colorbrewer:RdGy_11",
+      "category": "diverging"
+    },
+    "RdGy_10": {
+      "data": "cmap.data.colorbrewer:RdGy_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_11": {
+      "data": "cmap.data.colorbrewer:RdGy_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_3": {
+      "data": "cmap.data.colorbrewer:RdGy_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_4": {
+      "data": "cmap.data.colorbrewer:RdGy_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_5": {
+      "data": "cmap.data.colorbrewer:RdGy_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_6": {
+      "data": "cmap.data.colorbrewer:RdGy_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_7": {
+      "data": "cmap.data.colorbrewer:RdGy_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_8": {
+      "data": "cmap.data.colorbrewer:RdGy_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdGy_9": {
+      "data": "cmap.data.colorbrewer:RdGy_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdPu": {
+      "data": "cmap.data.colorbrewer:RdPu_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "RdPu_3": {
+      "data": "cmap.data.colorbrewer:RdPu_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdPu_4": {
+      "data": "cmap.data.colorbrewer:RdPu_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdPu_5": {
+      "data": "cmap.data.colorbrewer:RdPu_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdPu_6": {
+      "data": "cmap.data.colorbrewer:RdPu_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdPu_7": {
+      "data": "cmap.data.colorbrewer:RdPu_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdPu_8": {
+      "data": "cmap.data.colorbrewer:RdPu_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdPu_9": {
+      "data": "cmap.data.colorbrewer:RdPu_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "RdYlBu": {
+      "data": "cmap.data.colorbrewer:RdYlBu_11",
+      "category": "diverging"
+    },
+    "RdYlBu_10": {
+      "data": "cmap.data.colorbrewer:RdYlBu_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_11": {
+      "data": "cmap.data.colorbrewer:RdYlBu_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_3": {
+      "data": "cmap.data.colorbrewer:RdYlBu_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_4": {
+      "data": "cmap.data.colorbrewer:RdYlBu_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_5": {
+      "data": "cmap.data.colorbrewer:RdYlBu_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_6": {
+      "data": "cmap.data.colorbrewer:RdYlBu_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_7": {
+      "data": "cmap.data.colorbrewer:RdYlBu_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_8": {
+      "data": "cmap.data.colorbrewer:RdYlBu_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlBu_9": {
+      "data": "cmap.data.colorbrewer:RdYlBu_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn": {
+      "data": "cmap.data.colorbrewer:RdYlGn_11",
+      "category": "diverging"
+    },
+    "RdYlGn_10": {
+      "data": "cmap.data.colorbrewer:RdYlGn_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_11": {
+      "data": "cmap.data.colorbrewer:RdYlGn_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_3": {
+      "data": "cmap.data.colorbrewer:RdYlGn_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_4": {
+      "data": "cmap.data.colorbrewer:RdYlGn_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_5": {
+      "data": "cmap.data.colorbrewer:RdYlGn_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_6": {
+      "data": "cmap.data.colorbrewer:RdYlGn_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_7": {
+      "data": "cmap.data.colorbrewer:RdYlGn_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_8": {
+      "data": "cmap.data.colorbrewer:RdYlGn_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "RdYlGn_9": {
+      "data": "cmap.data.colorbrewer:RdYlGn_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Reds": {
+      "data": "cmap.data.colorbrewer:Reds_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "Reds_3": {
+      "data": "cmap.data.colorbrewer:Reds_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Reds_4": {
+      "data": "cmap.data.colorbrewer:Reds_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Reds_5": {
+      "data": "cmap.data.colorbrewer:Reds_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Reds_6": {
+      "data": "cmap.data.colorbrewer:Reds_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Reds_7": {
+      "data": "cmap.data.colorbrewer:Reds_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Reds_8": {
+      "data": "cmap.data.colorbrewer:Reds_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Reds_9": {
+      "data": "cmap.data.colorbrewer:Reds_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "Set1": {
+      "data": "cmap.data.colorbrewer:Set1_9",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_3": {
+      "data": "cmap.data.colorbrewer:Set1_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_4": {
+      "data": "cmap.data.colorbrewer:Set1_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_5": {
+      "data": "cmap.data.colorbrewer:Set1_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_6": {
+      "data": "cmap.data.colorbrewer:Set1_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_7": {
+      "data": "cmap.data.colorbrewer:Set1_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_8": {
+      "data": "cmap.data.colorbrewer:Set1_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set1_9": {
+      "data": "cmap.data.colorbrewer:Set1_9",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2": {
+      "data": "cmap.data.colorbrewer:Set2_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2_3": {
+      "data": "cmap.data.colorbrewer:Set2_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2_4": {
+      "data": "cmap.data.colorbrewer:Set2_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2_5": {
+      "data": "cmap.data.colorbrewer:Set2_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2_6": {
+      "data": "cmap.data.colorbrewer:Set2_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2_7": {
+      "data": "cmap.data.colorbrewer:Set2_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set2_8": {
+      "data": "cmap.data.colorbrewer:Set2_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3": {
+      "data": "cmap.data.colorbrewer:Set3_12",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_10": {
+      "data": "cmap.data.colorbrewer:Set3_10",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_11": {
+      "data": "cmap.data.colorbrewer:Set3_11",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_12": {
+      "data": "cmap.data.colorbrewer:Set3_12",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_3": {
+      "data": "cmap.data.colorbrewer:Set3_3",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_4": {
+      "data": "cmap.data.colorbrewer:Set3_4",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_5": {
+      "data": "cmap.data.colorbrewer:Set3_5",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_6": {
+      "data": "cmap.data.colorbrewer:Set3_6",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_7": {
+      "data": "cmap.data.colorbrewer:Set3_7",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_8": {
+      "data": "cmap.data.colorbrewer:Set3_8",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Set3_9": {
+      "data": "cmap.data.colorbrewer:Set3_9",
+      "category": "qualitative",
+      "interpolation": false
+    },
+    "Spectral": {
+      "data": "cmap.data.colorbrewer:Spectral_11",
+      "category": "diverging"
+    },
+    "Spectral_10": {
+      "data": "cmap.data.colorbrewer:Spectral_10",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_11": {
+      "data": "cmap.data.colorbrewer:Spectral_11",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_3": {
+      "data": "cmap.data.colorbrewer:Spectral_3",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_4": {
+      "data": "cmap.data.colorbrewer:Spectral_4",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_5": {
+      "data": "cmap.data.colorbrewer:Spectral_5",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_6": {
+      "data": "cmap.data.colorbrewer:Spectral_6",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_7": {
+      "data": "cmap.data.colorbrewer:Spectral_7",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_8": {
+      "data": "cmap.data.colorbrewer:Spectral_8",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Spectral_9": {
+      "data": "cmap.data.colorbrewer:Spectral_9",
+      "category": "diverging",
+      "interpolation": false
+    },
+    "Wistia": {
+      "data": "cmap.data._wistia:Wistia",
+      "tags": ["2"],
+      "category": "sequential"
+    },
+    "YlGn": {
+      "data": "cmap.data.colorbrewer:YlGn_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "YlGnBu": {
+      "data": "cmap.data.colorbrewer:YlGnBu_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "YlGnBu_3": {
+      "data": "cmap.data.colorbrewer:YlGnBu_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGnBu_4": {
+      "data": "cmap.data.colorbrewer:YlGnBu_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGnBu_5": {
+      "data": "cmap.data.colorbrewer:YlGnBu_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGnBu_6": {
+      "data": "cmap.data.colorbrewer:YlGnBu_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGnBu_7": {
+      "data": "cmap.data.colorbrewer:YlGnBu_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGnBu_8": {
+      "data": "cmap.data.colorbrewer:YlGnBu_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGnBu_9": {
+      "data": "cmap.data.colorbrewer:YlGnBu_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_3": {
+      "data": "cmap.data.colorbrewer:YlGn_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_4": {
+      "data": "cmap.data.colorbrewer:YlGn_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_5": {
+      "data": "cmap.data.colorbrewer:YlGn_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_6": {
+      "data": "cmap.data.colorbrewer:YlGn_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_7": {
+      "data": "cmap.data.colorbrewer:YlGn_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_8": {
+      "data": "cmap.data.colorbrewer:YlGn_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlGn_9": {
+      "data": "cmap.data.colorbrewer:YlGn_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr": {
+      "data": "cmap.data.colorbrewer:YlOrBr_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "YlOrBr_3": {
+      "data": "cmap.data.colorbrewer:YlOrBr_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr_4": {
+      "data": "cmap.data.colorbrewer:YlOrBr_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr_5": {
+      "data": "cmap.data.colorbrewer:YlOrBr_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr_6": {
+      "data": "cmap.data.colorbrewer:YlOrBr_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr_7": {
+      "data": "cmap.data.colorbrewer:YlOrBr_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr_8": {
+      "data": "cmap.data.colorbrewer:YlOrBr_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrBr_9": {
+      "data": "cmap.data.colorbrewer:YlOrBr_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd": {
+      "data": "cmap.data.colorbrewer:YlOrRd_9",
+      "tags": ["uniform"],
+      "category": "sequential"
+    },
+    "YlOrRd_3": {
+      "data": "cmap.data.colorbrewer:YlOrRd_3",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd_4": {
+      "data": "cmap.data.colorbrewer:YlOrRd_4",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd_5": {
+      "data": "cmap.data.colorbrewer:YlOrRd_5",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd_6": {
+      "data": "cmap.data.colorbrewer:YlOrRd_6",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd_7": {
+      "data": "cmap.data.colorbrewer:YlOrRd_7",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd_8": {
+      "data": "cmap.data.colorbrewer:YlOrRd_8",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    },
+    "YlOrRd_9": {
+      "data": "cmap.data.colorbrewer:YlOrRd_9",
+      "tags": ["uniform"],
+      "category": "sequential",
+      "interpolation": false
+    }
+  }
+}

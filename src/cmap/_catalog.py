@@ -69,6 +69,7 @@ def _populate_catalog() -> None:
                 if ":" not in v["alias"]:
                     raise ValueError(f"{namespaced!r} alias is not namespaced")
                 CATALOG[namespaced] = v
+                CATALOG[name] = v  # FIXME
                 continue
 
             for k in ("license", "namespace", "source", "authors", "category"):

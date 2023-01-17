@@ -1657,13 +1657,6 @@
       "data": "cmap.data.colorbrewer:Spectral_9",
       "interpolation": false
     },
-    "Wistia": {
-      "category": "sequential",
-      "data": "cmap.data._wistia:Wistia",
-      "tags": [
-        "2"
-      ]
-    },
     "YlGn": {
       "category": "sequential",
       "data": "cmap.data.colorbrewer:YlGn_9",

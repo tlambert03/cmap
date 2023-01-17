@@ -1,0 +1,34 @@
+{
+  "authors": [
+    "David Munro"
+  ],
+  "colormaps": {
+    "earth": {
+      "category": "miscellaneous",
+      "data": "cmap.data.yorick:earth"
+    },
+    "heat": {
+      "category": "sequential",
+      "data": "cmap.data.yorick:heat"
+    },
+    "ncar": {
+      "category": "miscellaneous",
+      "data": "cmap.data.yorick:ncar"
+    },
+    "rainbow": {
+      "category": "miscellaneous",
+      "data": "cmap.data.yorick:rainbow"
+    },
+    "stern": {
+      "category": "miscellaneous",
+      "data": "cmap.data.yorick:stern"
+    },
+    "yarg": {
+      "category": "sequential",
+      "data": "cmap.data.yorick:yarg"
+    }
+  },
+  "license": "BSD-3-Clause",
+  "namespace": "yorick",
+  "source": "https://github.com/LLNL/yorick"
+}

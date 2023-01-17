@@ -55,11 +55,6 @@ may be found in the (unused) file Gist/host.c.
 """
 import numpy as np
 
-__license__ = "BSD-3-Clause"
-__author__ = "David H. Munro"
-__source__ = "https://github.com/LLNL/yorick"
-
-
 # https://github.com/LLNL/yorick/blob/fda4a1ed1e2441e30de88e01b251b822f3604b1f/g/earth.gp
 earth = [
     (0.0, (0.0, 0.0, 0.0, 1.0)),

@@ -145,8 +145,6 @@ rainbow = partial(_combine_gnufunc, (_g33, _g13, _g10))
 #   34,35,36 ... AFM hot (black-red-yellow-white)
 afmhot = partial(_combine_gnufunc, (_g34, _g35, _g36))
 
-gist_gray = partial(_combine_gnufunc, (_g3, _g3, _g3))
-
 # A full color palette in HSV color space
 # 3,2,2    ... red-yellow-green-cyan-blue-magenta-red
 hsv = partial(_combine_gnufunc_hsv, (_g3, _g2, _g2))

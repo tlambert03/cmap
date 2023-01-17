@@ -140,7 +140,7 @@ module = ["matplotlib.*", "vispy.*", "napari.*", "pygfx"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = ["cmap.data._gnuplot"]
+module = ["cmap.data.gnuplot"]
 disallow_untyped_defs = false
 
 # https://coverage.readthedocs.io/en/6.4/config.html

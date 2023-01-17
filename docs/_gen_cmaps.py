@@ -78,9 +78,12 @@ INCLUDE_DATA = (
 
 def build_catalog(catalog: _catalog.Catalog) -> None:
     for name in catalog:
-        info = catalog[name]
-        category = info["category"]
-        license_: str = info["license"]
+        try:
+            info = catalog[name]
+            category = info["category"]
+            license_: str = info["license"]
+        except KeyError as e:
+            raise KeyError(f"Missing info for {name}: {e}") from e
         source = info.get("source", "...")
         source = f"[{source}]({source})" if source.startswith("http") else f"`{source}`"
         authors = ", ".join(info["authors"]) if "authors" in info else ""

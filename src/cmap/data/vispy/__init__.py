@@ -10,9 +10,6 @@ if TYPE_CHECKING:
     from numpy.typing import ArrayLike
 
 
-__license__ = "BSD-3-Clause"
-__source__ = "https://github.com/vispy/"
-
 # hsv(200/360, 0.1, 1) -> hsv(200/360, 0.8, 1)
 light_blues = [(0.9, 0.96666, 1.0), (0.2, 0.733333, 1.0)]
 single_hue = light_blues  # just an alias in vispy

@@ -141,15 +141,14 @@ class Colormap:
         if isinstance(value, str):
             rev = value.endswith("_r")
             info = catalog[value[:-2] if rev else value]
-            interpolation = interpolation or info.get("interpolation", "linear")
-            stops = _parse_colorstops(info["data"], interpolation)  # type: ignore
-            category = category or info["category"]
+            interpolation = interpolation or info.interpolation
+            stops = _parse_colorstops(info.data, interpolation)
+            category = category or info.category
             if rev:
                 stops = stops.reversed()
         else:
             stops = _parse_colorstops(value)
 
-        # because we're using __setattr__ to make the object immutable
         self.color_stops = stops
         self.name = name
         self.identifier = _make_identifier(identifier or name)
@@ -1044,8 +1043,8 @@ def _parse_colorstops(  # noqa: C901
     if isinstance(val, str):
         rev = val.endswith("_r")
         data = catalog[val[:-2] if rev else val]
-        interpolation = interpolation or data.get("interpolation", True)
-        obj = _parse_colorstops(data["data"], interpolation=interpolation, cls=cls)
+        interpolation = interpolation or data.interpolation
+        obj = _parse_colorstops(data.data, interpolation=interpolation, cls=cls)
         return obj.reversed() if rev else obj
 
     if _is_mpl_segmentdata(val):

@@ -50,7 +50,6 @@
 #             cat = "sequential"
 #         colormaps[code_name] = {
 #             "info": _info,
-#             "aliases": aliases,
 #             "data": f"cmap.data.colorcet.{code_name}:data",
 #             "category": cat,
 #         }

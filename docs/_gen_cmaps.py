@@ -78,15 +78,17 @@ INCLUDE_DATA = (
 
 def build_catalog(catalog: _catalog.Catalog) -> None:
     for name in catalog:
+        if ":" not in name:
+            continue
         try:
             info = catalog[name]
-            category = info["category"]
-            license_: str = info["license"]
+            category = info.category
+            license_: str = info.license
         except KeyError as e:
             raise KeyError(f"Missing info for {name}: {e}") from e
-        source = info.get("source", "...")
+        source = info.source
         source = f"[{source}]({source})" if source.startswith("http") else f"`{source}`"
-        authors = ", ".join(info["authors"]) if "authors" in info else ""
+        authors = ", ".join(info.authors)
         if license_ in LICENSE_URL:
             license_ = f"[{license_}]({LICENSE_URL[license_]})"
 
@@ -107,7 +109,7 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
                     license=license_,
                     authors=authors,
                     source=source,
-                    info=info.get("info", ""),
+                    info=info.info,
                     data=json.dumps({name: cmap_data}, separators=(",", ":")),
                 )
             )

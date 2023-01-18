@@ -774,7 +774,7 @@ twilight_shifted = twilight[len(twilight) // 2 :] + twilight[: len(twilight) // 
 twilight_shifted.reverse()
 
 # uknown provenance -----------------------
-binary = [(0.0, 0.0, 1.0), (1.0, 1.0, 1.0), (1.0, 0.0, 0.0)]
+binary = [(1.0, 1.0, 1.0), (0, 0, 0)]
 
 # original matplotlib post:
 # https://sourceforge.net/p/matplotlib/mailman/message/23330302/

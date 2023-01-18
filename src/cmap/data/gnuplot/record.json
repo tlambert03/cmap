@@ -19,14 +19,6 @@
       "category": "miscellaneous",
       "data": "cmap.data.gnuplot:grv"
     },
-    "hot": {
-      "category": "sequential",
-      "data": "cmap.data.gnuplot:hot"
-    },
-    "hsv": {
-      "category": "miscellaneous",
-      "data": "cmap.data.gnuplot:hsv"
-    },
     "ocean": {
       "category": "miscellaneous",
       "data": "cmap.data.gnuplot:ocean"

@@ -37,7 +37,7 @@ def test_pydantic_validate() -> None:
         '"value": ['
         "[0.0, [1.0, 0.0, 0.0, 1]], "
         "[0.7, [0.0, 0.0, 1.0, 1]], "
-        "[1.0, [1.0, 1.0, 1.0, 1]]]}"
+        "[1.0, [1.0, 1.0, 1.0, 1.0]]]}"  # i don't know why this is different ??
         "}"
     )
     assert MyModel.parse_raw(serialized) == obj

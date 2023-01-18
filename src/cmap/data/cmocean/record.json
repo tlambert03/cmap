@@ -14,7 +14,8 @@
     },
     "balance": {
       "category": "diverging",
-      "data": "cmap.data.cmocean.balance:balance"
+      "data": "cmap.data.cmocean.balance:balance",
+      "info": "The balance colormap is diverging with dark blue to off-white to dark red representing negative to zero to positive values; this could be used to represent sea surface elevation, with deviations in the surface elevations as shades of color away from neutral off-white. In this case, shades of red have been chosen to represent sea surface elevation above the reference value (often mean sea level) to connect with warmer water typically being associated with an increase in the free surface, such as with the Loop Current in the Gulf of Mexico. An example of this colormap is from a numerical simulation of the Texas and Louisiana shelf. This colormap is based on [RdBu](/catalog/sequential/rdbu/), but was recreated from scratch using the viscm tool."
     },
     "balance_blue": {
       "category": "sequential",

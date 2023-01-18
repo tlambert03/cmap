@@ -21,7 +21,7 @@ cm = Colormap('{name}')  # case insensitive
 ```
 
 {{{{ cmap: {name} 40 }}}}
-{{{{ cmap_gray: {name} 40 }}}}
+{{{{ cmap_gray: {name} 30 }}}}
 {{{{ cmap_sineramp: {name} }}}}
 
 ## Perceptual Lightness

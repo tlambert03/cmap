@@ -74,7 +74,7 @@ nav > label.md-header__button[for="__search"] {
 
 div.cmap {
   position: relative;
-  margin: 0.2rem 0;
+  margin: 0;
 }
 div.cmap-bar {
   height: 30px;
@@ -84,7 +84,7 @@ div.cmap-expr > .cmap-bar {
   height: 24px;
 }
 
-div.cmap.grayscale > .cmap-bar {
+div.cmap.grayscale > .cmap-bar, div.cmap.grayscale > img {
   filter: grayscale(100%);
 }
 

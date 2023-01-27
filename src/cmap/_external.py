@@ -162,6 +162,10 @@ def rich_print_colormap(cm: Colormap, width: int | None = None) -> None:
     # TODO: this is a side-effect
     console = get_console()
     color_cell = Text("")
-    for color in cm.iter_colors(width or (console.width - 12)):
+    if cm.interpolation == "nearest":
+        width = len(cm.color_stops)
+    else:
+        width or (console.width - 12)
+    for color in cm.iter_colors(width):
         color_cell += Text(" ", style=Style(bgcolor=color.hex[:7]))
     console.print(color_cell)

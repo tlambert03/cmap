@@ -202,7 +202,6 @@ def _write_cmap_redirects(site_dir: str) -> None:
             content = REDIRECT_TEMPLATE.format(url=real.url())
             with open(old_path_abs, "w", encoding="utf-8") as f:
                 f.write(content)
-                print(f"  wrote {old_path_abs}")
 
 
 def on_post_build(config, **kwargs: Any) -> None:

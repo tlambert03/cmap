@@ -137,13 +137,10 @@ class Colormap:
         interpolation: Interpolation | bool | None = None,
     ) -> None:
 
-        name = name or identifier
-        if not name:
-            name = value if isinstance(value, str) else "custom colormap"
-
         if isinstance(value, str):
             rev = value.endswith("_r")
             info = catalog[value[:-2] if rev else value]
+            name = name or f"{info.namespace}:{info.name}"
             category = category or info.category
             self.info = info
             if isinstance(info.data, list):
@@ -165,6 +162,10 @@ class Colormap:
         else:
             stops = _parse_colorstops(value)
             self.info = None
+
+        name = name or identifier
+        if not name:
+            name = value if isinstance(value, str) else "custom colormap"
 
         self.color_stops = stops
         self.name = name
@@ -1053,8 +1054,8 @@ def _mpl_segmentdata_to_stops(
 
 def _make_identifier(name: str) -> str:
     """Return a valid Python identifier from a string."""
-    out = "".join(c for c in name if c.isalnum() or c in ("_", "-", " "))
-    return out.lower().replace(" ", "_").replace("-", "_")
+    out = "".join(c for c in name if c.isalnum() or c in ("_", "-", " ", ":"))
+    return out.lower().replace(" ", "_").replace("-", "_").replace(":", "_")
 
 
 def _is_mpl_segmentdata(obj: Any) -> TypeGuard[MPLSegmentData]:

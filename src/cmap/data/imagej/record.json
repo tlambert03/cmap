@@ -1,0 +1,24 @@
+{
+  "authors": [],
+  "colormaps": {
+    "fire": {
+      "data": "cmap.data.imagej:fire",
+      "category": "miscellaneous"
+    },
+    "ice": {
+      "data": "cmap.data.imagej:ice",
+      "category": "miscellaneous"
+    },
+    "GreenFireBlue": {
+      "data": "cmap.data.imagej:green_fire_blue",
+      "category": "miscellaneous"
+    },
+    "HiLo": {
+      "data": "cmap.data.imagej:HiLo",
+      "category": "miscellaneous"
+    }
+  },
+  "license": "BSD-2-Clause",
+  "namespace": "imagej",
+  "source": "https://github.com/imagej/imagej-common"
+}

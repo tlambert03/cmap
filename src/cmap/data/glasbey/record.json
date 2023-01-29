@@ -1,9 +1,11 @@
 {
-  "authors": ["Chris Glasbey"],
+  "authors": [
+    "Chris Glasbey"
+  ],
   "colormaps": {
     "glasbey": {
-      "data": "cmap.data.glasbey.prebuilt:glasbey",
-      "category": "miscellaneous"
+      "category": "miscellaneous",
+      "data": "cmap.data.glasbey.prebuilt:glasbey"
     }
   },
   "license": "CC0",

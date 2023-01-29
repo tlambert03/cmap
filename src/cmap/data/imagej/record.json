@@ -1,21 +1,21 @@
 {
   "authors": [],
   "colormaps": {
-    "fire": {
-      "data": "cmap.data.imagej:fire",
-      "category": "miscellaneous"
-    },
-    "ice": {
-      "data": "cmap.data.imagej:ice",
-      "category": "miscellaneous"
-    },
     "GreenFireBlue": {
-      "data": "cmap.data.imagej:green_fire_blue",
-      "category": "miscellaneous"
+      "category": "miscellaneous",
+      "data": "cmap.data.imagej:green_fire_blue"
     },
     "HiLo": {
-      "data": "cmap.data.imagej:HiLo",
-      "category": "miscellaneous"
+      "category": "miscellaneous",
+      "data": "cmap.data.imagej:HiLo"
+    },
+    "fire": {
+      "category": "miscellaneous",
+      "data": "cmap.data.imagej:fire"
+    },
+    "ice": {
+      "category": "miscellaneous",
+      "data": "cmap.data.imagej:ice"
     }
   },
   "license": "BSD-2-Clause",

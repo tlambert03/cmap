@@ -1,8 +1,10 @@
+# type: ignore
 # glasbey vendored from https://github.com/lmcinnes/glasbey.
 # see __init__ and LICENSE_GLASBEY
 import numpy as np
 
 # "numbafication" is done at the bottom of the module
+
 
 def get_next_color(distances, colors, new_color):
     argmax = -1

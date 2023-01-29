@@ -141,7 +141,7 @@ def create_palette(
     initial = _cspace_convert(WB, "sRGB1", "CAM02-UCS").astype(np.float32, order="C")
 
     if cvd_severity is None:
-        from ._internals import generate_palette_cam02ucs
+        from ._internals import generate_palette_cam02ucs  # type: ignore
 
         palette = generate_palette_cam02ucs(
             colors, initial, np.uint32(palette_size + 2)
@@ -153,7 +153,7 @@ def create_palette(
             f"cvd_severity should be a float between 0 and 100 not {cvd_severity}"
         )
 
-    from ._internals import generate_palette_cam02ucs_and_other
+    from ._internals import generate_palette_cam02ucs_and_other  # type: ignore
 
     cvd_space = {
         "name": "sRGB1+CVD",

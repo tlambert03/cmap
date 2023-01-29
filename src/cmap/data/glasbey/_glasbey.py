@@ -1,3 +1,5 @@
+# glasbey vendored from https://github.com/lmcinnes/glasbey.
+# see __init__ and LICENSE_GLASBEY
 from __future__ import annotations
 
 from typing import Literal

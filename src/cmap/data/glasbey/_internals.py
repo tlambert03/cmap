@@ -1,8 +1,8 @@
-# MIT License
-# Leland McInnes, Sergey Alexandrov
-
+# glasbey vendored from https://github.com/lmcinnes/glasbey.
+# see __init__ and LICENSE_GLASBEY
 import numpy as np
 
+# "numbafication" is done at the bottom of the module
 
 def get_next_color(distances, colors, new_color):
     argmax = -1
@@ -104,42 +104,6 @@ def generate_palette_cam02ucs_and_other(
     return result
 
 
-# def generate_next_color_cam02ucs(colors, current_distances, new_palette_block):
-#     for i in range(new_palette_block.shape[0]):
-#         _ = get_next_color(current_distances, colors, new_palette_block[i])
-#     return get_next_color(current_distances, colors, new_palette_block[0])
-
-
-# def generate_next_color_cam02ucs_and_other(
-#     colors1,
-#     colors2,
-#     current_distances,
-#     new_palette_block1,
-#     new_palette_block2,
-#     alpha=0.0,
-# ):
-#     for i in range(new_palette_block1.shape[0]):
-#         _ = two_space_get_next_color(
-#             current_distances,
-#             colors1,
-#             colors2,
-#             new_palette_block1[i],
-#             new_palette_block2[i],
-#             alpha=alpha,
-#         )
-
-#     result, _ = two_space_get_next_color(
-#         current_distances,
-#         colors1,
-#         colors2,
-#         new_palette_block1[0],
-#         new_palette_block2[0],
-#         alpha=alpha,
-#     )
-
-#     return result
-
-
 try:
     import numba
 except ImportError:
@@ -168,6 +132,7 @@ else:
         cache=True,
     )
 
+    # get_next_color(distances, colors, new_color)
     get_next_color = jit1(get_next_color)
 
     jit2 = numba.njit(
@@ -187,24 +152,8 @@ else:
         cache=True,
     )
 
+    # generate_palette_cam02ucs(colors, initial_palette, size)
     generate_palette_cam02ucs = jit2(generate_palette_cam02ucs)
-
-    # jit3 = numba.njit(
-    #     [
-    #         #         'f4[::1](f4[:,::1], f4[::1], f4[:,::1])',
-    #         numba.types.Array(numba.float32, 1, "C", readonly=True)(
-    #             numba.types.Array(numba.float32, 2, "C", readonly=True),
-    #             numba.types.Array(numba.float32, 1, "C"),
-    #             numba.types.Array(numba.float32, 2, "C", readonly=True),
-    #         )
-    #     ],
-    #     locals={
-    #         "i": numba.uint16,
-    #     },
-    #     cache=True,
-    # )
-
-    # generate_next_color_cam02ucs = jit3(generate_next_color_cam02ucs)
 
     jit4 = numba.njit(
         [
@@ -257,23 +206,3 @@ else:
     )
 
     generate_palette_cam02ucs_and_other = jit5(generate_palette_cam02ucs_and_other)
-
-    # jit6 = numba.njit(
-    #     [
-    #         numba.types.Array(numba.float32, 1, "C", readonly=True)(
-    #             numba.types.Array(numba.float32, 2, "C", readonly=True),
-    #             numba.types.Array(numba.float32, 2, "C", readonly=True),
-    #             numba.types.Array(numba.float32, 1, "C"),
-    #             numba.types.Array(numba.float32, 2, "C", readonly=True),
-    #             numba.types.Array(numba.float32, 2, "C", readonly=True),
-    #             numba.float32,
-    #         )
-    #     ],
-    #     locals={
-    #         "i": numba.uint16,
-    #     },
-    #     cache=True,
-    # )
-    # generate_next_color_cam02ucs_and_other = jit6(
-    #     generate_next_color_cam02ucs_and_other
-    # )

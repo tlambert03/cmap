@@ -23,8 +23,8 @@ classifiers = [
 dynamic = ["version"]
 dependencies = ["numpy"]
 
-# [project.license-files]
-# globs = ["LICENSE/*"]
+[project.license-files]
+globs = ["LICENSE/*"]
 
 # extras
 # https://peps.python.org/pep-0621/#dependencies-optional-dependencies
@@ -162,7 +162,6 @@ source = ["src"]
 ignore = [
     ".github_changelog_generator",
     ".pre-commit-config.yaml",
-    ".ruff_cache/**/*",
     "tests/**/*",
     "setup.py",
     "docs/**/*",

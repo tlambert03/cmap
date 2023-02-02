@@ -1,0 +1,34 @@
+{
+  "authors": [
+    "Thomas Williams, Colin Kelley"
+  ],
+  "colormaps": {
+    "afmhot": {
+      "category": "sequential",
+      "data": "cmap.data.gnuplot:afmhot"
+    },
+    "gnuplot": {
+      "category": "miscellaneous",
+      "data": "cmap.data.gnuplot:gnuplot"
+    },
+    "gnuplot2": {
+      "category": "miscellaneous",
+      "data": "cmap.data.gnuplot:gnuplot2"
+    },
+    "grv": {
+      "category": "miscellaneous",
+      "data": "cmap.data.gnuplot:grv"
+    },
+    "ocean": {
+      "category": "miscellaneous",
+      "data": "cmap.data.gnuplot:ocean"
+    },
+    "rainbow": {
+      "category": "miscellaneous",
+      "data": "cmap.data.gnuplot:rainbow"
+    }
+  },
+  "license": "gnuplot",
+  "namespace": "gnuplot",
+  "source": "http://www.gnuplot.info"
+}

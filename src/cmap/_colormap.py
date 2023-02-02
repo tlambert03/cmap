@@ -33,6 +33,7 @@ if TYPE_CHECKING:
     from numpy.typing import ArrayLike, NDArray
     from typing_extensions import Literal, TypeAlias, TypedDict, TypeGuard
 
+    from ._catalog import LoadedCatalogItem
     from ._color import ColorLike
 
     Interpolation = Literal["linear", "nearest"]
@@ -110,6 +111,7 @@ class Colormap:
         "name",
         "identifier",
         "category",
+        "info",
         "_lut_cache",
         "interpolation",
         "_initialized",
@@ -123,6 +125,7 @@ class Colormap:
     identifier: str
     category: str | None
     interpolation: Interpolation
+    info: LoadedCatalogItem | None
 
     def __init__(
         self,
@@ -134,22 +137,36 @@ class Colormap:
         interpolation: Interpolation | bool | None = None,
     ) -> None:
 
-        name = name or identifier
-        if not name:
-            name = value if isinstance(value, str) else "custom colormap"
-
         if isinstance(value, str):
             rev = value.endswith("_r")
             info = catalog[value[:-2] if rev else value]
-            interpolation = interpolation or info.get("interpolation", "linear")
-            stops = _parse_colorstops(info["data"], interpolation)  # type: ignore
-            category = category or info["category"]
+            name = name or f"{info.namespace}:{info.name}"
+            category = category or info.category
+            self.info = info
+            if isinstance(info.data, list):
+                ld = len(info.data[0])
+                if ld == 2:
+                    # if it's a list of tuples, it's a list of color stops
+                    stops = ColorStops._from_uniform_stops(info.data)
+                elif ld == 3:
+                    stops = ColorStops._from_colorarray_like(info.data)
+                else:
+                    raise ValueError(
+                        f"Invalid catalog colormap data for {info.name!r}: {info.data}"
+                    )
+            else:
+                stops = _parse_colorstops(info.data)
+            stops._interpolation = _norm_interp(interpolation or info.interpolation)
             if rev:
                 stops = stops.reversed()
         else:
             stops = _parse_colorstops(value)
+            self.info = None
 
-        # because we're using __setattr__ to make the object immutable
+        name = name or identifier
+        if not name:
+            name = value if isinstance(value, str) else "custom colormap"
+
         self.color_stops = stops
         self.name = name
         self.identifier = _make_identifier(identifier or name)
@@ -513,6 +530,20 @@ class ColorStops(Sequence[ColorStop]):
 
     This is the main internal representation of a colormap, and is used to construct
     the LUT used in the Colormap.__call__ method.
+
+    Parameters
+    ----------
+    stops : array-like, optional
+        An array of color stops, by default None (must provide either stops or lut_func)
+        The array must be an (N, 5) array, where the first column is the position
+        (0-1) and the remaining columns are the color (RGBA, 0-1).
+    lut_func : callable, optional
+        A callable that takes a single argument (an (N, 1) array of positions) and
+        returns an (N, 4) array of colors.  This will be used to generate the LUT
+        instead of the stops array.  If provided, the stops argument will be ignored.
+    interpolation : str, optional
+        Interpolation mode.  Must be one of 'linear' (or `True`) or 'nearest' (or
+        `False`). Defaults to 'linear'.
     """
 
     _stops: np.ndarray  # internally, stored as an (N, 5) array
@@ -579,6 +610,35 @@ class ColorStops(Sequence[ColorStop]):
             A sequence of color stops.
         """
         return _parse_colorstops(colors, cls=cls)
+
+    @classmethod
+    def _from_uniform_stops(
+        cls, stops: Sequence[tuple[float, Sequence[float]]]
+    ) -> ColorStops:
+        """Create a ColorStops object from a sequence of uniform stops.
+
+        Faster constructor for a list of [(position, (r, g, b, a?)), ...] tuples.
+        This performs no color checking, clipping, or normalization.
+        """
+        ary = np.asarray([(x, *rest) for x, rest in stops])
+        if ary.shape[1] == 4:
+            ary = np.concatenate([ary, np.ones((len(ary), 1))], axis=1)
+        return cls(ary)
+
+    @classmethod
+    def _from_colorarray_like(cls, colors: ArrayLike) -> ColorStops:
+        """Create a ColorStops object from a sequence of colors.
+
+        Faster constructor for a list of [(r, g, b, a?), ...] colors
+        This performs no color checking, clipping, or normalization.
+        """
+        ary = np.asarray(colors)
+        if np.issubdtype(ary.dtype, np.integer):
+            ary = ary / 255
+        if ary.shape[1] == 3:
+            ary = np.concatenate([ary, np.ones((len(ary), 1))], axis=1)
+        stops = np.linspace(0, 1, len(ary))
+        return cls(np.concatenate([stops[:, None], ary], axis=1))
 
     @property
     def stops(self) -> tuple[float, ...]:
@@ -994,8 +1054,8 @@ def _mpl_segmentdata_to_stops(
 
 def _make_identifier(name: str) -> str:
     """Return a valid Python identifier from a string."""
-    out = "".join(c for c in name if c.isalnum() or c in ("_", "-", " "))
-    return out.lower().replace(" ", "_").replace("-", "_")
+    out = "".join(c for c in name if c.isalnum() or c in ("_", "-", " ", ":"))
+    return out.lower().replace(" ", "_").replace("-", "_").replace(":", "_")
 
 
 def _is_mpl_segmentdata(obj: Any) -> TypeGuard[MPLSegmentData]:
@@ -1005,7 +1065,6 @@ def _is_mpl_segmentdata(obj: Any) -> TypeGuard[MPLSegmentData]:
 
 def _parse_colorstops(  # noqa: C901
     val: ColorStopsLike,
-    interpolation: Interpolation | bool = "linear",
     cls: type[ColorStops] = ColorStops,
 ) -> ColorStops:
     """Parse `colors` into a sequence of color stops.
@@ -1023,10 +1082,6 @@ def _parse_colorstops(  # noqa: C901
     ----------
     val : str | Iterable[Any]
         Colors and (optional) stop positions.
-    interpolation : bool | str, optional
-        Whether to interpolate between color stops. If a string, should be one of
-        'linear', 'nearest'.  If True, will use 'linear' interpolation.  If False,
-        will use 'nearest', by default 'linear'.
     cls : type, optional
         The class to instantiate, by default ColorStops
 
@@ -1035,23 +1090,24 @@ def _parse_colorstops(  # noqa: C901
     ColorStops
         A sequence of color stops.
     """
-    if isinstance(val, cls):
-        return val
     if callable(val):
-        return cls(lut_func=val, interpolation=interpolation)
+        return cls(lut_func=val)
 
-    _clr_seq: Sequence[ColorLike | ColorStopLike]
     if isinstance(val, str):
         rev = val.endswith("_r")
         data = catalog[val[:-2] if rev else val]
-        interpolation = interpolation or data.get("interpolation", True)
-        obj = _parse_colorstops(data["data"], interpolation=interpolation, cls=cls)
-        return obj.reversed() if rev else obj
+        stops = _parse_colorstops(data.data, cls=cls)
+        stops._interpolation = _norm_interp(data.interpolation)
+        return stops.reversed() if rev else stops
 
+    if isinstance(val, cls):
+        return val
+
+    _clr_seq: Sequence[ColorLike | ColorStopLike]
     if _is_mpl_segmentdata(val):
         _mpl_stops = _mpl_segmentdata_to_stops(val)
         if callable(_mpl_stops):
-            return cls(lut_func=_mpl_stops, interpolation=interpolation)
+            return cls(lut_func=_mpl_stops)
         _clr_seq = _mpl_stops
     elif isinstance(val, dict):
         if not all(isinstance(x, Number) for x in val):
@@ -1088,4 +1144,4 @@ def _parse_colorstops(  # noqa: C901
         raise ValueError("Color stops must be in ascending position order")
 
     _stops = _fill_stops(_positions, "neighboring")  # TODO: expose fill_mode?
-    return cls(zip(_stops, _colors), interpolation=interpolation)
+    return cls(zip(_stops, _colors))

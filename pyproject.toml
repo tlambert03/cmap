@@ -101,6 +101,7 @@ extend-select = [
 ]
 extend-ignore = [
     "D100", # Missing docstring in public module
+    "D104", # Missing docstring in public package
     "D107", # Missing docstring in __init__
     "D203", # 1 blank line required before class docstring
     "D212", # Multi-line docstring summary should start at the first line
@@ -118,7 +119,7 @@ extend-ignore = [
 # https://docs.pytest.org/en/6.2.x/customize.html
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = ["-v", "--color", "yes", "--cov=cmap", "--cov-report", "term-missing"]
+addopts = ["-v", "--color", "yes"]
 testpaths = ["tests"]
 filterwarnings = [
     "error",
@@ -140,7 +141,7 @@ module = ["matplotlib.*", "vispy.*", "napari.*", "pygfx"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = ["cmap.data._gnuplot"]
+module = ["cmap.data.gnuplot"]
 disallow_untyped_defs = false
 
 # https://coverage.readthedocs.io/en/6.4/config.html
@@ -161,7 +162,6 @@ source = ["src"]
 ignore = [
     ".github_changelog_generator",
     ".pre-commit-config.yaml",
-    ".ruff_cache/**/*",
     "tests/**/*",
     "setup.py",
     "docs/**/*",

@@ -1,0 +1,59 @@
+{
+  "authors": [],
+  "colormaps": {
+    "GrBu": {
+      "category": "diverging",
+      "data": "cmap.data.vispy:GrBu"
+    },
+    "GrBu_d": {
+      "category": "diverging",
+      "data": "cmap.data.vispy:GrBu_d"
+    },
+    "PuGr": {
+      "category": "diverging",
+      "data": "cmap.data.vispy:PuGr"
+    },
+    "RdBu": {
+      "category": "diverging",
+      "data": "cmap.data.vispy:RdBu"
+    },
+    "RdYeBuCy": {
+      "category": "diverging",
+      "data": "cmap.data.vispy:RdYeBuCy"
+    },
+    "diverging": {
+      "category": "diverging",
+      "data": "cmap.data.vispy:diverging"
+    },
+    "fire": {
+      "category": "sequential",
+      "data": "cmap.data.vispy:fire"
+    },
+    "hsl": {
+      "category": "miscellaneous",
+      "data": "cmap.data.vispy:hsl"
+    },
+    "husl": {
+      "category": "miscellaneous",
+      "data": "cmap.data.vispy:husl"
+    },
+    "ice": {
+      "category": "sequential",
+      "data": "cmap.data.vispy:ice"
+    },
+    "light_blues": {
+      "category": "sequential",
+      "data": "cmap.data.vispy:light_blues"
+    },
+    "orange": {
+      "category": "sequential",
+      "data": "cmap.data.vispy:orange"
+    },
+    "single_hue": {
+      "alias": "vispy:light_blues"
+    }
+  },
+  "license": "BSD-3-Clause",
+  "namespace": "vispy",
+  "source": "https://github.com/vispy/"
+}

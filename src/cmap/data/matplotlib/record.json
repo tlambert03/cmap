@@ -1,0 +1,105 @@
+{
+  "authors": [],
+  "colormaps": {
+    "CMRmap": {
+      "authors": [
+        "Carey Rappaport"
+      ],
+      "category": "miscellaneous",
+      "data": "cmap.data.matplotlib._CMRmap:CMRmap",
+      "license": "BSD-2-Clause",
+      "source": "https://www.mathworks.com/matlabcentral/fileexchange/2662-cmrmap-m"
+    },
+    "Wistia": {
+      "category": "sequential",
+      "data": "cmap.data.matplotlib._wistia:Wistia",
+      "info": "Colorblind-friendly heatmap palette that relies on a green-to-red spectrum, which typically implies intensity or activity. For the red/green colorblind, these hues are particularly difficult to distinguish bewteen. Most colorblind-friendly solutions rely on a different set of hues altogether (usually yellows and purples) to solve this problem, but this palette maintains the red/green symbolism while achieving deuteranopic legibility by varying the perceived brightness of the hues. To read more about its development and see examples, visit [Wistia's blog post about it](http://wistia.com/blog/heatmaps-for-colorblindness).",
+      "license": "MIT",
+      "source": "https://github.com/wistia/heatmap-palette"
+    },
+    "binary": {
+      "category": "sequential",
+      "data": "cmap.data.matplotlib:binary"
+    },
+    "brg": {
+      "category": "miscellaneous",
+      "data": "cmap.data.matplotlib:brg"
+    },
+    "bwr": {
+      "category": "miscellaneous",
+      "data": "cmap.data.matplotlib:bwr"
+    },
+    "coolwarm": {
+      "authors": [
+        "Kenneth Moreland"
+      ],
+      "category": "diverging",
+      "data": "cmap.data.matplotlib._coolwarm:coolwarm",
+      "info": "Generated from `CoolWarmFloat33.csv` of *Diverging Color Maps for Scientific Visualization* by Kenneth Moreland <https://www.kennethmoreland.com/color-maps/>. For paper reference, see <https://doi.org/10.1007/978-3-642-10520-3_9>"
+    },
+    "gist_earth": {
+      "alias": "yorick:earth"
+    },
+    "gist_gray": {
+      "alias": "cmap:white"
+    },
+    "gist_heat": {
+      "alias": "yorick:heat"
+    },
+    "gist_ncar": {
+      "alias": "yorick:ncar"
+    },
+    "gist_rainbow": {
+      "alias": "yorick:rainbow"
+    },
+    "gist_stern": {
+      "alias": "yorick:stern"
+    },
+    "gist_yarg": {
+      "alias": "yorick:yarg"
+    },
+    "inferno": {
+      "alias": "bids:inferno"
+    },
+    "magma": {
+      "alias": "bids:magma"
+    },
+    "nipy_spectral": {
+      "category": "miscellaneous",
+      "data": "cmap.data.matplotlib:nipy_spectral",
+      "info": "Contributed to matplotlib [in 2006](https://sourceforge.net/p/matplotlib/mailman/message/8931272/) by Tim Leslie from the [nipy](http://neuroimaging.scipy.org/) project."
+    },
+    "plasma": {
+      "alias": "bids:plasma"
+    },
+    "seismic": {
+      "category": "diverging",
+      "data": "cmap.data.matplotlib:seismic"
+    },
+    "terrain": {
+      "category": "sequential",
+      "data": "cmap.data.matplotlib:terrain",
+      "info": "Appears to have its origin in Igor, and was [added to matplotlib in 2009](https://sourceforge.net/p/matplotlib/mailman/message/23330302/)."
+    },
+    "twilight": {
+      "authors": [
+        "Bastian Bechtold"
+      ],
+      "category": "sequential",
+      "data": "cmap.data.matplotlib:twilight"
+    },
+    "twilight_shifted": {
+      "authors": [
+        "Bastian Bechtold"
+      ],
+      "category": "sequential",
+      "data": "cmap.data.matplotlib:twilight_shifted"
+    },
+    "viridis": {
+      "alias": "bids:viridis"
+    }
+  },
+  "license": "PSF",
+  "namespace": "matplotlib",
+  "source": "https://github.com/matplotlib/matplotlib"
+}

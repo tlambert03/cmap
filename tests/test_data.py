@@ -74,8 +74,10 @@ def test_matplotlib_image_parity(name: str) -> None:
     img1 = mpl_map(_GRADIENT)
     img2 = our_map_to_mpl(_GRADIENT)
     img3 = our_map(_GRADIENT)
-    atol = 0.25 if name == "gist_stern" else 0.02  # TODO
 
+    # TODO: matplotlib has a strange discontinuity in the gist_stern colormap
+    # not sure we want to emulate it?
+    atol = 0.25 if name == "gist_stern" else 0.02
     npt.assert_allclose(img1, img2, atol=atol)
     npt.assert_allclose(img1, img3, atol=atol)
 

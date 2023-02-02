@@ -1,0 +1,49 @@
+{
+  "authors": [
+    "Maureen Stone",
+    "Cristy Miller"
+  ],
+  "category": "qualitative",
+  "colormaps": {
+    "tab10": {
+      "data": "cmap.data.tableau:Tableau10",
+      "interpolation": false
+    },
+    "tab10_colorblind": {
+      "data": "cmap.data.tableau:ColorBlind10",
+      "interpolation": false
+    },
+    "tab10_light": {
+      "data": "cmap.data.tableau:Tableau10_Light",
+      "interpolation": false
+    },
+    "tab10_medium": {
+      "data": "cmap.data.tableau:Tableau10_Medium",
+      "interpolation": false
+    },
+    "tab10_new": {
+      "data": "cmap.data.tableau:Tableau10_New",
+      "interpolation": false
+    },
+    "tab20": {
+      "data": "cmap.data.tableau:Tableau20",
+      "interpolation": false
+    },
+    "tab20b": {
+      "data": "cmap.data.tableau:Tableau20b",
+      "interpolation": false
+    },
+    "tab20c": {
+      "data": "cmap.data.tableau:Tableau20c",
+      "interpolation": false
+    },
+    "tab_traffic_light": {
+      "data": "cmap.data.tableau:Traffic_Light",
+      "interpolation": false
+    }
+  },
+  "info": "This is a test dataset",
+  "license": "BSD-3-Clause",
+  "namespace": "seaborn",
+  "source": "https://public.tableau.com/views/TableauColors/ColorPaletteswithRGBValues"
+}

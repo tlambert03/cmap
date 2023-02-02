@@ -1,0 +1,35 @@
+{
+  "authors": [
+    "John Doe"
+  ],
+  "colormaps": {
+    "crest": {
+      "category": "sequential",
+      "data": "cmap.data.seaborn:crest"
+    },
+    "flare": {
+      "category": "sequential",
+      "data": "cmap.data.seaborn:flare"
+    },
+    "icefire": {
+      "category": "diverging",
+      "data": "cmap.data.seaborn:icefire"
+    },
+    "mako": {
+      "category": "sequential",
+      "data": "cmap.data.seaborn:mako"
+    },
+    "rocket": {
+      "category": "sequential",
+      "data": "cmap.data.seaborn:rocket"
+    },
+    "vlag": {
+      "category": "diverging",
+      "data": "cmap.data.seaborn:vlag"
+    }
+  },
+  "info": "This is a test dataset",
+  "license": "BSD-3-Clause",
+  "namespace": "seaborn",
+  "source": "https://github.com/mwaskom/seaborn"
+}

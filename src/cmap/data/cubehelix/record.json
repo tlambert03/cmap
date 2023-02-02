@@ -1,0 +1,14 @@
+{
+  "authors": [
+    ""
+  ],
+  "colormaps": {
+    "cubehelix": {
+      "category": "sequential",
+      "data": "cmap.data.cubehelix:cubehelix"
+    }
+  },
+  "license": "BSD-2-Clause",
+  "namespace": "cubehelix",
+  "source": "https://github.com/jradavenport/cubehelix"
+}

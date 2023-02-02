@@ -10,9 +10,9 @@ TEMPLATE = """# {name}
 
 {info}
 
-| category | license | source |
-| --- | --- | --- |
-| {category} | {license} | {source} |
+| category | license | authors | source |
+| --- | --- | --- | --- |
+| {category} | {license} | {authors} | {source} |
 
 ```python
 from cmap import Colormap
@@ -21,7 +21,7 @@ cm = Colormap('{name}')  # case insensitive
 ```
 
 {{{{ cmap: {name} 40 }}}}
-{{{{ cmap_gray: {name} 40 }}}}
+{{{{ cmap_gray: {name} 30 }}}}
 {{{{ cmap_sineramp: {name} }}}}
 
 ## Perceptual Lightness
@@ -78,11 +78,17 @@ INCLUDE_DATA = (
 
 def build_catalog(catalog: _catalog.Catalog) -> None:
     for name in catalog:
-        info = catalog[name]
-        category = info["category"]
-        license_: str = info["license"]
-        source = info.get("source", "...")
+        if ":" not in name:
+            continue
+        try:
+            info = catalog[name]
+            category = info.category
+            license_: str = info.license
+        except KeyError as e:
+            raise KeyError(f"Missing info for {name}: {e}") from e
+        source = info.source
         source = f"[{source}]({source})" if source.startswith("http") else f"`{source}`"
+        authors = ", ".join(info.authors)
         if license_ in LICENSE_URL:
             license_ = f"[{license_}]({LICENSE_URL[license_]})"
 
@@ -101,8 +107,9 @@ def build_catalog(catalog: _catalog.Catalog) -> None:
                     name=name,
                     category=category.title(),
                     license=license_,
+                    authors=authors,
                     source=source,
-                    info=info.get("info", ""),
+                    info=info.info,
                     data=json.dumps({name: cmap_data}, separators=(",", ":")),
                 )
             )

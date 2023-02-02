@@ -1,0 +1,14 @@
+{
+  "authors": [
+    "Chris Glasbey"
+  ],
+  "colormaps": {
+    "glasbey": {
+      "category": "miscellaneous",
+      "data": "cmap.data.glasbey.prebuilt:glasbey"
+    }
+  },
+  "license": "CC0",
+  "namespace": "glasbey",
+  "source": "https://doi.org/10.1002/col.20327"
+}

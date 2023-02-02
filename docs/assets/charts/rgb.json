@@ -1,31 +1,53 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": { "url": "/cmap/assets/data/jet.csv" },
+  "data": {
+    "url": "/cmap/assets/data/jet.csv"
+  },
   "encoding": {
-    "x": { "field": "x", "type": "quantitative" },
-    "size": { "value": 4 }
+    "size": {
+      "value": 4
+    },
+    "x": {
+      "field": "x",
+      "type": "quantitative"
+    }
   },
   "layer": [
     {
-      "mark": "line",
       "encoding": {
-        "y": { "field": "R", "type": "quantitative" },
-        "color": { "value": "#D22" }
-      }
+        "color": {
+          "value": "#D22"
+        },
+        "y": {
+          "field": "R",
+          "type": "quantitative"
+        }
+      },
+      "mark": "line"
     },
     {
-      "mark": "line",
       "encoding": {
-        "y": { "field": "G", "type": "quantitative" },
-        "color": { "value": "#0C0" }
-      }
+        "color": {
+          "value": "#0C0"
+        },
+        "y": {
+          "field": "G",
+          "type": "quantitative"
+        }
+      },
+      "mark": "line"
     },
     {
-      "mark": "line",
       "encoding": {
-        "y": { "field": "B", "type": "quantitative" },
-        "color": { "value": "blue" }
-      }
+        "color": {
+          "value": "blue"
+        },
+        "y": {
+          "field": "B",
+          "type": "quantitative"
+        }
+      },
+      "mark": "line"
     }
   ]
 }

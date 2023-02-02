@@ -1,0 +1,36 @@
+{
+  "authors": [
+    "Nathaniel J. Smith",
+    "Stefan van der Walt"
+  ],
+  "colormaps": {
+    "fake_parula": {
+      "category": "sequential",
+      "data": "cmap.data.bids:fake_parula"
+    },
+    "inferno": {
+      "category": "sequential",
+      "data": "cmap.data.bids:inferno"
+    },
+    "magma": {
+      "category": "sequential",
+      "data": "cmap.data.bids:magma"
+    },
+    "plasma": {
+      "category": "sequential",
+      "data": "cmap.data.bids:plasma"
+    },
+    "viridis": {
+      "authors": [
+        "Nathaniel J. Smith",
+        "Stefan van der Walt",
+        "Eric Firing"
+      ],
+      "category": "sequential",
+      "data": "cmap.data.bids:viridis"
+    }
+  },
+  "license": "CC0",
+  "namespace": "bids",
+  "source": "https://github.com/bids/colormap"
+}

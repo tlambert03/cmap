@@ -1,0 +1,68 @@
+{
+  "authors": [],
+  "colormaps": {
+    "autumn": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:autumn"
+    },
+    "bone": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:bone"
+    },
+    "cool": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:cool"
+    },
+    "copper": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:copper"
+    },
+    "flag": {
+      "category": "miscellaneous",
+      "data": "cmap.data.matlab:flag"
+    },
+    "gray": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:gray"
+    },
+    "grays": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:gray"
+    },
+    "hot": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:hot"
+    },
+    "hsv": {
+      "category": "cyclic",
+      "data": "cmap.data.matlab:hsv"
+    },
+    "jet": {
+      "category": "miscellaneous",
+      "data": "cmap.data.matlab:jet"
+    },
+    "pink": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:pink"
+    },
+    "prism": {
+      "category": "miscellaneous",
+      "data": "cmap.data.matlab:prism"
+    },
+    "spring": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:spring"
+    },
+    "summer": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:summer"
+    },
+    "winter": {
+      "category": "sequential",
+      "data": "cmap.data.matlab:winter"
+    }
+  },
+  "license": "UNKNOWN",
+  "namespace": "matlab",
+  "source": ""
+}

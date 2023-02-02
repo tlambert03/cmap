@@ -1,0 +1,111 @@
+{
+  "authors": [
+    ""
+  ],
+  "colormaps": {
+    "algae": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.algae:algae",
+      "info": "The algae colormap is sequential with whitish-green for low values and increasing in green with increasing value, which could be used to represent an increase in chlorophyll in the water. This colormap is based on [Greens](/catalog/sequential/greens), but was recreated from scratch using the viscm tool."
+    },
+    "amp": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.amp:amp"
+    },
+    "balance": {
+      "category": "diverging",
+      "data": "cmap.data.cmocean.balance:balance",
+      "info": "The balance colormap is diverging with dark blue to off-white to dark red representing negative to zero to positive values; this could be used to represent sea surface elevation, with deviations in the surface elevations as shades of color away from neutral off-white. In this case, shades of red have been chosen to represent sea surface elevation above the reference value (often mean sea level) to connect with warmer water typically being associated with an increase in the free surface, such as with the Loop Current in the Gulf of Mexico. An example of this colormap is from a numerical simulation of the Texas and Louisiana shelf. This colormap is based on [RdBu](/catalog/sequential/rdbu/), but was recreated from scratch using the viscm tool."
+    },
+    "balance_blue": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.balance:balance_blue"
+    },
+    "curl": {
+      "category": "diverging",
+      "data": "cmap.data.cmocean.curl:curl"
+    },
+    "curl_pink": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.curl:curl_pink"
+    },
+    "deep": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.deep:deep"
+    },
+    "delta": {
+      "category": "diverging",
+      "data": "cmap.data.cmocean.delta:delta"
+    },
+    "delta_blue": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.delta:delta_blue"
+    },
+    "dense": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.dense:dense"
+    },
+    "diff": {
+      "category": "diverging",
+      "data": "cmap.data.cmocean.diff:diff",
+      "info": "The diff colormap is diverging, with one side shades of blues and one side shades of browns."
+    },
+    "haline": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.haline:haline"
+    },
+    "ice": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.ice:ice",
+      "info": "The ice colormap is sequential from very dark blue (almost black) to very light blue (almost white). A use for this could be representations of sea ice."
+    },
+    "matter": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.matter:matter"
+    },
+    "oxy": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.oxy:oxy"
+    },
+    "phase": {
+      "category": "cyclic",
+      "data": "cmap.data.cmocean.phase:phase"
+    },
+    "rain": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.rain:rain"
+    },
+    "solar": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.solar:solar"
+    },
+    "speed": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.speed:speed"
+    },
+    "tarn": {
+      "category": "diverging",
+      "data": "cmap.data.cmocean.tarn:tarn"
+    },
+    "tempo": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.tempo:tempo"
+    },
+    "thermal": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.thermal:thermal"
+    },
+    "topo": {
+      "category": "miscellaneous",
+      "data": "cmap.data.cmocean.topo:topo"
+    },
+    "turbid": {
+      "category": "sequential",
+      "data": "cmap.data.cmocean.turbid:turbid"
+    }
+  },
+  "info": "",
+  "license": "MIT",
+  "namespace": "cmocean",
+  "source": "https://github.com/matplotlib/cmocean"
+}

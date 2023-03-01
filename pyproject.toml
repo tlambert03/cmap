@@ -40,7 +40,11 @@ docs = [
     'imageio',
     'colorcet',
 ]
-test = ["pytest>=6.0", "pytest-cov", "numba"]
+test = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "numba; python_version<'3.11'",
+]
 thirdparty = [
     "bokeh",
     "colour",
@@ -89,17 +93,17 @@ target-version = "py38"
 fix = true
 src = ["src"]
 select = [
-    "E",    # style errors
-    "F",    # flakes
-    "D",    # pydocstyle
-    "I",    # isort
-    "UP",   # pyupgrade
-    "S",    # bandit
-    "C4",   # flake8-comprehensions
-    "B",    # flake8-bugbear
-    "ISC",  # implicit-str-concat
-    "TID",  # tidy-imports
-    "RUF",  # ruff-specific rules
+    "E",   # style errors
+    "F",   # flakes
+    "D",   # pydocstyle
+    "I",   # isort
+    "UP",  # pyupgrade
+    "S",   # bandit
+    "C4",  # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "ISC", # implicit-str-concat
+    "TID", # tidy-imports
+    "RUF", # ruff-specific rules
 ]
 ignore = [
     "D100", # Missing docstring in public module

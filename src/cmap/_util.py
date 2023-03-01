@@ -68,7 +68,7 @@ def plot_color_gradients(
     return fig
 
 
-def plot_rgb(cmap: Colormap | str, N: int = 256) -> "MplFigure":
+def plot_rgb(cmap: Colormap | str, N: int = 256) -> MplFigure:
     """Plot the R,G,B,A components of a colormap individually."""
     import matplotlib.pyplot as plt
 
@@ -493,7 +493,7 @@ def _png_bytes(cm: Colormap) -> bytes:
 
 
 def _to_img_tag(cm: Colormap, height: str = "32px", width: str = "100%") -> str:
-    """Returns a base64-encoded <img> tag for the given colormap.
+    """Return a base64-encoded <img> tag for the given colormap.
 
     <img style="height: 32px" width="100%" src="data:image/png;base64, ...">
     """

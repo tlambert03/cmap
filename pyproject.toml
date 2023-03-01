@@ -86,20 +86,21 @@ include = ["/src", "/tests"]
 [tool.ruff]
 line-length = 88
 target-version = "py38"
-extend-select = [
-    "E",  # style errors
-    "F",  # flakes
-    "D",  # pydocstyle
-    "I",  # isort
-    "UP", # pyupgrade
-    # "N",  # pep8-naming
+fix = true
+select = [
+    "E",    # style errors
+    "F",    # flakes
+    "D",    # pydocstyle
+    "I",    # isort
+    "UP",   # pyupgrade
     "S",    # bandit
-    "C",    # flake8-comprehensions
+    "C4",   # flake8-comprehensions
     "B",    # flake8-bugbear
-    "A001", # flake8-builtins
+    "ISC",  # implicit-str-concat
+    "TID",  # tidy-imports
     "RUF",  # ruff-specific rules
 ]
-extend-ignore = [
+ignore = [
     "D100", # Missing docstring in public module
     "D104", # Missing docstring in public package
     "D107", # Missing docstring in __init__

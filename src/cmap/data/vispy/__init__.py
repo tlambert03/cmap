@@ -94,6 +94,7 @@ _red = np.array([1.0, 0.0, 0.0])
 
 
 def fire(x: "ArrayLike") -> np.ndarray:
+    """Fire colormap function."""
     _x = np.atleast_2d(np.clip(np.asarray(x), 0, 1.0)).T
     c = (1.0 - _x) * _white + _x * _yellow
     e = (1.0 - _x) * _yellow + _x * _red

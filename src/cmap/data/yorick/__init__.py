@@ -146,6 +146,7 @@ yarg = [[255, 255, 255], [0, 0, 0]]
 
 
 def heat(x: np.ndarray) -> np.ndarray:
+    """Heat colormap function."""
     return np.stack([1.5 * x, 2 * x - 1, 4 * x - 3], axis=-1)
 
 

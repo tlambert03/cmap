@@ -24,6 +24,8 @@ from ._catalog import catalog
 from ._color import Color
 
 if TYPE_CHECKING:
+    from typing import Literal
+
     import bokeh.models
     import matplotlib.colors
     import matplotlib.figure
@@ -31,7 +33,7 @@ if TYPE_CHECKING:
     import pygfx
     import vispy.color
     from numpy.typing import ArrayLike, NDArray
-    from typing_extensions import Literal, TypeAlias, TypedDict, TypeGuard
+    from typing_extensions import TypeAlias, TypedDict, TypeGuard
 
     from ._catalog import LoadedCatalogItem
     from ._color import ColorLike
@@ -136,7 +138,6 @@ class Colormap:
         category: str | None = None,
         interpolation: Interpolation | bool | None = None,
     ) -> None:
-
         if isinstance(value, str):
             rev = value.endswith("_r")
             info = catalog[value[:-2] if rev else value]
@@ -580,7 +581,7 @@ class ColorStops(Sequence[ColorStop]):
                     raise ValueError("Expected (N, 5) array")  # pragma: no cover
                 self._stops = stops
             else:
-                self._stops = np.array([(p,) + tuple(c) for p, c in stops])
+                self._stops = np.array([(p, *tuple(c)) for p, c in stops])
 
     def _call_lut_func(self, X: np.ndarray) -> np.ndarray:
         if self._lut_func is None:
@@ -999,15 +1000,15 @@ def _interpolate_stops(N: int, data: ArrayLike, gamma: float = 1.0) -> np.ndarra
     return np.clip(lut, 0.0, 1.0)  # type: ignore
 
 
-def _map_rgb(mappers: Iterable[LutCallable], ary: "NDArray") -> "NDArray":
-    """Helper function for combining multiple LutCallables into single rgb array."""
+def _map_rgb(mappers: Iterable[LutCallable], ary: NDArray) -> NDArray:
+    """Combine multiple LutCallables into single rgb array."""
     return np.stack([_g(np.asarray(ary)) for _g in mappers], axis=-1)
 
 
 def _mpl_segmentdata_to_stops(
     data: MPLSegmentData, precision: int = 16, N: int = 256, gamma: float = 1.0
 ) -> list[ColorStopLike] | LutCallable:
-    """Converts a matplotlib colormap segmentdata dict to a list of stops.
+    """Convert a matplotlib colormap segmentdata dict to a list of stops.
 
     Parameters
     ----------
@@ -1032,7 +1033,7 @@ def _mpl_segmentdata_to_stops(
     if all(callable(v) for v in data.values()):
         funcs = (data["red"], data["green"], data["blue"])
         if "alpha" in data:
-            return partial(_map_rgb, funcs + (data["alpha"],))
+            return partial(_map_rgb, (*funcs, data["alpha"]))
         return partial(_map_rgb, funcs)
     if any(callable(v) for v in data.values()):
         raise ValueError(
@@ -1048,7 +1049,7 @@ def _mpl_segmentdata_to_stops(
     else:
         alpha = np.ones_like(all_positions)
 
-    rgba = np.stack(rgb + [alpha], axis=1)
+    rgba = np.stack([*rgb, alpha], axis=1)
     return [(a, tuple(b)) for a, b in zip(all_positions, rgba.tolist())]  # type: ignore
 
 
@@ -1063,7 +1064,7 @@ def _is_mpl_segmentdata(obj: Any) -> TypeGuard[MPLSegmentData]:
     return isinstance(obj, dict) and all(k in obj for k in ("red", "green", "blue"))
 
 
-def _parse_colorstops(  # noqa: C901
+def _parse_colorstops(
     val: ColorStopsLike,
     cls: type[ColorStops] = ColorStops,
 ) -> ColorStops:

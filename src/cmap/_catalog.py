@@ -45,7 +45,7 @@ class LoadedCatalogItem:
     info: str = ""
     namespace: str = ""
     authors: list[str] = field(default_factory=list)
-    interpolation: bool | "Interpolation" = "linear"
+    interpolation: bool | Interpolation = "linear"
     tags: list[str] = field(default_factory=list)
 
 
@@ -89,7 +89,6 @@ _CATALOG_LOWER = {_norm_name(k): v for k, v in CATALOG.items()}
 
 
 class Catalog(Mapping[str, "LoadedCatalogItem"]):
-
     _loaded: dict[str, LoadedCatalogItem] = {}
 
     def __iter__(self) -> Iterator[str]:

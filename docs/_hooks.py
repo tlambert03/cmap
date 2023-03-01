@@ -29,7 +29,7 @@ class DocCmap(Colormap):
         width: str = "100%",
         img: np.ndarray | None = None,
     ) -> str:
-        """Returns a base64-encoded <img> tag for the given colormap.
+        """Return a base64-encoded <img> tag for the given colormap.
 
         <img style="height: 32px" width="100%" src="data:image/png;base64, ...">
         """

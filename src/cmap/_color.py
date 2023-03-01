@@ -282,7 +282,7 @@ def _norm_name(name: str) -> str:
     return delim.sub("", name).lower()
 
 
-def parse_rgba(value: Any) -> RGBA:  # noqa: C901
+def parse_rgba(value: Any) -> RGBA:
     """Parse a color."""
     # parse hex, rgb, rgba, hsl, hsla, and color name strings
     if isinstance(value, str):

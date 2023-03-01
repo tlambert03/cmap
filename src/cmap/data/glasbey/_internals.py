@@ -46,7 +46,6 @@ def two_space_get_next_color(
     max_dist = 0.0
     dim = distances.shape[0]
     for i in range(dim):
-
         # Color space 1 distance
         d1 = 0.0
         if alpha > 0.0:

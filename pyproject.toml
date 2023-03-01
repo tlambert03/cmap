@@ -40,7 +40,7 @@ docs = [
     'imageio',
     'colorcet',
 ]
-test = ["pytest>=6.0", "pytest-cov"]
+test = ["pytest>=6.0", "pytest-cov", "numba"]
 thirdparty = [
     "bokeh",
     "colour",

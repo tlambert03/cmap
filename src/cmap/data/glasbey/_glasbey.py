@@ -134,7 +134,7 @@ def create_palette(
             chroma_bounds=chroma_bounds,
             hue_bounds=hue_bounds,
         )
-    else:
+    else:  # pragma: no cover
         raise ValueError(
             f'Parameter grid_space should be one of "JCh" or "RGB" not {grid_space!r}'
         )
@@ -149,7 +149,7 @@ def create_palette(
         return _get_rgb_palette(palette)[2:]
 
     if not isinstance(cvd_severity, float) and 0 <= cvd_severity <= 100:
-        raise ValueError(
+        raise ValueError(  # pragma: no cover
             f"cvd_severity should be a float between 0 and 100 not {cvd_severity}"
         )
 

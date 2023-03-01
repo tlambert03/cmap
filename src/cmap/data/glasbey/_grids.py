@@ -18,7 +18,7 @@ def _norm_gridsize(grid_size: int | tuple[int, int, int]) -> tuple[int, int, int
         return (grid_size, grid_size, grid_size)
     elif isinstance(grid_size, Sized) and len(grid_size) == 3:
         return grid_size
-    raise ValueError(
+    raise ValueError(  # pragma: no cover
         "Parameter grid_size should either be an integer or a 3-tuple of integers"
     )
 

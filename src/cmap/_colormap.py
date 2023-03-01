@@ -151,7 +151,7 @@ class Colormap:
                     stops = ColorStops._from_uniform_stops(info.data)
                 elif ld == 3:
                     stops = ColorStops._from_colorarray_like(info.data)
-                else:
+                else:  # pragma: no cover
                     raise ValueError(
                         f"Invalid catalog colormap data for {info.name!r}: {info.data}"
                     )
@@ -337,9 +337,7 @@ class Colormap:
             name = self.name[:-2] if self.name.endswith("_r") else f"{self.name}_r"
 
         return type(self)(
-            self.color_stops.reversed(),
-            name=name,
-            category=self.category,
+            self.color_stops.reversed(), name=name, category=self.category
         )
 
     def to_css(

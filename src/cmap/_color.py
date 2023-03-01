@@ -307,7 +307,7 @@ def parse_rgba(value: Any) -> RGBA:
             return RGBA8(*_bound_0_255(value)).to_float()
         if np.issubdtype(value.dtype, np.floating) and len(value) in {3, 4}:
             return RGBA(*_bound_0_1(cast("Sequence", value)))
-        raise ValueError(f"Invalid color array: {value!r}")
+        raise ValueError(f"Invalid color array: {value!r}")  # pragma: no cover
 
     if isinstance(value, Sequence):
         if isinstance(value, RGBA):

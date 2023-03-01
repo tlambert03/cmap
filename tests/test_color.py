@@ -103,7 +103,7 @@ def test_color_errors() -> None:
     with pytest.raises(ValueError, match="Invalid color string"):
         Color("seven")
     with pytest.raises(TypeError, match="Cannot convert typ"):
-        Color(1.2)
+        Color(1.2)  # type: ignore
     with pytest.raises(AttributeError, match="Color is immutable"):
         Color("red")._rgba = (0, 1, 2, 3)  # type: ignore
 
@@ -124,10 +124,12 @@ def test_color_conversions() -> None:
     np.testing.assert_array_equal(np.asarray(color), (1, 0, 0, 1))
     assert color.hsl == (0, 1, 0.5, 1)
     assert color.hsv == (0, 1, 1, 1)
+    assert color.alpha == 1
     assert color.hex == "#FF0000"
     assert color.rgba == (1, 0, 0, 1)
     assert color.rgba8 == (255, 0, 0, 1)
     assert color.rgba_string == "rgb(255, 0, 0)"
+    assert Color((1.0, 1.0, 1.0, 0.5)).rgba_string == "rgba(255, 255, 255, 0.5)"
     assert color == "#FF0000FF"
     assert color == "#FF0000"
     assert color == Color("r")

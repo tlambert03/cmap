@@ -66,7 +66,7 @@ def _populate_catalog() -> None:
             v = cast("CatalogItem | CatalogAlias", v)
             namespaced = f"{data['namespace']}:{name}"
             if "alias" in v:
-                if ":" not in v["alias"]:
+                if ":" not in v["alias"]:  # pragma: no cover
                     raise ValueError(f"{namespaced!r} alias is not namespaced")
                 CATALOG[namespaced] = v
                 CATALOG[name] = v  # FIXME
@@ -101,7 +101,7 @@ class Catalog(Mapping[str, "LoadedCatalogItem"]):
         if name not in self._loaded:
             if (key := _norm_name(name)) not in _CATALOG_LOWER:
                 # TODO: print a list of available colormaps or something
-                if name != key:
+                if name != key:  # pragma: no cover
                     raise ValueError(f"Colormap {name!r} (or {key!r}) not found.")
                 raise ValueError(f"Colormap {name!r} not found.")
 
@@ -135,8 +135,6 @@ class Catalog(Mapping[str, "LoadedCatalogItem"]):
             # well tested on internal data though
             mod = __import__(module, fromlist=[attr])
             _item["data"] = getattr(mod, attr)
-        if "aliases" in _item:
-            breakpoint()
         return LoadedCatalogItem(name=key.split(":", 1)[-1], **_item)
 
 

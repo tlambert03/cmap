@@ -24,3 +24,5 @@ def test_catalog_data() -> None:
         else:
             raise AssertionError(f"Unexpected data type: {type(item.data)}")
         Colormap(name)  # smoke test
+
+    assert len(catalog) > 100

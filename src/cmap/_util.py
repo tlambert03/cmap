@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, Sequence, cast
+from typing import TYPE_CHECKING, Sequence, TypedDict, cast
 
 import numpy as np
 
@@ -19,7 +19,7 @@ def _ensure_cmap(cmap: Colormap | str) -> Colormap:
     from cmap import Colormap
 
     cm = Colormap(cmap) if isinstance(cmap, str) else cmap
-    if not isinstance(cm, Colormap):
+    if not isinstance(cm, Colormap):  # pragma: no cover
         raise TypeError(f"Expected Colormap or str, got {type(cm)}")
     return cm
 
@@ -292,7 +292,7 @@ def sineramp(
         rows = cols = shape
     elif len(shape) == 2:
         rows, cols = shape
-    else:
+    else:  # pragma: no cover
         raise ValueError("size must be a 1 or 2 element vector")
 
     # Adjust width of image so that we have an integer number of cycles of
@@ -420,7 +420,24 @@ def circlesineramp(
     return cast(np.ndarray, im * alpha)
 
 
-def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> dict:
+class ReportDict(TypedDict):
+    x: np.ndarray
+    R: np.ndarray
+    G: np.ndarray
+    B: np.ndarray
+    J: np.ndarray
+    a: np.ndarray
+    b: np.ndarray
+    color: list[str]
+    chroma: np.ndarray
+    hue: np.ndarray
+    colorfulness: np.ndarray
+    saturation: np.ndarray
+    perceptual_derivs: np.ndarray
+    lightness_derivs: np.ndarray
+
+
+def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> ReportDict:
     """Generate a report of data describing a colormap.
 
     This is primarily used for generating charts in the documentation
@@ -436,7 +453,7 @@ def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> dict
         RGBA = cm(x)
     RGB = RGBA[:, :3]
 
-    Jab = cspace_convert(RGB, "sRGB1", uniform_space)
+    Jab = cast("np.ndarray", cspace_convert(RGB, "sRGB1", uniform_space))
 
     local_deltas = np.sqrt(np.sum((Jab[:-1, :] - Jab[1:, :]) ** 2, axis=-1))
     local_deltas = np.insert(local_deltas, 0, 0)  # keep length the same
@@ -479,6 +496,7 @@ def report(cm: Colormap, n: int = 256, uniform_space: str = "CAM02-UCS") -> dict
 
 
 def _png_bytes(cm: Colormap) -> bytes:
+    """Return a PNG-encoded bytes object for the given colormap."""
     import io
 
     from PIL import Image
@@ -506,7 +524,7 @@ def _to_img_tag(cm: Colormap, height: str = "32px", width: str = "100%") -> str:
     )
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     import matplotlib.pyplot as plt
 
     plot_color_gradients(sys.argv[1:], compare=True)

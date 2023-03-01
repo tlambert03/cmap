@@ -146,6 +146,7 @@ ignore_missing_imports = true
 module = ["cmap.data.gnuplot"]
 disallow_untyped_defs = false
 
+
 # https://coverage.readthedocs.io/en/6.4/config.html
 [tool.coverage.report]
 exclude_lines = [
@@ -154,7 +155,11 @@ exclude_lines = [
     "@overload",
     "except ImportError",
     "return _external.",  # skip calls to external functions in colormap
+    "\\.\\.\\.",
 ]
+show_missing = true
+skip_covered = true
+
 [tool.coverage.run]
 source = ["src"]
 

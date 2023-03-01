@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+
 from cmap import Colormap
 from cmap._catalog import catalog
 

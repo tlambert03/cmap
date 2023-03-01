@@ -4,6 +4,7 @@ from typing import Any
 import numpy as np
 import numpy.testing as npt
 import pytest
+
 from cmap import Color, Colormap
 from cmap._colormap import ColorStop, ColorStops, _fill_stops
 

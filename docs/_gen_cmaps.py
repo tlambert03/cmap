@@ -3,6 +3,7 @@ from pathlib import Path
 
 import mkdocs_gen_files
 import numpy as np
+
 from cmap import Colormap, _catalog
 from cmap._util import report
 

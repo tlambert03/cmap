@@ -6,6 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pytest
+
 from cmap import Color, Colormap
 
 if TYPE_CHECKING:
@@ -27,8 +28,9 @@ def test_colour_support() -> None:
 
 def test_rich_color_repr() -> None:
     rich = pytest.importorskip("rich")
-    from cmap._external import rich_print_colormap
     from rich.text import Text
+
+    from cmap._external import rich_print_colormap
 
     mock = MagicMock()
     with patch.object(rich, "get_console", lambda: mock):

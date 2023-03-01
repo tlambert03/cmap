@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 import numpy as np
+
 from cmap import Colormap, _util
 from cmap._catalog import CATALOG
 from cmap._color import NAME_TO_RGB

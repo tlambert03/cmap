@@ -87,6 +87,7 @@ include = ["/src", "/tests"]
 line-length = 88
 target-version = "py38"
 fix = true
+src = ["src"]
 select = [
     "E",    # style errors
     "F",    # flakes

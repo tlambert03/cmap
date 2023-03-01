@@ -2,6 +2,7 @@ from typing import Any
 
 import numpy as np
 import pytest
+
 from cmap._color import RGBA, RGBA8, Color
 
 try:

@@ -18,13 +18,13 @@ from typing import (
 )
 
 import numpy as np
-import numpy.typing as npt
 
 from . import _external
 
 if TYPE_CHECKING:
     from typing import Union
 
+    import numpy.typing as npt
     from typing_extensions import TypeAlias
 
     # not used internally... but available for typing
@@ -151,13 +151,15 @@ class RGBA8(NamedTuple):
         return f"rgba({self.r}, {self.g}, {self.b}, {self.a})"
 
 
-# Parsers
-
-_num = r"(-?\d+\.?\d*|none)"
-_perc = r"(-?\d+\.?\d*%|none)"
-_nump = r"(-?\d+\.?\d*%?|none)"
+# regexes for parsing color strings
+_num = r"(-?\d+\.?\d*|none)"  # a number or the string 'none'
+_perc = r"(-?\d+\.?\d*%|none)"  # a percentage or the string 'none'
+_nump = r"(-?\d+\.?\d*%?|none)"  # a number or percentage or the string 'none'
+# parse an rgb(a) string
 reRGB = re.compile(rf"rgba?\(\s*{_nump}[,\s]+{_nump}[,\s]+{_nump}[,\s/]*{_nump}?\)")
+# parse an hsl(a) string
 reHSL = re.compile(rf"hsla?\(\s*{_num}[,\s]+{_perc}[,\s]+{_perc}[,\s/]*{_nump}?\)")
+# used to strip delimiter characters from color strings with `delim.sub("", name)`
 delim = re.compile(r"( |-|_)", re.I)
 
 

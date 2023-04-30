@@ -71,11 +71,11 @@ dev = [
     "ruff",
 ]
 
-
 [project.urls]
-homepage = "https://github.com/tlambert03/cmap"
-repository = "https://github.com/tlambert03/cmap"
-
+Homepage = "https://github.com/tlambert03/cmap"
+Repository = "https://github.com/tlambert03/cmap"
+"Bug Tracker" = "https://github.com/tlambert03/cmap/issues"
+Documentation = "https://cmap-docs.rtfd.io/"
 
 # https://hatch.pypa.io/latest/config/metadata/
 [tool.hatch.version]

@@ -62,7 +62,7 @@ jobs:
           python -m pip install -e .[test,thirdparty] ${{ github.event_name == 'schedule' && '--pre' || ''  }}
 
       - name: Run test
-        uses: coactions/setup-xvfb@v1
+        uses: aganders3/headless-gui@v1.2
         with:
           run: pytest -v --cov=cmap --cov-report=xml --cov-report=term-missing
 

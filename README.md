@@ -28,7 +28,7 @@ and other libraries that use matplotlib colormaps).
 
 ## API
 
-- [`cmap.Color`](https://cmap-docs.readthedocs.io/en/latest/colors/)
+### [`cmap.Color`](https://cmap-docs.readthedocs.io/en/latest/colors/)
 
 The `cmap.Color` object is a simple wrapper around a tuple of RGBA scalars, with
 a few convenience methods for converting to other color objects.
@@ -39,10 +39,13 @@ from cmap import Color
 red = Color("red")  # or a variety of other "color like" inputs
 ```
 
-- [`cmap.Colormap`](https://cmap-docs.readthedocs.io/en/latest/colormaps/)
+### [`cmap.Colormap`](https://cmap-docs.readthedocs.io/en/latest/colormaps/)
 
 The `cmap.Colormap` object is a callable that can map a scalar value (or numpy
-array of values) to an RGBA color (or a numpy array of RGBA colors). 
+array of values) to an RGBA color (or a numpy array of RGBA colors).  API is
+intended to mimic the behavior of a
+[`matplotlib.colors.Colormap`](https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.Colormap.html#matplotlib.colors.Colormap)
+object (without requiring matplotlib)
 
 ```python
 In [1]: import cmap
@@ -59,10 +62,11 @@ array([[1.        , 0.        , 0.        , 1.        ],
        [0.        , 0.        , 1.        , 1.        ]])
 ```
 
-## Current Third Party Support
+## Third Party Library Support
 
 The `cmap.Colormap` object has convenience methods that allow it to be used with a number of third-party colormap objects (like
-`matplotlib`, `vispy`, `napari`, `plotly`, etc...).  
+`matplotlib`, `vispy`, `napari`, `plotly`, etc...).
+
 See [documentation](https://cmap-docs.readthedocs.io/en/latest/colormaps/#usage-with-external-visualization-libraries)
 for details.
 

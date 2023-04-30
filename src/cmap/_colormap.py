@@ -561,7 +561,8 @@ class ColorStops(Sequence[ColorStop]):
             self._lut_func = lut_func
             if stops is not None:  # pragma: no cover
                 warnings.warn(
-                    "lut_func argument overrides stops argument. Don't pass both."
+                    "lut_func argument overrides stops argument. Don't pass both.",
+                    stacklevel=2,
                 )
 
             stops = np.linspace(0, 1, 256)

@@ -148,7 +148,7 @@ def test_copy() -> None:
     color = Color("red")
     assert copy(color) is color
     assert deepcopy(color) is color
-    assert pickle.loads(pickle.dumps(color)) is color
+    assert pickle.loads(pickle.dumps(color)) is color  # noqa: S301
     assert ref(color)() is color
 
 

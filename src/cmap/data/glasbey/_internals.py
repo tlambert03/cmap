@@ -110,7 +110,9 @@ try:
 except ImportError:
     import warnings
 
-    warnings.warn("Numba not installed. glasbey palette creation will be slow.")
+    warnings.warn(
+        "Numba not installed. glasbey palette creation will be slow.", stacklevel=2
+    )
 else:
     jit1 = numba.njit(
         [

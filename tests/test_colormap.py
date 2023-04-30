@@ -101,7 +101,7 @@ def test_colormap_copy() -> None:
     assert deepcopy(cmap1) == cmap1
     assert cmap1 == ["r", "m", "b"]
     assert cmap1 == ["r", (0.5, "m"), "b"]
-    assert cmap1 == pickle.loads(pickle.dumps(cmap1)) == cmap2
+    assert cmap1 == pickle.loads(pickle.dumps(cmap1)) == cmap2  # noqa: S301
     assert cmap1 != {"1234"}
 
 

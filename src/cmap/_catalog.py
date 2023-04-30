@@ -122,7 +122,8 @@ class Catalog(Mapping[str, "LoadedCatalogItem"]):
                 warnings.warn(
                     f"The name {key!r} is an alias for {namespaced!r}, but is also "
                     f"available as: {', '.join(conflicts)!r}. To silence this "
-                    "warning, use a fully namespaced name."
+                    "warning, use a fully namespaced name.",
+                    stacklevel=2,
                 )
             return self[namespaced]
 

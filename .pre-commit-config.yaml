@@ -9,7 +9,7 @@ exclude: ^LICENSE
 
 repos:
   - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: v2.1.1
+    rev: v2.2.0
     hooks:
       - id: conventional-pre-commit
         stages: [commit-msg]
@@ -24,24 +24,25 @@ repos:
         args: [--autofix]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.0.253
+    rev: v0.0.263
     hooks:
       - id: ruff
         args: [--fix]
 
   - repo: https://github.com/psf/black
-    rev: 23.1.0
+    rev: 23.3.0
     hooks:
       - id: black
 
-  # commented out until PEP 639 is supported
+  # commented out until PEP 639 is supported\
+  # https://github.com/abravalheri/validate-pyproject/issues/70
   # - repo: https://github.com/abravalheri/validate-pyproject
   #   rev: v0.10.1
   #   hooks:
   #     - id: validate-pyproject
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.0.1
+    rev: v1.2.0
     hooks:
       - id: mypy
         files: "^src/"

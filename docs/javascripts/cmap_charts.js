@@ -156,20 +156,32 @@ async function makeRGBChart(canvas, data) {
 }
 
 async function makeHSLChart(canvas, data) {
-  var datasets = [];
-  var label_data, _data, val;
+  const datasets = [];
+  var label_data, _data, val, lastval;
 
-  ["hue", "saturation", "chroma"].forEach((label) => {
+  ["saturation", "chroma", "hue"].forEach((label) => {
     label_data = data[label];
     _data = [];
     for (i = 0; i < data.x.length; i++) {
       val = label_data[i];
-      _data.push({
-        x: data.x[i],
-        y: label == "hue" ? (val * 10) / 36 : val,
-      });
+      // If the hue is jumping by more than 90 degrees, insert a null
+      // value to break the line
+      if (label == "hue" && Math.abs(val - lastval) > 95) {
+        // we just fully skip this point, which does mean a data point is missed
+        // but if we insert a null value, the chartjs hover tooltip will be offset
+        // for all later points
+        _data.push({ x: data.x[i], y: null });
+      } else {
+        _data.push({ x: data.x[i], y: val });
+      }
+      lastval = val;
     }
-    datasets.push({ label: label, showLine: true, data: _data });
+    datasets.push({
+      label: label,
+      showLine: true,
+      data: _data,
+      yAxisID: label == "hue" ? "y2" : "y",
+    });
   });
 
   new Chart(canvas, {
@@ -178,7 +190,16 @@ async function makeHSLChart(canvas, data) {
     options: {
       ...GLOBAL_OPTIONS,
       plugins: { legend: { display: true, labels: { boxHeight: 1 } } },
-      scales: {},
+      scales: {
+        y: { max: 100, min: 0, title: { text: "Saturation/Chroma %", display: true } },
+        y2: {
+          max: 360,
+          min: 0,
+          ticks: { stepSize: 36 },
+          title: { text: "Hue degree", display: true },
+          position: "right",
+        },
+      },
       elements: {
         line: { borderWidth: 4 },
         point: { radius: 0 },

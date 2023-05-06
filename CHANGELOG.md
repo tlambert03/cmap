@@ -1,8 +1,20 @@
 # Changelog
 
-## [0.0.2](https://github.com/tlambert03/cmap/tree/0.0.2) (2023-05-03)
+## [0.0.3](https://github.com/tlambert03/cmap/tree/0.0.3) (2023-05-06)
 
-[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.0.1...0.0.2)
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.0.2...0.0.3)
+
+**Implemented enhancements:**
+
+- feat: add colorcet aliases [\#11](https://github.com/tlambert03/cmap/pull/11) ([tlambert03](https://github.com/tlambert03))
+
+**Documentation:**
+
+- docs: break hue discontinuity in docs [\#13](https://github.com/tlambert03/cmap/pull/13) ([tlambert03](https://github.com/tlambert03))
+
+## [v0.0.2](https://github.com/tlambert03/cmap/tree/v0.0.2) (2023-05-03)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.0.1...v0.0.2)
 
 **Implemented enhancements:**
 

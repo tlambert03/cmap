@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.1.1](https://github.com/tlambert03/cmap/tree/v0.1.1) (2023-09-07)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.0...v0.1.1)
+
+**Implemented enhancements:**
+
+- feat: select unique names by category [\#25](https://github.com/tlambert03/cmap/pull/25) ([tlambert03](https://github.com/tlambert03))
+
 ## [v0.1.0](https://github.com/tlambert03/cmap/tree/v0.1.0) (2023-09-06)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.0.3...v0.1.0)

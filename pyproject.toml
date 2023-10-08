@@ -19,6 +19,7 @@ classifiers = [
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 dynamic = ["version"]
 dependencies = ["numpy"]
@@ -131,7 +132,8 @@ filterwarnings = [
     "error",
     "ignore:distutils Version classes are deprecated",
     "ignore:`np.bool8` is a deprecated:DeprecationWarning",
-
+    "ignore:datetime.datetime.utcfromtimestamp:DeprecationWarning",
+    "ignore::DeprecationWarning:docstring_parser",
 ]
 
 # https://mypy.readthedocs.io/en/stable/config_file.html

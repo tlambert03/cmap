@@ -1,5 +1,21 @@
 # Changelog
 
+## [v0.1.2](https://github.com/tlambert03/cmap/tree/v0.1.2) (2023-10-08)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.1...v0.1.2)
+
+**Implemented enhancements:**
+
+- feat: support python 3.12 [\#24](https://github.com/tlambert03/cmap/pull/24) ([tlambert03](https://github.com/tlambert03))
+
+**Fixed bugs:**
+
+- fix: fix for issues in mpl 3.8.0 [\#27](https://github.com/tlambert03/cmap/pull/27) ([tlambert03](https://github.com/tlambert03))
+
+**Merged pull requests:**
+
+- ci\(pre-commit.ci\): autoupdate [\#26](https://github.com/tlambert03/cmap/pull/26) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+
 ## [v0.1.1](https://github.com/tlambert03/cmap/tree/v0.1.1) (2023-09-07)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.0...v0.1.1)

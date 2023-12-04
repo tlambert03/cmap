@@ -1,5 +1,21 @@
 # Changelog
 
+## [v0.1.3](https://github.com/tlambert03/cmap/tree/v0.1.3) (2023-12-04)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.2...v0.1.3)
+
+**Fixed bugs:**
+
+- update to\_pygfx [\#31](https://github.com/tlambert03/cmap/pull/31) ([tlambert03](https://github.com/tlambert03))
+
+**Documentation:**
+
+- update docs and pre-commit [\#30](https://github.com/tlambert03/cmap/pull/30) ([tlambert03](https://github.com/tlambert03))
+
+**Merged pull requests:**
+
+- ci\(dependabot\): bump styfle/cancel-workflow-action from 0.11.0 to 0.12.0 [\#28](https://github.com/tlambert03/cmap/pull/28) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.1.2](https://github.com/tlambert03/cmap/tree/v0.1.2) (2023-10-08)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.1...v0.1.2)

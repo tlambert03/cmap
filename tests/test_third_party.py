@@ -19,6 +19,8 @@ if not (os.getenv("CI") or os.getenv("THIRD")):
 
 CMAP = Colormap(["black", (0, 1, 0), "00FFFF33", "w"])
 IMG = np.random.rand(10, 10).astype("float32")
+CI = bool(os.getenv("CI"))
+LINUX = sys.platform.startswith("linux")
 
 
 def test_colour_support() -> None:
@@ -79,19 +81,20 @@ def test_plotly() -> None:
     px.imshow(IMG, color_continuous_scale=CMAP.to_plotly())
 
 
-@pytest.mark.skipif(bool(os.getenv("CI")), reason="segfaults")
+@pytest.mark.skipif(CI and LINUX, reason="need to fix drivers")
 def test_pygfx(qapp: "QApplication") -> None:
     from qtpy.QtWidgets import QWidget
 
-    gfx = pytest.importorskip("pygfx")
+    pytest.importorskip("pygfx")
     auto = pytest.importorskip("wgpu.gui.auto")
+    import pygfx as gfx
 
     canvas = auto.WgpuCanvas(size=IMG.shape)
     renderer = gfx.renderers.WgpuRenderer(canvas)
     camera = gfx.OrthographicCamera(*IMG.shape)
-    camera.position.y = IMG.shape[0] / 2
-    camera.position.x = IMG.shape[1] / 2
-    camera.scale.y = -1
+    # camera.position.y = IMG.shape[0] / 2
+    # camera.position.x = IMG.shape[1] / 2
+    # camera.scale.y = -1
 
     scene = gfx.Scene()
     scene.add(

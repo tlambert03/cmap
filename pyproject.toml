@@ -59,6 +59,7 @@ thirdparty = [
     "rich",
     "viscm",
     "vispy",
+    "pyqtgraph",
 ]
 dev = [
     "black",

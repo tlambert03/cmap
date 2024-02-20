@@ -1,5 +1,24 @@
 # Changelog
 
+## [v0.2.0](https://github.com/tlambert03/cmap/tree/v0.2.0) (2024-02-20)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.3...v0.2.0)
+
+**Implemented enhancements:**
+
+- feat: add support for pyqtgraph [\#32](https://github.com/tlambert03/cmap/pull/32) ([tlambert03](https://github.com/tlambert03))
+
+**Fixed bugs:**
+
+- fix: misc fixes for pydantic deprecations and other breakages [\#38](https://github.com/tlambert03/cmap/pull/38) ([tlambert03](https://github.com/tlambert03))
+
+**Merged pull requests:**
+
+- ci\(dependabot\): bump aganders3/headless-gui from 2.1 to 2.2 [\#37](https://github.com/tlambert03/cmap/pull/37) ([dependabot[bot]](https://github.com/apps/dependabot))
+- ci\(dependabot\): bump codecov/codecov-action from 3 to 4 [\#36](https://github.com/tlambert03/cmap/pull/36) ([dependabot[bot]](https://github.com/apps/dependabot))
+- ci\(dependabot\): bump actions/setup-python from 4 to 5 [\#34](https://github.com/tlambert03/cmap/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))
+- ci\(dependabot\): bump aganders3/headless-gui from 1.2 to 2.1 [\#33](https://github.com/tlambert03/cmap/pull/33) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.1.3](https://github.com/tlambert03/cmap/tree/v0.1.3) (2023-12-04)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.2...v0.1.3)

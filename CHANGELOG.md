@@ -1,6 +1,6 @@
 # Changelog
 
-## [v0.2.0](https://github.com/tlambert03/cmap/tree/v0.2.0) (2024-02-20)
+## [v0.2.0](https://github.com/tlambert03/cmap/tree/v0.2.0) (2024-03-09)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.3...v0.2.0)
 
@@ -14,6 +14,7 @@
 
 **Merged pull requests:**
 
+- test: Add test\_min extra and make sure tests run with bare minimum [\#40](https://github.com/tlambert03/cmap/pull/40) ([tlambert03](https://github.com/tlambert03))
 - ci\(dependabot\): bump aganders3/headless-gui from 2.1 to 2.2 [\#37](https://github.com/tlambert03/cmap/pull/37) ([dependabot[bot]](https://github.com/apps/dependabot))
 - ci\(dependabot\): bump codecov/codecov-action from 3 to 4 [\#36](https://github.com/tlambert03/cmap/pull/36) ([dependabot[bot]](https://github.com/apps/dependabot))
 - ci\(dependabot\): bump actions/setup-python from 4 to 5 [\#34](https://github.com/tlambert03/cmap/pull/34) ([dependabot[bot]](https://github.com/apps/dependabot))

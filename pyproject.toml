@@ -41,13 +41,13 @@ docs = [
     'imageio',
     'colorcet',
 ]
-test = [
-    "pytest>=6.0",
-    "pytest-cov",
-    "numba; python_version<'3.11'",
+test_min = ["pytest>=6.0"]
+test = ["cmap[test_min]", "pytest-cov"]
+test_thirdparty = [
+    "cmap[test]",
+    "numba; python_version<'3.13'",
     "matplotlib",
-]
-thirdparty = [
+    "colorspacious",
     "bokeh",
     "colour",
     "napari",
@@ -62,6 +62,7 @@ thirdparty = [
     "pyqtgraph",
 ]
 dev = [
+    "cmap[test_thirdparty]",
     "black",
     "ipython",
     "mypy",
@@ -106,8 +107,8 @@ select = [
     "ISC", # implicit-str-concat
     "TID", # tidy-imports
     "RUF", # ruff-specific rules
-    "TCH",  # flake8-type-checking
-    "TID",  # flake8-tidy-imports
+    "TCH", # flake8-type-checking
+    "TID", # flake8-tidy-imports
 ]
 [tool.ruff.lint]
 pydocstyle = { convention = "numpy" }
@@ -137,7 +138,7 @@ filterwarnings = [
     "ignore:`np.bool8` is a deprecated:DeprecationWarning",
     "ignore:datetime.datetime.utcfromtimestamp:DeprecationWarning",
     "ignore::DeprecationWarning:docstring_parser",
-    "ignore:Pyarrow will become a required dependency of pandas"
+    "ignore:Pyarrow will become a required dependency of pandas",
 ]
 
 # https://mypy.readthedocs.io/en/stable/config_file.html

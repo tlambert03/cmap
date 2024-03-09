@@ -9,6 +9,11 @@ import pytest
 
 from cmap import Color, Colormap
 
+try:
+    import pytestqt  # noqa F401
+except ImportError:
+    pytest.skip("pytest-qt not installed", allow_module_level=True)
+
 if TYPE_CHECKING:
     from qtpy.QtWidgets import QApplication
 
@@ -53,7 +58,6 @@ def test_matplotlib() -> None:
 
 
 @pytest.mark.filterwarnings("ignore")
-@pytest.mark.skipif(sys.version_info >= (3, 12), reason="napari not working on py3.12")
 def test_napari(qapp: "QApplication") -> None:
     napari = pytest.importorskip("napari")
 
@@ -116,6 +120,7 @@ def test_pygfx(qapp: "QApplication") -> None:
 
 @pytest.mark.skipif(os.name == "nt" and sys.version_info >= (3, 11), reason="segfaults")
 def test_bokeh() -> None:
+    pytest.importorskip("bokeh")
     from bokeh.plotting import figure
 
     p = figure()
@@ -133,6 +138,7 @@ def test_altair() -> None:
 
 
 def test_viscm(tmp_path: Path) -> None:
+    pytest.importorskip("viscm")
     # NOT using importorskip here because there IS an error import viscm
     # in the current release
     cmap1 = Colormap(["red", "green", "blue"])

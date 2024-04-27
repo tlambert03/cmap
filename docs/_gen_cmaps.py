@@ -1,8 +1,9 @@
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 import mkdocs_gen_files
+import natsort
 import numpy as np
 
 if TYPE_CHECKING:
@@ -84,7 +85,8 @@ INCLUDE_DATA = (
 
 
 def build_catalog(catalog: "_catalog.Catalog") -> None:
-    for name in catalog:
+    nav = mkdocs_gen_files.Nav()
+    for name in natsort.natsorted(catalog, alg=natsort.ns.IGNORECASE):
         if ":" not in name:
             continue
         try:
@@ -116,7 +118,9 @@ def build_catalog(catalog: "_catalog.Catalog") -> None:
         aliases = _make_aliases_md(_aliases) if _aliases else ""
 
         # write the actual markdown file
-        with mkdocs_gen_files.open(f"catalog/{category}/{name.lower()}.md", "w") as f:
+        doc_path = f"{category}/{name.lower()}.md"
+        nav[(category.title(), name)] = doc_path
+        with mkdocs_gen_files.open(f"catalog/{doc_path}", "w") as f:
             f.write(
                 TEMPLATE.format(
                     name=name,
@@ -130,9 +134,15 @@ def build_catalog(catalog: "_catalog.Catalog") -> None:
                 )
             )
 
+    # sort categories alphabetically
+    nav._data = dict(sorted(nav._data.items(), key=lambda x: x[0][0]))
+    with mkdocs_gen_files.open("catalog/SUMMARY.md", "w") as nav_file:
+        nav_file.writelines(["# SUMMARY { data-search-exclude }\n"])
+        nav_file.writelines(nav.build_literate_nav())
+
 
 def _make_aliases_md(aliases: list[str]) -> str:
     return "**Aliases**:  " + ", ".join(f"`{a}`" for a in aliases)
 
 
-build_catalog(cast("_catalog.Catalog", Colormap.catalog()))
+build_catalog(Colormap.catalog())

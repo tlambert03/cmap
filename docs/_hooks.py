@@ -5,6 +5,7 @@ from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Sequence, cast
 
+import natsort
 import numpy as np
 
 from cmap import Colormap, _util
@@ -24,7 +25,7 @@ CMAP_DIV = """
 """
 CMAP_LINK = '<a href="{url}">' + CMAP_DIV + "</a>"
 DEV_MODE = "serve" in sys.argv
-SINERAMP = _util.sineramp((96, 512))[:, ::-1]
+SINERAMP = _util.sineramp((96, 826))[:, ::-1]
 
 
 def _to_img_tag(
@@ -34,7 +35,7 @@ def _to_img_tag(
     img: np.ndarray | None = None,
 ) -> str:
     """Return a base64-encoded <img> tag for the given colormap."""
-    _img = cm._repr_png_(width=256, height=1, img=img)
+    _img = cm._repr_png_(width=826, height=1, img=img)
     data = base64.b64encode(_img).decode("ascii")
     return (
         f'<img style="height: {height}" width="{width}" src="data:image/png;base64,'
@@ -91,7 +92,9 @@ def _cmap_catalog() -> str:
     """
     categories = set()
     lines = []
-    for cmap_name, details in sorted(CATALOG.items(), key=lambda x: x[0].lower()):
+    for cmap_name, details in natsort.natsorted(
+        CATALOG.items(), key=lambda x: x[0].lower()
+    ):
         if "alias" in details:
             continue
         category = details.get("category") or "Uncategorized"
@@ -185,7 +188,9 @@ Redirecting...
 
 def _write_cmap_redirects(site_dir: str) -> None:
     sd = Path(site_dir)
-    for cmap_name, details in sorted(CATALOG.items(), key=lambda x: x[0].lower()):
+    for cmap_name, details in natsort.natsorted(
+        CATALOG.items(), key=lambda x: x[0].lower()
+    ):
         if "alias" in details:
             cmap_name = cmap_name.replace(":", "-")
             real = Colormap(details["alias"])  # type: ignore
@@ -198,6 +203,6 @@ def _write_cmap_redirects(site_dir: str) -> None:
                 f.write(content)
 
 
-def on_post_build(config, **kwargs: Any) -> None:
+def on_post_build(config: dict, **kwargs: Any) -> None:
     """Copy the extra javascripts to the output directory."""
     _write_cmap_redirects(config["site_dir"])

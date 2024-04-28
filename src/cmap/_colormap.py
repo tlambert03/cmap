@@ -434,6 +434,49 @@ class Colormap:
             self.color_stops.reversed(), name=name, category=self.category
         )
 
+    def shifted(
+        self,
+        shift: float = 0.5,
+        name: str | None = None,
+        mode: Literal["wrap", "clip"] = "wrap",
+    ) -> Colormap:
+        """Return a new Colormap, with colors shifted by a scalar value.
+
+        This method shifts the stops in the colormap by a scalar value.
+        It makes most sense for cyclic colormaps, but can be used with any colormap.
+
+        Parameters
+        ----------
+        shift : float
+            The amount to shift the colormap.  Positive values shift the colormap
+            towards the end, negative values shift the colormap towards the beginning.
+        name : str
+            A new name for the colormap.  If not provided, the name of the new colormap
+            will be the name of the original colormap with "_shifted{shift}" appended.
+        mode : {'wrap', 'clip'}, optional
+            The mode to use when shifting the colormap.  Must be one of 'wrap' or
+            'clip'. If 'wrap', the colormap will be shifted and wrapped around the ends.
+            If 'clip', the colormap will be shifted and the colors at the ends will be
+            clipped and/or repeated as necessary.
+
+        Returns
+        -------
+        Colormap
+            A new colormap with the colors shifted.
+        """
+        if name is None:
+            name = f"{self.name}_shifted{shift}"
+
+        return type(self)(
+            self.color_stops.shifted(shift=shift, mode=mode),
+            name=name,
+            category=self.category,
+            interpolation=self.interpolation,
+            under=self.under_color,
+            over=self.over_color,
+            bad=self.bad_color,
+        )
+
     def to_css(
         self,
         max_stops: int | None = None,
@@ -969,7 +1012,35 @@ class ColorStops(Sequence[ColorStop]):
         # invert the positions in the stops
         rev_stops = self._stops[::-1]
         rev_stops[:, 0] = 1 - rev_stops[:, 0]
-        return type(self)(rev_stops)
+        return type(self)(rev_stops, interpolation=self._interpolation)
+
+    def shifted(
+        self, shift: float, mode: Literal["wrap", "clip"] = "wrap"
+    ) -> ColorStops:
+        """Return a new ColorStops object with all positions shifted by `shift`.
+
+        Parameters
+        ----------
+        shift : float
+            The amount to shift the colormap.  Positive values shift the colormap
+            towards the end, negative values shift the colormap towards the beginning.
+        mode : {'wrap', 'clip'}, optional
+            The mode to use when shifting the colormap.  Must be one of 'wrap' or
+            'clip'. If 'wrap', the colormap will be shifted and wrapped around the ends.
+            If 'clip', the colormap will be shifted and the colors at the ends will be
+            clipped and/or repeated as necessary.
+        """
+        if mode not in {"wrap", "clip"}:  # pragma: no cover
+            raise ValueError("mode must be 'wrap' or 'clip'")
+
+        if mode == "wrap":
+            stops = _wrap_shift_color_stops(self._stops, shift)
+        else:
+            stops = self._stops.copy()
+            stops[:, 0] += shift
+            # throw away stops that are out of bounds
+            stops = stops[(stops[:, 0] >= 0) & (stops[:, 0] <= 1)]
+        return type(self)(stops, interpolation=self._interpolation)
 
     @classmethod
     def __get_pydantic_core_schema__(
@@ -1317,3 +1388,16 @@ def _html_color_patch(color: Color | None) -> str:
         "border: 1px solid #555; "
         f'background-color: {color.hex};"></div>'
     )
+
+
+def _wrap_shift_color_stops(data: np.ndarray, shift_amount: float) -> np.ndarray:
+    """Shift (N, 5) array of color stops by `shift_amount` and wrap around."""
+    out = np.array(data, copy=True)
+    # ensure that 0 <= data < 1
+    # this is important for dealing with wraparound when shifting
+    out[:, 0][out[:, 0] == 1] = 1 - np.finfo(float).eps
+    out[:, 0] += shift_amount
+    out[:, 0] %= 1
+    # sort the array by the first column
+    out = out[out[:, 0].argsort()]
+    return out

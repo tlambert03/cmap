@@ -2,17 +2,19 @@
 
 ## [v0.2.0](https://github.com/tlambert03/cmap/tree/v0.2.0) (2024-04-28)
 
-[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.2.0...v0.2.0)
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.3...v0.2.0)
 
 **Implemented enhancements:**
 
 - feat: add shifted method [\#52](https://github.com/tlambert03/cmap/pull/52) ([tlambert03](https://github.com/tlambert03))
 - feat: add over/under/bad colors [\#50](https://github.com/tlambert03/cmap/pull/50) ([tlambert03](https://github.com/tlambert03))
 - feat: add Paul Tol's colormaps [\#48](https://github.com/tlambert03/cmap/pull/48) ([Jhsmit](https://github.com/Jhsmit))
+- feat: add support for pyqtgraph [\#32](https://github.com/tlambert03/cmap/pull/32) ([tlambert03](https://github.com/tlambert03))
 
 **Fixed bugs:**
 
 - fix: fix interpolation argument preservation in custom colormaps [\#47](https://github.com/tlambert03/cmap/pull/47) ([tlambert03](https://github.com/tlambert03))
+- fix: misc fixes for pydantic deprecations and other breakages [\#38](https://github.com/tlambert03/cmap/pull/38) ([tlambert03](https://github.com/tlambert03))
 
 **Documentation:**
 
@@ -22,21 +24,6 @@
 
 - ci\(dependabot\): bump softprops/action-gh-release from 1 to 2 [\#42](https://github.com/tlambert03/cmap/pull/42) ([dependabot[bot]](https://github.com/apps/dependabot))
 - chore: use ruff instead of black [\#41](https://github.com/tlambert03/cmap/pull/41) ([tlambert03](https://github.com/tlambert03))
-
-## [v0.2.0](https://github.com/tlambert03/cmap/tree/v0.2.0) (2024-03-09)
-
-[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.3...v0.2.0)
-
-**Implemented enhancements:**
-
-- feat: add support for pyqtgraph [\#32](https://github.com/tlambert03/cmap/pull/32) ([tlambert03](https://github.com/tlambert03))
-
-**Fixed bugs:**
-
-- fix: misc fixes for pydantic deprecations and other breakages [\#38](https://github.com/tlambert03/cmap/pull/38) ([tlambert03](https://github.com/tlambert03))
-
-**Merged pull requests:**
-
 - test: Add test\_min extra and make sure tests run with bare minimum [\#40](https://github.com/tlambert03/cmap/pull/40) ([tlambert03](https://github.com/tlambert03))
 - ci\(dependabot\): bump aganders3/headless-gui from 2.1 to 2.2 [\#37](https://github.com/tlambert03/cmap/pull/37) ([dependabot[bot]](https://github.com/apps/dependabot))
 - ci\(dependabot\): bump codecov/codecov-action from 3 to 4 [\#36](https://github.com/tlambert03/cmap/pull/36) ([dependabot[bot]](https://github.com/apps/dependabot))

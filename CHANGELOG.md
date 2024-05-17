@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.2.1](https://github.com/tlambert03/cmap/tree/v0.2.1) (2024-05-17)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.2.0...v0.2.1)
+
+**Implemented enhancements:**
+
+- Expose `Colormap.num_colors` and document usage for cycling through qualitative colormaps  [\#55](https://github.com/tlambert03/cmap/pull/55) ([andy-sweet](https://github.com/andy-sweet))
+
+**Documentation:**
+
+- docs: make colormap attributes more visible [\#56](https://github.com/tlambert03/cmap/pull/56) ([tlambert03](https://github.com/tlambert03))
+
 ## [v0.2.0](https://github.com/tlambert03/cmap/tree/v0.2.0) (2024-04-28)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.1.3...v0.2.0)

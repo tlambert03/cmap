@@ -151,9 +151,143 @@ A [`numpy.ndarray`][], in one of the following formats:
 
 ## Usage
 
-### Useful properties
+### Using qualitative colormaps
 
- ... TODO
+Consider a ColorBrewer qualitative colormap from the default catalog with eight color stops
+
+```python
+c = Colormap("colorbrewer:set1_8")
+c.color_stops
+```
+
+As with all colormaps, the color stop positions are in [0, 1]
+
+```python
+ColorStops(
+  (0.0, Color((0.8941, 0.102, 0.1098))),
+  (0.14285714285714285, Color((0.2157, 0.4941, 0.7216))),
+  (0.2857142857142857, Color((0.302, 0.6863, 0.2902))),
+  (0.42857142857142855, Color((0.5961, 0.3059, 0.6392))),
+  (0.5714285714285714, Color((1.0, 0.498, 0.0))),
+  (0.7142857142857142, Color((1.0, 1.0, 0.2))),
+  (0.8571428571428571, Color((0.651, 0.3373, 0.1569))),
+  (1.0, Color((0.9686, 0.5059, 0.749)))
+)
+```
+
+so a floating point value in [0, 1] can be used to map to a color
+
+```python
+c(0.2)
+```
+
+which will use nearest neighbor interpolation by default to return the second color exactly
+
+```python
+Color((0.2157, 0.4941, 0.7216))
+```
+
+even though the position is in between the second and third color stops.
+
+However, qualitative colormaps are often used to map integer valued or categorical values to colors.
+The behavior of calling a `Colormap` depends on the type of the input.
+Calling a `Colormap` with an integer
+
+```python
+c(1)
+```
+
+indexes directly into the colormap's LUT
+
+```python
+Color((0.2157, 0.4941, 0.7216))
+```
+
+which is often a more natural operation.
+
+#### Cycling through colors
+
+When using qualitative colormaps to map integer values, sometimes the input domain
+may be larger than the number of colors in the colormap.
+
+By default, values less than zero
+
+```python
+c(-1)
+```
+
+map to the first color
+
+```python
+Color((0.8941, 0.102, 0.1098))
+```
+
+and values greater than the number of colors
+
+```python
+c(9)
+```
+
+map to the last color
+
+```python
+Color((0.9686, 0.5059, 0.749))
+```
+
+This behavior can be customized by providing the `under` and `over` colors when initializing a `Colormap`.
+Instead, sometimes it is preferable for the mapping to cycle through the color stops.
+
+There is currently no built-in way to do this when calling the `Colormap`, but it can be done by using the
+modulo operator on the input value with `Colormap.num_colors`
+
+```python
+c(9 % c.num_colors)
+```
+
+which now maps to the first color
+
+
+```python
+Color((0.8941, 0.102, 0.1098))
+```
+
+This also works well when using an array as input
+
+```python
+c(np.arange(16 % c.num_colors))
+```
+
+which returns the cycled RGBA color values in an array output
+
+```python
+array([[0.89411765, 0.10196078, 0.10980392, 1.        ],
+       [0.21568627, 0.49411765, 0.72156863, 1.        ],
+       [0.30196078, 0.68627451, 0.29019608, 1.        ],
+       [0.59607843, 0.30588235, 0.63921569, 1.        ],
+       [1.        , 0.49803922, 0.        , 1.        ],
+       [1.        , 1.        , 0.2       , 1.        ],
+       [0.65098039, 0.3372549 , 0.15686275, 1.        ],
+       [0.96862745, 0.50588235, 0.74901961, 1.        ],
+       [0.89411765, 0.10196078, 0.10980392, 1.        ],
+       [0.21568627, 0.49411765, 0.72156863, 1.        ],
+       [0.30196078, 0.68627451, 0.29019608, 1.        ],
+       [0.59607843, 0.30588235, 0.63921569, 1.        ],
+       [1.        , 0.49803922, 0.        , 1.        ],
+       [1.        , 1.        , 0.2       , 1.        ],
+       [0.65098039, 0.3372549 , 0.15686275, 1.        ],
+       [0.96862745, 0.50588235, 0.74901961, 1.        ]])
+```
+
+The behavior of calling a `Colormap` with an array depends on its `dtype`.
+With a floating point `dtype`, it expects the values to be [0, 1], so the
+equivalent call to the above is
+
+```python
+c(np.linspace(0, 2, 16, endpoint=False) % 1)
+```
+
+which returns the same output array values.
+
 
 ## Immutability
 

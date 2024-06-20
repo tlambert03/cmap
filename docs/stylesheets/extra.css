@@ -173,3 +173,6 @@ body[data-md-color-scheme="slate"] .btn.active {
   margin: 0.2rem;
   text-align: center;
 }
+#readthedocs-ea, .ethical-alabaster {
+  display: none;
+}

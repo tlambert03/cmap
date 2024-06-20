@@ -663,7 +663,14 @@ class Colormap:
         from pydantic_core import core_schema
 
         schema = handler(Any)
-        ser = core_schema.plain_serializer_function_ser_schema(lambda x: x.as_dict())
+
+        def _serialize(obj: Colormap) -> Any:
+            if obj.info is not None and obj.info.qualified_name:
+                # this is a catalog item
+                return obj.info.qualified_name
+            return obj.as_dict()
+
+        ser = core_schema.plain_serializer_function_ser_schema(_serialize)
         return core_schema.no_info_after_validator_function(
             cls._validate, schema, serialization=ser
         )

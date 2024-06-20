@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.2.2](https://github.com/tlambert03/cmap/tree/v0.2.2) (2024-06-20)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.2.1...v0.2.2)
+
+**Implemented enhancements:**
+
+- feat: smaller serialization for catalog items [\#59](https://github.com/tlambert03/cmap/pull/59) ([tlambert03](https://github.com/tlambert03))
+
+**Fixed bugs:**
+
+- fix: fixes for numpy2 [\#60](https://github.com/tlambert03/cmap/pull/60) ([tlambert03](https://github.com/tlambert03))
+
 ## [v0.2.1](https://github.com/tlambert03/cmap/tree/v0.2.1) (2024-05-17)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.2.0...v0.2.1)

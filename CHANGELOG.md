@@ -1,5 +1,25 @@
 # Changelog
 
+## [v0.3.0](https://github.com/tlambert03/cmap/tree/v0.3.0) (2024-07-24)
+
+[Full Changelog](https://github.com/tlambert03/cmap/compare/v0.2.2...v0.3.0)
+
+**Implemented enhancements:**
+
+- feat: Add the `cerrado` sequential colormap [\#69](https://github.com/tlambert03/cmap/pull/69) ([apcamargo](https://github.com/apcamargo))
+- feat: add flexible integer conversion [\#68](https://github.com/tlambert03/cmap/pull/68) ([tlambert03](https://github.com/tlambert03))
+- feat: Add the `okabeito` namespace and colormap [\#65](https://github.com/tlambert03/cmap/pull/65) ([apcamargo](https://github.com/apcamargo))
+- feat: Add the `araucaria` sequential colormap [\#64](https://github.com/tlambert03/cmap/pull/64) ([apcamargo](https://github.com/apcamargo))
+
+**Documentation:**
+
+- docs: add contrib namespace, add how-to-contribute to FAQ [\#63](https://github.com/tlambert03/cmap/pull/63) ([tlambert03](https://github.com/tlambert03))
+
+**Merged pull requests:**
+
+- Add the `observable10` qualitative colormap [\#67](https://github.com/tlambert03/cmap/pull/67) ([apcamargo](https://github.com/apcamargo))
+- refactor: clarify that authors/license can be added directly to colormap entries, update contrib [\#66](https://github.com/tlambert03/cmap/pull/66) ([tlambert03](https://github.com/tlambert03))
+
 ## [v0.2.2](https://github.com/tlambert03/cmap/tree/v0.2.2) (2024-06-20)
 
 [Full Changelog](https://github.com/tlambert03/cmap/compare/v0.2.1...v0.2.2)

@@ -1,7 +1,3 @@
-> [!NOTE]
-> `cmap` is now in the [pyapp-kit](https://github.com/pyapp-kit) organization.  This repo is my personal fork.  
-> Please submit issues and PRs at https://github.com/pyapp-kit/cmap
-
 # cmap
 
 [![License](https://img.shields.io/pypi/l/cmap.svg?color=green)](https://github.com/pyapp-kit/cmap/raw/main/LICENSE)

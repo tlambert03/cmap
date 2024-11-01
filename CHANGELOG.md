@@ -1,5 +1,23 @@
 # Changelog
 
+## [v0.4.0](https://github.com/pyapp-kit/cmap/tree/v0.4.0) (2024-11-01)
+
+[Full Changelog](https://github.com/pyapp-kit/cmap/compare/v0.3.0...v0.4.0)
+
+**Implemented enhancements:**
+
+- feat: add cmasher colormaps [\#75](https://github.com/pyapp-kit/cmap/pull/75) ([tlambert03](https://github.com/tlambert03))
+
+**Documentation:**
+
+- docs: add note about bang wong paper [\#72](https://github.com/pyapp-kit/cmap/pull/72) ([tlambert03](https://github.com/tlambert03))
+
+**Merged pull requests:**
+
+- build: support py3.13 [\#76](https://github.com/pyapp-kit/cmap/pull/76) ([tlambert03](https://github.com/tlambert03))
+- Rename tlambert03/cmap -\> pyapp-kit/cmap [\#73](https://github.com/pyapp-kit/cmap/pull/73) ([tlambert03](https://github.com/tlambert03))
+- ci\(pre-commit.ci\): autoupdate [\#70](https://github.com/pyapp-kit/cmap/pull/70) ([pre-commit-ci[bot]](https://github.com/apps/pre-commit-ci))
+
 ## [v0.3.0](https://github.com/pyapp-kit/cmap/tree/v0.3.0) (2024-07-24)
 
 [Full Changelog](https://github.com/pyapp-kit/cmap/compare/v0.2.2...v0.3.0)

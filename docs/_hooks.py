@@ -87,34 +87,54 @@ def _cmap_sineramp(match: re.Match) -> str:
 
 
 def _cmap_catalog() -> str:
-    """Return the HTML for the colormap catalog page.
-
-    this works in conjunction with the `javascripts/extra.js` script.
-    """
-    categories = set()
+    """Return the HTML for the colormap catalog page."""
     lines = []
+
+    # Track unique categories and namespaces
+    categories = set()
+    namespaces = set()
+
     for cmap_name, details in natsort.natsorted(
         CATALOG.items(), key=lambda x: x[0].lower()
     ):
         if "alias" in details:
             continue
-        category = details.get("category") or "Uncategorized"
+
+        category = details.get("category", "misc").lower()
+        namespace = details.get("namespace", "other").lower()
+
         categories.add(category)
-        classes = ["filterDiv", category.lower()]
+        namespaces.add(namespace)
+
+        classes = ["filterDiv", category.lower(), namespace.lower()]
         lines.append(_cmap_div(cmap_name, classes))
 
-    btns = [
-        '<div id="cmapFilterButtons">',
-        """<button class="btn active" onclick="filterSelection('all')">All</button>""",
+    # Create filter button sections
+    # Category buttons
+    category_buttons = [
+        '<div id="cmapCategoryButtons" class="filter-button-group">',
+        '<button class="btn active" data-filter-cat="all">All categories</button>',
     ]
-    btns.extend(
-        f'<button class="btn" onclick="filterSelection({c.lower()!r})">{c}</button>'
+    category_buttons.extend(
+        f'<button class="btn" data-filter-cat="{c}">{c.capitalize()}</button>'
         for c in sorted(categories)
     )
-    btns.append("</div>")
-    lines = btns + lines
+    category_buttons.append("</div>")
 
-    return "\n".join(lines)
+    # Namespace buttons
+    namespace_buttons = [
+        '<div id="cmapNamespaceButtons" class="filter-button-group">',
+        '<button class="btn active" data-filter-ns="all">All namespaces</button>',
+    ]
+    namespace_buttons.extend(
+        f'<button class="btn" data-filter-ns="{n}">{n.capitalize()}</button>'
+        for n in sorted(namespaces)
+    )
+    namespace_buttons.append("</div>")
+
+    # Combine everything
+    html = "\n".join(category_buttons + namespace_buttons + lines)
+    return html
 
 
 COLORBOX = """<div class="colorbox" style="background-color: {hex}; color: {text_color}">

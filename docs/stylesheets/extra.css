@@ -176,3 +176,68 @@ body[data-md-color-scheme="slate"] .btn.active {
 #readthedocs-ea, .ethical-alabaster {
   display: none;
 }
+
+/* ----------------------------------------------- */
+
+
+/* Buttons layout */
+.filter-button-group {
+  margin-bottom: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.filter-button-group .btn {
+  padding: 0.4em 1em;
+  border: none;
+  cursor: pointer;
+  background: #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  transition: background 0.2s;
+}
+
+.filter-button-group .btn:hover {
+  background: #bbb;
+}
+
+.filter-button-group .btn.active {
+  background: #007acc;
+  color: #fff;
+}
+
+/* The filterable items grid */
+.filterDiv {
+  display: none; /* hide by default; shown via JS by adding 'show' */
+}
+
+.filterDiv.show {
+  display: block;
+}
+
+.cmap-box {
+  padding: 1em;
+  margin: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fafafa;
+  transition: box-shadow 0.2s;
+}
+
+.cmap-box:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* If you want a multi-column look, you can wrap .filterDiv in a grid container: */
+#cmapCatalogGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+#cmapCatalogGrid .filterDiv {
+  flex: 1 1 calc(25% - 1em);
+  box-sizing: border-box;
+  min-width: 150px; /* or whatever you prefer */
+}

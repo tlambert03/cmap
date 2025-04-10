@@ -1,56 +1,70 @@
-// This code pairs with the _hooks.py:_cmap_catalog()
-// and controls the buttons on the category.md page
-// from the very basic https://www.w3schools.com/howto/howto_js_filter_elements.asp
-// :P
+let activeCategory = "all";
+let activeNamespace = "all";
 
-function filterSelection(c) {
-  var x, i;
-  x = document.getElementsByClassName("filterDiv");
-  if (c == "all") c = "";
-  for (i = 0; i < x.length; i++) {
-    w3RemoveClass(x[i], "show");
-    if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-  }
-}
+// Called after changing either the category or the namespace
+function applyFilters() {
+  const items = document.getElementsByClassName("filterDiv");
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    const itemClasses = item.className.split(" ");
 
-function w3AddClass(element, name) {
-  var i, arr1, arr2;
-  arr1 = element.className.split(" ");
-  arr2 = name.split(" ");
-  for (i = 0; i < arr2.length; i++) {
-    if (arr1.indexOf(arr2[i]) == -1) {
-      element.className += " " + arr2[i];
+    // Check category
+    const matchesCategory =
+      activeCategory === "all" || itemClasses.includes(activeCategory);
+    // Check namespace
+    const matchesNamespace =
+      activeNamespace === "all" || itemClasses.includes(activeNamespace);
+
+    // Show item only if it matches both
+    if (matchesCategory && matchesNamespace) {
+      item.classList.add("show");
+    } else {
+      item.classList.remove("show");
     }
   }
-}
-
-function w3RemoveClass(element, name) {
-  var i, arr1, arr2;
-  arr1 = element.className.split(" ");
-  arr2 = name.split(" ");
-  for (i = 0; i < arr2.length; i++) {
-    while (arr1.indexOf(arr2[i]) > -1) {
-      arr1.splice(arr1.indexOf(arr2[i]), 1);
-    }
-  }
-  element.className = arr1.join(" ");
 }
 
 function initFilters() {
-  // Add active class to the current button (highlight it)
-  var btnContainer = document.getElementById("cmapFilterButtons");
-  if (btnContainer) {
-    // if the element exists, initialize the event listeners
-    filterSelection("all");
-    var btns = btnContainer.getElementsByClassName("btn");
-    for (var i = 0; i < btns.length; i++) {
-      btns[i].addEventListener("click", function () {
-        var current = document.getElementsByClassName("active");
-        current[0].className = current[0].className.replace(" active", "");
-        this.className += " active";
+  // Category button clicks
+  const catBtnContainer = document.getElementById("cmapCategoryButtons");
+  if (catBtnContainer) {
+    const catBtns = catBtnContainer.getElementsByClassName("btn");
+    for (let btn of catBtns) {
+      btn.addEventListener("click", function() {
+        // Remove 'active' from existing
+        for (let b of catBtns) {
+          b.classList.remove("active");
+        }
+        // Set 'active' on the clicked button
+        this.classList.add("active");
+        // Update the filter
+        activeCategory = this.getAttribute("data-filter-cat");
+        applyFilters();
       });
     }
   }
+
+  // Namespace button clicks
+  const nsBtnContainer = document.getElementById("cmapNamespaceButtons");
+  if (nsBtnContainer) {
+    const nsBtns = nsBtnContainer.getElementsByClassName("btn");
+    for (let btn of nsBtns) {
+      btn.addEventListener("click", function() {
+        // Remove 'active' from existing
+        for (let b of nsBtns) {
+          b.classList.remove("active");
+        }
+        // Set 'active' on the clicked button
+        this.classList.add("active");
+        // Update the filter
+        activeNamespace = this.getAttribute("data-filter-ns");
+        applyFilters();
+      });
+    }
+  }
+
+  // Initialize on load
+  applyFilters();
 }
 
-initFilters();
+document.addEventListener("DOMContentLoaded", initFilters);

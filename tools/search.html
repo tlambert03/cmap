@@ -54,19 +54,19 @@
 
       .search-panel {
         display: flex;
-        gap: 2rem;
+        flex-direction: column;
+        gap: 1rem;
       }
 
       .search-panel__filters {
-        flex: 1;
-        max-width: 250px;
+        display: flex;
+        flex-wrap: wrap;
         padding: 1rem;
         background: var(--card-background);
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
-        align-self: flex-start;
-        position: sticky;
-        top: 20px;
+        position: relative;
+        top: auto;
       }
 
       .search-panel__filters h2 {
@@ -74,16 +74,21 @@
         font-size: 1.2rem;
       }
 
+      /* Arrange filter groups side by side */
       .search-panel__filters h3 {
-        margin-top: 1.5rem;
+        width: 100%;
         margin-bottom: 0.5rem;
         font-size: 1rem;
         font-weight: 500;
         color: var(--primary-color);
       }
+      .search-panel__filters > div {
+        flex: 1 1 200px;
+      }
 
       .search-panel__results {
-        flex: 3;
+        width: 100%;
+        margin-top: 0;
       }
 
       #searchbox {
@@ -98,9 +103,9 @@
 
       /* Grid layout for hits */
       .ais-Hits-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
         list-style: none;
         padding: 0;
         margin: 0;
@@ -115,64 +120,56 @@
         display: block;
       }
 
+      /* Single-column horizontal strip layout */
       .hit {
-        height: 100%;
         display: flex;
-        flex-direction: column;
-        background: var(--card-background);
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        overflow: hidden;
-        transition: var(--transition);
-        cursor: pointer;
-        position: relative;
-      }
-
-      .hit:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .hit-colormap {
-        width: 100%;
-        height: 60px;
-        border: none;
+        flex-direction: row;
+        align-items: center;
+        height: 36px;
+        background: none;
+        box-shadow: none;
         border-radius: 0;
-        margin-bottom: 0;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        text-decoration: none;
+        color: inherit;
+        cursor: pointer;
+        border-radius: 5px;
       }
-
-      .hit-image {
-        width: 100%;
-        height: 60px;
+      .hit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+      .hit-colormap {
+        flex: 1;
+        height: 100%;
+        margin: 0;
+        border-radius: 0;
         image-rendering: pixelated;
+        image-rendering: crisp-edges;
       }
-
       .hit-content {
-        padding: 1rem;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        flex: 0 0 200px;
+        width: 200px;
+        padding-left: 1rem;
+        background: transparent;
       }
-
-      .hit-header {
-        margin-bottom: 0.5rem;
+      /* Hide additional content, only keep the heading */
+      .hit-content > :not(.hit-header) {
+        display: none;
       }
-
       .hit-name {
-        font-weight: 600;
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         margin: 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        color: var(--primary-color);
       }
 
       .hit-name span.namespace {
         opacity: 0.7;
         color: #888888;
-        font-size: 0.9rem;
+        font-size: 0.7rem;
         padding-right: 0.3rem;
         margin: 0;
       }
@@ -219,23 +216,23 @@
         font-weight: 500;
       }
 
-      .hit a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
-      }
-
       .ais-Pagination {
         margin-top: 2rem;
         display: flex;
         justify-content: center;
       }
 
+      /* Float clear filters button to the right */
+      #clear-refinements {
+        float: right;
+        margin-bottom: 1rem;
+      }
+      .clear-refinements-button {
+        display: inline-block;
+      }
+
       /* Responsive adjustments */
-      @media (max-width: 900px) {
+      @media (max-width: 800px) {
         .search-panel {
           flex-direction: column;
         }
@@ -253,22 +250,13 @@
   </head>
 
   <body>
-
     <div class="container">
       <div class="search-panel">
         <div class="search-panel__filters">
-          <h2>Filter Colormaps</h2>
-          <h3>Category</h3>
           <div id="category-list"></div>
-
-          <h3>Library</h3>
-          <div id="namespace-list"></div>
-
-          <h3>Tags</h3>
           <div id="tags-list"></div>
-
-          <h3>License</h3>
-          <div id="license-list"></div>
+          <div id="namespace-list"></div>
+          <div id="clear-refinements"></div>
         </div>
 
         <div class="search-panel__results">
@@ -281,21 +269,16 @@
     </div>
   </body>
   <script>
-    const appId = "9WAWQMVNTB";
-    const apiKey = "1702c7905e3ce60bfac6ddea6b6e4fff";
-    const indexName = "cmap_catalog";
-
-    // Initialize search when the page loads
-    document.addEventListener("DOMContentLoaded", function () {
-      initSearch(appId, apiKey, indexName);
-    });
-
-    function initSearch(appId, apiKey, indexName) {
-      const searchClient = algoliasearch(appId, apiKey);
+    document.addEventListener("DOMContentLoaded", initSearch);
+    function initSearch() {
+      const searchClient = algoliasearch(
+        "9WAWQMVNTB",
+        "1702c7905e3ce60bfac6ddea6b6e4fff"
+      );
       const search = instantsearch({
-        indexName: indexName,
+        indexName: "cmap_catalog",
         searchClient,
-        routing: true, // Enable URL sync for sharing search results
+        // routing: true, // Enable URL sync for sharing search results
       });
 
       // Define the search widgets
@@ -330,55 +313,27 @@
           container: "#hits",
           templates: {
             item(hit) {
-              const tags = Array.isArray(hit.tags) ? hit.tags : [];
-              const authors = Array.isArray(hit.authors)
-                ? hit.authors.join(", ")
-                : hit.authors || "";
-              const license = hit.license || "";
-
-              // Limit the number of tags to display
-              const displayTags = tags.slice(0, 3);
-
               return `
-                <div class="hit">
-                  <div class="hit-colormap">
-                    ${
-                      hit.image_base64
-                        ? `<img class="hit-image" src="data:image/png;base64,${hit.image_base64}" alt="${hit.name} colormap" />`
-                        : `<div style="height: 80px; background: linear-gradient(to right, ${colorSamples.join(
-                            ", "
-                          )})"></div>`
-                    }
-                  </div>
-                  <div class="hit-content">
-                    <div class="hit-header">
-                      <h3 class="hit-name"><span class='namespace'>${instantsearch.highlight(
-                        { attribute: "namespace", hit }
-                      )}:</span>${instantsearch.highlight({
-                attribute: "name",
-                hit,
-              })}</h3>
-                    </div>
-
-                    <div class="hit-tags">
-                      <span class="hit-tag">${hit.category}</span>
-                      ${displayTags
-                        .map((tag) => `<span class="hit-tag">${tag}</span>`)
-                        .join("")}
-                      ${
-                        hit.interpolation === false
-                          ? '<span class="hit-tag">discrete</span>'
-                          : ""
-                      }
-                    </div>
-                  </div>
-                  <a href="${
-                    hit.url
-                  }" target="_blank" aria-label="View details for ${
+              <a class="hit" href="${
+                hit.url
+              }" target="_blank" aria-label="View details for ${
                 hit.name
-              } colormap"></a>
+              } colormap">
+                <div class="hit-colormap" style="background-image: url('data:image/png;base64,${
+                  hit.image_base64
+                }'); background-repeat: repeat-y; background-size: 100% 100%;"></div>
+                <div class="hit-content">
+                  <div class="hit-header">
+                    <h3 class="hit-name">
+                      <span class="namespace">${instantsearch.highlight({
+                        attribute: "namespace",
+                        hit,
+                      })}:</span>
+                      ${instantsearch.highlight({ attribute: "name", hit })}
+                    </h3>
+                  </div>
                 </div>
-              `;
+              </a>`;
             },
             empty:
               '<div class="empty-results">No results found for <q>{{ query }}</q>.<br>Try another search term or clear filters.</div>',
@@ -405,14 +360,10 @@
           },
         }),
 
-        instantsearch.widgets.refinementList({
+        instantsearch.widgets.menuSelect({
           container: "#namespace-list",
           attribute: "namespace",
           sortBy: ["count:desc", "name:asc"],
-          showMore: true,
-          searchable: true,
-          limit: 6,
-          showMoreLimit: 15,
         }),
 
         instantsearch.widgets.refinementList({
@@ -425,10 +376,17 @@
           searchablePlaceholder: "Search tags...",
         }),
 
-        instantsearch.widgets.refinementList({
-          container: "#license-list",
-          attribute: "license",
-          sortBy: ["count:desc", "name:asc"],
+        // Clear all refinements
+        instantsearch.widgets.clearRefinements({
+          container: "#clear-refinements",
+          templates: {
+            resetLabel: "Clear Filters",
+            noRefinement: "No filters applied",
+          },
+          cssClasses: {
+            root: "clear-refinements-button",
+            disabled: "disabled",
+          },
         }),
       ]);
 

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Cmap Catalog Explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACSVBMVEUAAAD/AAD/AAD/AAD/AAD/AAD/AQH/AAD/AQH/AAD/AAD/AADiBAT/AAD/AADiAwP/AAD/AAD/AADiBASZBwfiBATiBATiBATlBAT/AAD/AADkBAT/AAD/AAD/AAC3CAjkBAT/AADjBAT/AADiBAS5CAjsAgL/AAD/AADjBASrCQnjBATjBAS5CAjiBAS0CAi6CAjiBAThBATjBATiBATiBAThBAS0CAi0CAi/BwfiBAT/AADiBAT/AADiBATlAwO/BgbjBATjBAT/AADhBAThBASzCAjiBAT/AADhBATlBAThBATiBATkBAT/AADCBwf/AAD/AADjBASvCQnTBQX/AADiBAThBATiBATiBATkBAT/AADzAgL/AADiBAThBATiBAThBATiBASzCAj/AADjBASFCwviBATZBAT/AADlBATlAwPiBATjBAT/AAD/AAC2CAjhBAS0CAi4CAi2CAi/BwfiBATiBAT/AAD/AADjBAT/AAD/AAD/AADiBAT/AADiBAT/AAD/AADHBgb/AAD/AAD/AADiBAT/AAD/AADqAwP/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AAD/AADiBAT/AADiBATmAwO5CQniBATVBQX/AADiBATSBQXzAQH/AADiBATIBgb/AADiBATABwfiBATBBwezCAi4CAi2CQm5CAi1CAi4CAi3CAi5CAizCAi0CAi7CAi0CAizCAivCQmpCQm9CQm4CAi3CAi2CQm1CQm3CAi0CQm4CAi3CQnIBwdGc/4QAAAAK3RSTlMAEY68HifGCwGZ9lREfvtCxacauccwO+5R3nkm4/zzLUgCsRQczK30yBjvoMkQIQAAAAFiS0dEAIgFHUgAAAAHdElNRQfnDBIKFyKTsFPRAAABZUlEQVQ4y63SZ1PCQBAG4NRAQNBE7IWiYsGKvffea0RjRLH33guCCvbet/2ywcxm0hE/+XzeXGb2mJtLtGUuCu3sfySw5HB5BEy8fAGLBEvETkBCYVLSUmFaRmaWTJ4tVchzZDk6RZ5OLtRDIlPzsrLzC3SKQnVAkQKlvEhXXFJqwJu0Uq+UpfnKa6qpoZHNqKmutslam0lGRBId3FpabG2ldtL1cDva25ekXVR+z/LSbq6unu5epn1dfQP9YuCTogvtHfwZHFLJBoZHRod0Yuq4fRifGIdxYgInpyYnhOScNodmsLoH01TPMvPzC+SikKCbpVqo5XG+tLyyKqSa8TUYq/jb+gbxZneHCrHF3UsZNm/fgZvGvn0IE4wc4bwTj51jt3P+ABcuA9hbWrqG+3H+hu+KnqdBO3sH+sbQN4LHJ0RPTA8RBUoeX55fXt/eYL64vSJ+fHp++foO8P0j/qaUn1+f4jq/RQVrfwGBGTq1ObdbGQAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyMy0xMi0xOFQwNjoyMzozNCswNDowMOws+msAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMjMtMTItMThUMDY6MjM6MzQrMDQ6MDCdcULXAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIzLTEyLTE4VDA2OjIzOjM0KzA0OjAwyjBjCAAAAABJRU5ErkJggg==" type="image/png">
+
+  <!-- Include Algolia's InstantSearch library -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@8.1.0/themes/satellite-min.css">
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.17.2/dist/algoliasearch.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.56.0/dist/instantsearch.production.min.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #4183c4;
+      --background-color: #f9f9f9;
+      --card-background: #ffffff;
+      --text-color: #333333;
+      --tag-background: #f0f5ff;
+      --tag-color: #4183c4;
+      --border-radius: 8px;
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+      --transition: all 0.2s ease;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+
+    .search-panel {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .search-panel__filters {
+      flex: 1;
+      max-width: 250px;
+      padding: 1rem;
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      align-self: flex-start;
+      position: sticky;
+      top: 20px;
+    }
+
+    .search-panel__filters h2 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+
+    .search-panel__filters h3 {
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+
+    .search-panel__results {
+      flex: 3;
+    }
+
+    #searchbox {
+      margin-bottom: 1.5rem;
+    }
+
+    #stats {
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    /* Grid layout for hits */
+    .ais-Hits-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .ais-Hits-item {
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+      border: none;
+      background: none;
+      display: block;
+    }
+
+    .hit {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: var(--card-background);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .hit:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .hit-colormap {
+      width: 100%;
+      height: 60px;
+      border: none;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    .hit-image {
+      width: 100%;
+      height: 60px;
+      image-rendering: pixelated;
+    }
+
+    .hit-content {
+      padding: 1rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hit-header {
+      margin-bottom: 1rem;
+    }
+
+    .hit-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin: 0;
+      margin-bottom: 0.25rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--primary-color);
+    }
+
+    .hit-namespace {
+      font-size: 0.85rem;
+      opacity: 0.7;
+      margin: 0;
+    }
+
+    .hit-info {
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .hit-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .hit-authors {
+      font-size: 0.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hit-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: 0.5rem;
+    }
+
+    .hit-tag {
+      background-color: var(--tag-background);
+      color: var(--tag-color);
+      padding: 0.2rem 0.5rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .hit a {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .ais-Pagination {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .search-panel {
+        flex-direction: column;
+      }
+
+      .search-panel__filters {
+        max-width: none;
+        position: static;
+      }
+
+      .ais-Hits-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Cmap Catalog Explorer</h1>
+  </div>
+
+  <div class="container">
+    <div class="search-panel">
+      <div class="search-panel__filters">
+        <h2>Filter Colormaps</h2>
+        <h3>Category</h3>
+        <div id="category-list"></div>
+
+        <h3>Library</h3>
+        <div id="namespace-list"></div>
+
+        <h3>Tags</h3>
+        <div id="tags-list"></div>
+
+        <h3>License</h3>
+        <div id="license-list"></div>
+      </div>
+
+      <div class="search-panel__results">
+        <div id="searchbox" class="searchbox"></div>
+        <div id="stats"></div>
+        <div id="hits"></div>
+        <div id="pagination"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const appId = '9WAWQMVNTB';
+    const apiKey = '1702c7905e3ce60bfac6ddea6b6e4fff';
+    const indexName = 'cmap_catalog';
+
+    // Initialize search when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initSearch(appId, apiKey, indexName);
+    });
+
+    function initSearch(appId, apiKey, indexName) {
+      const searchClient = algoliasearch(appId, apiKey);
+      const search = instantsearch({
+        indexName: indexName,
+        searchClient,
+        routing: true, // Enable URL sync for sharing search results
+      });
+
+      // Define the search widgets
+      search.addWidgets([
+        // Enhanced search box
+        instantsearch.widgets.searchBox({
+          container: '#searchbox',
+          placeholder: 'Search for colormaps...',
+          showReset: true,
+          showSubmit: true,
+          showLoadingIndicator: true,
+          cssClasses: {
+            input: 'search-input',
+            submit: 'search-submit',
+            reset: 'search-reset',
+          }
+        }),
+
+        // Display total hits and processing time
+        instantsearch.widgets.stats({
+          container: '#stats',
+          templates: {
+            text: ({ nbHits, processingTimeMS, query }) =>
+              `Found ${nbHits} colormaps ${query ? `for "${query}"` : ''} in ${processingTimeMS}ms`
+          }
+        }),
+
+        // Display hits
+        instantsearch.widgets.hits({
+          container: '#hits',
+          templates: {
+            item(hit) {
+              const colorSamples = hit.color_samples || [];
+              const tags = Array.isArray(hit.tags) ? hit.tags : [];
+              const authors = Array.isArray(hit.authors) ? hit.authors.join(', ') : hit.authors || '';
+              const license = hit.license || '';
+
+              // Limit the number of tags to display
+              const displayTags = tags.slice(0, 3);
+
+              return `
+                <div class="hit">
+                  <div class="hit-colormap">
+                    ${hit.image_base64 ?
+                      `<img class="hit-image" src="data:image/png;base64,${hit.image_base64}" alt="${hit.name} colormap" />` :
+                      `<div style="height: 80px; background: linear-gradient(to right, ${colorSamples.join(', ')})"></div>`
+                    }
+                  </div>
+                  <div class="hit-content">
+                    <div class="hit-header">
+                      <h3 class="hit-name">${instantsearch.highlight({ attribute: 'name', hit })}</h3>
+                      <p class="hit-namespace">${hit.namespace}:${hit.name}</p>
+                    </div>
+
+                    <div class="hit-meta">
+                      ${authors ? `<div class="hit-authors">By: ${authors}</div>` : ''}
+                    </div>
+
+                    <div class="hit-tags">
+                      <span class="hit-tag">${hit.category}</span>
+                      ${displayTags.map(tag => `<span class="hit-tag">${tag}</span>`).join('')}
+                      ${hit.interpolation === false ? '<span class="hit-tag">discrete</span>' : ''}
+                    </div>
+                  </div>
+                  <a href="${hit.url}" target="_blank" aria-label="View details for ${hit.name} colormap"></a>
+                </div>
+              `;
+            },
+            empty: '<div class="empty-results">No results found for <q>{{ query }}</q>.<br>Try another search term or clear filters.</div>',
+          },
+        }),
+
+        // Add pagination
+        instantsearch.widgets.pagination({
+          container: '#pagination',
+          padding: 2,
+          showFirst: false,
+          showLast: false,
+        }),
+
+        // Add refinement lists with improved UI
+        instantsearch.widgets.refinementList({
+          container: '#category-list',
+          attribute: 'category',
+          sortBy: ['count:desc', 'name:asc'],
+          showMore: true,
+          showMoreLimit: 15,
+          cssClasses: {
+            showMore: 'show-more-button'
+          }
+        }),
+
+        instantsearch.widgets.refinementList({
+          container: '#namespace-list',
+          attribute: 'namespace',
+          sortBy: ['count:desc', 'name:asc'],
+          showMore: true,
+          searchable: true,
+          limit: 6,
+          showMoreLimit: 15
+        }),
+
+        instantsearch.widgets.refinementList({
+          container: '#tags-list',
+          attribute: 'tags',
+          sortBy: ['count:desc', 'name:asc'],
+          showMore: true,
+          showMoreLimit: 20,
+          searchable: false,
+          searchablePlaceholder: 'Search tags...',
+        }),
+
+        instantsearch.widgets.refinementList({
+          container: '#license-list',
+          attribute: 'license',
+          sortBy: ['count:desc', 'name:asc'],
+        }),
+      ]);
+
+      // Start the search
+      search.start();
+    }
+  </script>
+</body>
+</html>

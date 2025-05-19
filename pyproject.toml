@@ -193,3 +193,8 @@ ignore = [
     "mkdocs.yml",
     ".readthedocs.yaml",
 ]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.2.0",
+]
